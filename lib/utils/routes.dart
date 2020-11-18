@@ -16,7 +16,7 @@ const getHotelById = '​/api​/hotel​/'; // needs {hotelId}
 const getHotelRecommendationById = '​/api​/hotel​/{hotelId}​/reccomendations'; //needs {hotelId}
 
 // Booking routes
-const getUserBooking = '​/api​/profile​/bookings';
+const getBookings = '/api/profile/bookings';
 const addNewBooking = '/api/profile/bookings/'; //needs {hotelId}
 const deleteBookingById ='​/api​/profile​/bookings​/'; //needs {bookingId}
 const editBookingById = '​/api​/profile​/bookings​/'; //needs {bookingId}

@@ -17,6 +17,7 @@ class NavigationController {
       }
     } catch (e) {
       logger.e(e);
+      return null;
     }
   }
 
