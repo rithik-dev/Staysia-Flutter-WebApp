@@ -22,13 +22,13 @@ class NavigationController {
     }
   }
 
-  static Future getHotelsWithNameController({String tag}) async {}
+  static Future getHotelsWithTagController({String tag}) async {}
 
   static Future searchHotelWithNameController() async {}
 
-  static Future fuzzySearchController() async {}
-
-  static Future fuzzyTagSearchController() async {}
+  // static Future fuzzySearchController() async {}
+  //
+  // static Future fuzzyTagSearchController() async {}
 
   static Future getHotelByIdController({String hotelId}) async {}
 
