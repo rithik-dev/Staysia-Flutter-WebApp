@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:staysia_web/models/get_citites.dart';
 import 'package:staysia_web/utils/get_dio.dart';
+import 'package:staysia_web/utils/routes.dart';
 
 import '../main.dart';
 
@@ -9,7 +10,7 @@ class NavigationController {
 
   static Future<GetCities> getCitiesController() async {
     try {
-      final res = await _dio.get("/api/");
+      final res = await _dio.get(getCities);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return GetCities.fromJson(res.data as Map<String, dynamic>);
       } else {

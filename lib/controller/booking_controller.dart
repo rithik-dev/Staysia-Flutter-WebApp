@@ -7,6 +7,12 @@ import 'package:staysia_web/utils/routes.dart';
 class BookingController {
   static final Dio _dio = getDioInstance();
 
+  static Future addNewBookingController({String hotelId}) async {}
+
+  static Future deleteBookingController({String bookingId}) async {}
+
+  static Future editBookingController({String bookingId}) async {}
+
   static Future<List<Booking>> getBookingsController() async {
     try {
       logger.d(getBookings);
