@@ -10,15 +10,15 @@ class GetHotelsWithName {
   String title;
 
   GetHotelsWithName(
-      {this.city,
-      this.destinationId,
-      this.id,
-      this.neighbourhood,
-      this.price,
-      this.rating,
-      this.starRating,
-      this.thumbnail,
-      this.title});
+      {city,
+      destinationId,
+      id,
+      neighbourhood,
+      price,
+      rating,
+      starRating,
+      thumbnail,
+      title});
 
   GetHotelsWithName.fromJson(Map<String, dynamic> json) {
     city = json['city'] as String;
@@ -35,18 +35,19 @@ class GetHotelsWithName {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['city'] = this.city;
-    data['destinationId'] = this.destinationId;
-    data['id'] = this.id;
-    data['neighbourhood'] = this.neighbourhood;
-    if (this.price != null) {
-      data['price'] = this.price.toJson();
+    // ignore: omit_local_variable_types
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['city'] = city;
+    data['destinationId'] = destinationId;
+    data['id'] = id;
+    data['neighbourhood'] = neighbourhood;
+    if (price != null) {
+      data['price'] = price.toJson();
     }
-    data['rating'] = this.rating;
-    data['starRating'] = this.starRating;
-    data['thumbnail'] = this.thumbnail;
-    data['title'] = this.title;
+    data['rating'] = rating;
+    data['starRating'] = starRating;
+    data['thumbnail'] = thumbnail;
+    data['title'] = title;
     return data;
   }
 }
@@ -60,12 +61,12 @@ class Price {
   int savingsPercent;
 
   Price(
-      {this.beforePrice,
-      this.currency,
-      this.currentPrice,
-      this.discounted,
-      this.savingsAmount,
-      this.savingsPercent});
+      {beforePrice,
+      currency,
+      currentPrice,
+      discounted,
+      savingsAmount,
+      savingsPercent});
 
   Price.fromJson(Map<String, dynamic> json) {
     beforePrice = json['before_price'] as int;
