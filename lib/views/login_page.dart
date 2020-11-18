@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
+import 'package:staysia_web/main.dart';
+import 'package:staysia_web/models/booking.dart';
 
 class LoginPage extends StatefulWidget {
   final String email, password;
@@ -22,9 +24,10 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Text('logs'),
             FlatButton(
-              child: Text("test api"),
-              onPressed: () {
-                BookingController.getBookingsController();
+              child: Text('test api'),
+              onPressed: () async{
+                List<Booking> allBookings = await BookingController.getBookingsController();
+                logger.d(allBookings);
               },
             ),
           ],

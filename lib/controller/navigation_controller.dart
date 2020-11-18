@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:staysia_web/models/get_citites.dart';
 import 'package:staysia_web/utils/get_dio.dart';
 
+import '../main.dart';
+
 class NavigationController {
   static final Dio _dio = getDioInstance();
 
@@ -14,7 +16,7 @@ class NavigationController {
         return null;
       }
     } catch (e) {
-      print(e);
+      logger.e(e);
     }
   }
 

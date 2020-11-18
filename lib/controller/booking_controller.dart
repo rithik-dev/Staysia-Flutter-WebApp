@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/booking.dart';
 import 'package:staysia_web/utils/get_dio.dart';
 
@@ -9,14 +10,16 @@ class BookingController {
     try {
       final res = await _dio.get('/api/profile/bookings');
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        return (res.data as List<Map<String, dynamic>>)
+        return (res.data as List<dynamic>)
             .map((e) => Booking.fromJson(e))
-            .toList();
+            .toList()
+            .cast<Booking>();
       } else {
         return null;
       }
     } catch (e) {
-      print(e);
+      logger.e(e);
+      return null;
     }
   }
 }

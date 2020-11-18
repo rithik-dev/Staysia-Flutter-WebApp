@@ -16,7 +16,7 @@ class Booking {
       this.timestamp,
       this.title});
 
-  Booking.fromJson(Map<String, dynamic> json) {
+  Booking.fromJson(dynamic json) {
     bookingDetails = json['bookingDetails'] != null
         ? BookingDetails.fromJson(
             json['bookingDetails'] as Map<String, dynamic>,
@@ -55,7 +55,7 @@ class BookingDetails {
   BookingDetails(
       {this.bookingName, this.checkIn, this.checkOut, this.guests, this.room});
 
-  BookingDetails.fromJson(Map<String, dynamic> json) {
+  BookingDetails.fromJson(Map<String,dynamic> json) {
     bookingName = json['bookingName'] as String;
     checkIn = json['check_In'] as String;
     checkOut = json['check_Out'] as String;
