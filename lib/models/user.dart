@@ -3,19 +3,19 @@ import 'package:flutter/cupertino.dart';
 class User extends ChangeNotifier {
   String name;
   String email;
-  String phone;
+  String phone_number;
 
   User({
     @required this.name,
     @required this.email,
-    @required this.phone,
+    @required this.phone_number,
   });
 
   factory User.fromJson(Map json) {
     return User(
       name: json['name'] as String,
       email: json['email'] as String,
-      phone: json['phone'] as String,
+      phone_number: json['phone_number'] as String,
     );
   }
 
@@ -26,13 +26,13 @@ class User extends ChangeNotifier {
       // ignore: unnecessary_this
       'email': this.email,
       // ignore: unnecessary_this
-      'phone': this.phone,
+      'phone_number': this.phone_number,
     };
   }
 
   @override
   String toString() {
-    return 'User{name: $name, email: $email, phone: $phone}';
+    return 'User{name: $name, email: $email, phone_number: $phone_number}';
   }
 
   void updateUserInProvider(User user) {
@@ -41,7 +41,7 @@ class User extends ChangeNotifier {
     // ignore: unnecessary_this
     this.email = user.email;
     // ignore: unnecessary_this
-    this.phone = user.phone;
+    this.phone_number = user.phone_number;
 
     notifyListeners();
   }

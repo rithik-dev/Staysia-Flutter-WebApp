@@ -57,7 +57,7 @@ class _SplashPage extends State<SplashPage> {
   }
 
   User user = User(
-    phone: '',
+    phone_number: '',
     email: '',
     name: '',
   );

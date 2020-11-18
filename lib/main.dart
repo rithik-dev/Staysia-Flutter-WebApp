@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<DeviceDimension>(
             create: (_) => DeviceDimension(width: 0.0, height: 0.0)),
         ChangeNotifierProvider<User>(
-            create: (_) => User(phone: '', email: '', name: '')),
+            create: (_) => User(phone_number: '', email: '', name: '')),
       ],
       child: MaterialApp(
         navigatorKey: nav,
