@@ -15,6 +15,7 @@ linter:
     - close_sinks
     - avoid_print
     - avoid_shadowing_type_parameters
+    - omit_local_variable_types
     - comment_references
     - constant_identifier_names
     - control_flow_in_finally
