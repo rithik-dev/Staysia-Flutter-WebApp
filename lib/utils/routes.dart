@@ -1,25 +1,26 @@
 // User routes
-const signup = '​/api​/signup';
-const googleSignup = '​/api​/google-signup';
-const login = '​/api​/login';
-const logout = '​/api​/logout';
-const getProfile = '​/api​/profile';
-const patchProfile = '​/api​/profile​/';
+const signup = '/signup';
+const googleSignup = '/google-signup';
+const login = '/login';
+const logout = '/logout';
+const getProfile = '/profile';
+const patchProfile = '/profile';
 
 // Navigation routes
-const getCities = '​/api​/';
-const getHotelsWithTags= '​/api​/tags​/'; //needs {tag}
-const searchHotelsWithName = '​/api​/search';
-const fuzzySearch = '​/api​/searchbar'; //Fuzzy search for search bar
-const fuzzyTagSearch = '​/api​/search​/tags';
-const getHotelById = '​/api​/hotel​/'; // needs {hotelId}
-const getHotelRecommendationById = '​/api​/hotel​/{hotelId}​/reccomendations'; //needs {hotelId}
+const getCities = '/';
+const getHotelsWithTags = '/tags/'; //needs {tag}
+const searchHotelsWithName = '/search';
+const fuzzySearch = '/searchbar'; //Fuzzy search for search bar
+const fuzzyTagSearch = '/search/tags';
+const getHotelById = '/hotel/'; // needs {hotelId}
+const getHotelRecommendationById =
+    '/hotel/{hotelId}/reccomendations'; //needs {hotelId}
 
 // Booking routes
-const getBookings = '/api/profile/bookings';
-const addNewBooking = '/api/profile/bookings/'; //needs {hotelId}
-const deleteBookingById ='​/api​/profile​/bookings​/'; //needs {bookingId}
-const editBookingById = '​/api​/profile​/bookings​/'; //needs {bookingId}
+const getBookings = '/profile/bookings';
+const addNewBooking = '/profile/bookings'; //needs {hotelId}
+const deleteBookingById = '/profile/bookings'; //needs {bookingId}
+const editBookingById = '/profile/bookings'; //needs {bookingId}
 
 // Review routes
-const addReviewToHotel = '​/api​/hotel​/{hotelId}​/review'; //needs {hotelId}
+const addReviewToHotel = '/hotel/{hotelId}/review'; //needs {hotelId}
