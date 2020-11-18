@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:staysia_web/controller/booking_controller.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,9 +22,9 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Text('logs'),
             FlatButton(
-              child: Text("get cities"),
+              child: Text("test api"),
               onPressed: () {
-                NavigationController.getCitiesController();
+                BookingController.getBookingsController();
               },
             ),
           ],

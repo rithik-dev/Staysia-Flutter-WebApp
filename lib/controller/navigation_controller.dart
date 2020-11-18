@@ -14,7 +14,7 @@ class NavigationController {
         return null;
       }
     } catch (e) {
-      print(e.error);
+      print(e);
     }
   }
 
