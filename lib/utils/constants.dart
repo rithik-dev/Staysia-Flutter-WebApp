@@ -50,18 +50,18 @@ AlertStyle kAlertStyle = AlertStyle(
 var kDefaultTheme = ThemeData(
   primaryColor: Colors.white,
   brightness: Brightness.light,
-  accentColor: Colors.green,
-  focusColor: Colors.purpleAccent,
+  accentColor: Colors.orange,
+  focusColor: Colors.orangeAccent,
   inputDecorationTheme: InputDecorationTheme(
     focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
-      color: Colors.pink,
+      color: Colors.blue,
       style: BorderStyle.solid,
       width: 2,
     )),
 //          labelText: "Product Name",
     labelStyle: TextStyle(
-      color: Colors.purple,
+      color: Colors.deepOrangeAccent,
     ),
     hintStyle: TextStyle(
       color: Colors.grey[600],
@@ -73,7 +73,7 @@ var kDefaultTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(20.0)),
     ),
   ),
-  hintColor: Colors.pink,
+  hintColor: Colors.deepOrange,
   textTheme: TextTheme(
     button: TextStyle(color: Color(0xFF252525)),
     headline5:
@@ -101,7 +101,7 @@ var kDefaultTheme = ThemeData(
     subtitle1: TextStyle(
         fontSize: 14.5,
         fontWeight: FontWeight.w500,
-        color: Colors.purple,
+        color: Colors.black,
         fontFamily: 'karla'),
     headline6: TextStyle(
         fontSize: 16.0,
