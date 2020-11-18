@@ -9,19 +9,19 @@ class GetCities {
     if (json['cities'] != null) {
       cities = <Cities>[];
       json['cities'].forEach((v) {
-        cities.add(Cities.fromJson(v));
+        cities.add(Cities.fromJson(v as Map<String, dynamic>));
       });
     }
     if (json['stars'] != null) {
       stars = <Stars>[];
       json['stars'].forEach((v) {
-        stars.add(Stars.fromJson(v));
+        stars.add(Stars.fromJson(v as Map<String, dynamic>));
       });
     }
     if (json['tags'] != null) {
       tags = <Tags>[];
       json['tags'].forEach((v) {
-        tags.add(Tags.fromJson(v));
+        tags.add(Tags.fromJson(v as Map<String, dynamic>));
       });
     }
   }
@@ -48,7 +48,7 @@ class Cities {
 
   Cities({this.displayName, this.tag, this.thumbnail});
 
-  Cities.fromJson(dynamic json) {
+  Cities.fromJson(Map<String, dynamic> json) {
     displayName = json['displayName'] as String;
     tag = json['tag'] as String;
     thumbnail = json['thumbnail'] as String;
@@ -70,7 +70,7 @@ class Stars {
 
   Stars({this.displayName, this.tag, this.thumbnail});
 
-  Stars.fromJson(dynamic json) {
+  Stars.fromJson(Map<String, dynamic> json) {
     displayName = json['displayName'] as String;
     tag = json['tag'] as String;
     thumbnail = json['thumbnail'] as String;
@@ -92,7 +92,7 @@ class Tags {
 
   Tags({this.displayName, this.tag, this.thumbnail});
 
-  Tags.fromJson(dynamic json) {
+  Tags.fromJson(Map<String, dynamic> json) {
     displayName = json['displayName'] as String;
     tag = json['tag'] as String;
     thumbnail = json['thumbnail'] as String;
