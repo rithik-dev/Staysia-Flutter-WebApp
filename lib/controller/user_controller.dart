@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/get_dio.dart';
 import 'package:staysia_web/utils/routes.dart';
 
@@ -27,7 +28,7 @@ class UserController {
     }
   }
 
-  static Future googleSignupController() async {
+  static Future<String> googleSignupController() async {
     try {
       final res = await _dio.get(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -41,7 +42,7 @@ class UserController {
     }
   }
 
-  static Future loginController({
+  static Future<String> loginController({
     String email,
     String password,
   }) async {
@@ -59,11 +60,53 @@ class UserController {
     }
   }
 
-  static Future logoutController() async {
-
+  static Future<bool> logoutController() async {
+    try {
+      final res = await _dio.get(logout);
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      logger.e(e);
+      return false;
+    }
   }
 
-  static Future getProfileController() async {}
+  static Future<User> getProfileController() async {
+    try {
+      final res = await _dio.get(getProfile);
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return User(
+            name: res.data['name'] as String,
+            email: res.data['email'] as String,
+            phone_number: res.data['phone_number'] as String);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
 
-  static Future patchProfileController() async {}
+  static Future<User> patchProfileController(
+      {String name, String phone_number}) async {
+    try {
+      final res = await _dio.patch(patchProfile,
+          data: {'name': name, 'phone_number': phone_number});
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return User(
+            name: res.data['name'] as String,
+            email: res.data['email'] as String,
+            phone_number: res.data['phone_number'] as String);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
 }
