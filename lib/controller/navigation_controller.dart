@@ -9,11 +9,11 @@ class NavigationController {
     try {
       final res = await _dio.get("/api/");
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        return GetCities.fromJson(res.data);
+        return GetCities.fromJson(res.data as Map<String, dynamic>);
       } else {
         return null;
       }
-    } on DioError catch (e) {
+    } catch (e) {
       print(e.error);
     }
   }

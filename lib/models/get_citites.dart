@@ -5,7 +5,7 @@ class GetCities {
 
   GetCities({this.cities, this.stars, this.tags});
 
-  GetCities.fromJson(dynamic json) {
+  GetCities.fromJson(Map<String, dynamic> json) {
     if (json['cities'] != null) {
       cities = <Cities>[];
       json['cities'].forEach((v) {
