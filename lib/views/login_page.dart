@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:staysia_web/controller/navigation_controller.dart';
 
 class LoginPage extends StatefulWidget {
-  final String email,password;
-  const LoginPage({this.email = '',this.password = ''});
+  final String email, password;
+
+  const LoginPage({this.email = '', this.password = ''});
+
   static const id = '/login';
 
   @override
@@ -12,8 +15,20 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('logs'),
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            Text('logs'),
+            FlatButton(
+              child: Text("get cities"),
+              onPressed: () {
+                NavigationController.getCitiesController();
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
