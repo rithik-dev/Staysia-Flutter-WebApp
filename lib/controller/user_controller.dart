@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/get_dio.dart';
 import 'package:staysia_web/utils/routes.dart';
@@ -98,7 +99,7 @@ class UserController {
   }
 
   static Future<User> patchProfileController(
-      {String name, String phone_number}) async {
+      {@required String name,@required  String phone_number}) async {
     try {
       final res = await _dio.patch(patchProfile,
           data: {'name': name, 'phone_number': phone_number});

@@ -4,6 +4,14 @@ class User extends ChangeNotifier {
   String name;
   String email;
   String phone_number;
+  bool _isLoggedIn;
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  void setLoggedInStatus(bool loggedIn) {
+    _isLoggedIn = loggedIn;
+    notifyListeners();
+  }
 
   User({
     @required this.name,

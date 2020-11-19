@@ -69,6 +69,8 @@ class _SplashPage extends State<SplashPage> {
     Provider.of<DeviceDimension>(context, listen: false)
         .updateDeviceInProvider(device: device);
     Provider.of<User>(context, listen: false).updateUserInProvider(user);
+    Provider.of<User>(context, listen: false)
+        .setLoggedInStatus(jwt != null && jwt != '');
   }
 
   User user = User(

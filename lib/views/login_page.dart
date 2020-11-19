@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
+import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/booking.dart';
+import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/firebase_auth.dart';
 
@@ -28,7 +31,11 @@ class _LoginPageState extends State<LoginPage> {
               child: Text('test api'),
               onPressed: () async {
                 try {
-                  await BookingController.getBookingsController();
+                  // await UserController.patchProfileController(
+                  //   name: 'sv',
+                  //   phone_number: '9988',
+                  // );
+                  print(Provider.of<User>(context, listen: false).isLoggedIn);
                   // logger.d(jwt);
                   // await BookingController.editBookingController(
                   //     booking: Booking.fromJson({
