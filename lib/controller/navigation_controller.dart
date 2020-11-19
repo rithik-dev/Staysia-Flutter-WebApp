@@ -44,9 +44,18 @@ class NavigationController {
     }
   }
 
-  static Future searchHotelWithNameController() async {
+  static Future<List<Hotel>> searchHotelWithNameController({
+    @required String q,
+    String city,
+    String checkIn,
+    String checkOut,
+  }) async {
     try {
       final res = await _dio.get(searchHotelsWithName, queryParameters: {
+        'q': q,
+        if (city != null) 'city': city,
+        if (checkIn != null) 'check_In': checkIn,
+        if (checkOut != null) 'check_Out': checkOut,
       });
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return (res.data as List<dynamic>)
