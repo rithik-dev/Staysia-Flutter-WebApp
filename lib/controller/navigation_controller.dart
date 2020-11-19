@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:staysia_web/models/detailed_hotel.dart';
 import 'package:staysia_web/models/get_citites.dart';
 import 'package:staysia_web/models/hotel.dart';
 import 'package:staysia_web/utils/get_dio.dart';
@@ -75,7 +76,19 @@ class NavigationController {
   //
   // static Future fuzzyTagSearchController() async {}
 
-  static Future getHotelByIdController({String hotelId}) async {}
+  static Future getHotelByIdController({@required String hotelId}) async {
+    try {
+      final res = await _dio.get(getHotelById + hotelId);
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return DetailedHotel.fromJson(res.data as Map<String, dynamic>);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
 
   static Future getHotelRecommendationByIdController({String hotelId}) async {}
 }
