@@ -30,17 +30,17 @@ class Booking {
     title = json['title'] as String;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(Booking booking) {
     final data = <String, dynamic>{};
-    if (bookingDetails != null) {
-      data['bookingDetails'] = bookingDetails.toJson();
+    if (booking.bookingDetails != null) {
+      data['bookingDetails'] = booking.bookingDetails.toJson();
     }
-    data['bookingId'] = bookingId;
-    data['hotelId'] = hotelId;
-    data['price'] = price;
-    data['status'] = status;
-    data['timestamp'] = timestamp;
-    data['title'] = title;
+    data['bookingId'] = booking.bookingId;
+    data['hotelId'] = booking.hotelId;
+    data['price'] = booking.price;
+    data['status'] = booking.status;
+    data['timestamp'] = booking.timestamp;
+    data['title'] = booking.title;
     return data;
   }
 }

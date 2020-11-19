@@ -7,16 +7,80 @@ import 'package:staysia_web/utils/routes.dart';
 class BookingController {
   static final Dio _dio = getDioInstance();
 
-  static Future addNewBookingController({String hotelId}) async {}
+  static Future addNewBookingController({String hotelId}) async {
 
-  static Future deleteBookingController({String bookingId}) async {}
+  //   {
+  //     "status": "booked",
+  //   "bookingDetails": {
+  //   "bookingName": "string",
+  //   "guests": 1,
+  //   "room": {
+  //   "roomType": 1
+  //   },
+  //   "check_In": "dd/mm/yyyy",
+  //   "check_Out": "dd/mm/yyyy"
+  //   }
+  // }
 
-  static Future editBookingController({String bookingId}) async {}
+  //   {
+  //     "bookingDetails": {
+  //   "bookingName": "string",
+  //   "check_In": "string",
+  //   "check_Out": "string",
+  //   "guests": 0,
+  //   "room": {
+  //   "roomType": 0
+  //   }
+  //   },
+  //   "bookingId": "string",
+  //   "hotelId": "string",
+  //   "price": 0,
+  //   "status": "booked",
+  //   "timestamp": "string",
+  //   "title": "string"
+  // }
 
-  static Future<List<Booking>> getBookingsController() async {
+  }
+
+  static Future<bool> deleteBookingController({String bookingId}) async {
     try {
-      logger.d(getBookings);
-      final res = await _dio.get(getBookings);
+      final res = await _dio.delete(deleteBookingById + bookingId);
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      logger.e(e);
+      return false;
+    }
+  }
+
+  static Future<Booking> editBookingController(
+      {String bookingId, Booking booking}) async {
+    try {
+      final res = await _dio.patch(editBookingById + bookingId,
+          data: Booking().toJson(booking));
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return Booking.fromJson(res.data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  static Future<List<Booking>> getBookingsController(String accessToken) async {
+    try {
+      final res = await _dio.get(getBookings,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $accessToken',
+              'X-Requested-With': 'XMLHttpRequest',
+            },
+          ));
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return (res.data as List<dynamic>)
             .map((e) => Booking.fromJson(e))
