@@ -3,14 +3,12 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/components/custom_text_form_field.dart';
-import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/views/home_page.dart';
 
-// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   static const id = 'login';
   final String password, email;
@@ -49,43 +47,46 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text(
-                    "Login\n\n",
+                    'Login\n\n',
                     textAlign: TextAlign.center,
                   ),
                   CustomTextFormField(
-                    labelText: "Email",
+                    labelText: 'Email',
                     defaultValue: widget.email,
                     icon: Icons.mail,
-                    autofocus: true,
+                    autoFocus: true,
                     onChanged: (String value) {
                       _email = value;
                     },
                     validator: (String value) {
-                      if (value.isEmpty || value.trim() == "")
+                      if (value.isEmpty || value.trim() == '') {
                         return 'Please Enter Your Email';
-                      else if (!(value.contains("@") && value.contains(".")))
-                        return "Invalid Email";
+                      } else if (!(value.contains('@') &&
+                          value.contains('.'))) {
+                        return 'Invalid Email';
+                      }
                       return null;
                     },
                   ),
                   SizedBox(height: 10.0),
                   CustomTextFormField(
                     defaultValue: widget.password,
-                    labelText: "Password",
+                    labelText: 'Password',
                     icon: Icons.lock,
                     onChanged: (String value) {
                       _password = value;
                     },
                     validator: (String value) {
-                      if (value.isEmpty || value.trim() == "")
+                      if (value.isEmpty || value.trim() == '') {
                         return 'Please Enter Your Password';
-                      else if (value.length < 6)
-                        return "Length should be greater than 5";
+                      } else if (value.length < 6) {
+                        return 'Length should be greater than 5';
+                      }
                       return null;
                     },
                   ),
                   FlatButton(
-                    child: Text("LOGIN"),
+                    child: Text('LOGIN'),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         try {

@@ -8,7 +8,6 @@ import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/DeviceDimension.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/views/home_page.dart';
-import 'package:staysia_web/views/login_page.dart';
 
 import '../main.dart';
 

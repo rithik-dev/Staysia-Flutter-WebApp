@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:staysia_web/components/city_card.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
+import 'package:staysia_web/controller/review_controller.dart';
+import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/get_citites.dart';
+import 'package:staysia_web/models/review.dart';
 
 class HomePage extends StatelessWidget {
   static const id = 'homePage';
@@ -38,6 +41,19 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
+            FlatButton(
+              child: Text('click'),
+              onPressed: () async {
+                final newReviews=await ReviewController.addReviewToHotelController(
+                    hotelId: '424978',
+                    review: Review(
+                        rating: 3,
+                        review:
+                            'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
+                        title: "It's great"));
+
+              },
+            )
           ],
         ),
       ),
