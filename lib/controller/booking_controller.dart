@@ -60,7 +60,7 @@ class BookingController {
       {String bookingId, Booking booking}) async {
     try {
       final res = await _dio.patch(editBookingById + bookingId,
-          data: Booking().toJson(booking));
+          data: booking.toJson(booking));
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return Booking.fromJson(res.data);
       } else {
