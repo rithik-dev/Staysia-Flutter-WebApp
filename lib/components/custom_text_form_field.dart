@@ -9,7 +9,7 @@ class CustomTextFormField extends StatefulWidget {
   final Function trailingFunction;
   final String defaultValue;
   final bool showTrailingWidget;
-  final bool autofocus;
+  final bool autoFocus;
   final String Function(String) validator;
   final IconData icon;
   final bool flipIcon;
@@ -20,7 +20,7 @@ class CustomTextFormField extends StatefulWidget {
       this.trailingFunction,
       this.showTrailingWidget = true,
       this.defaultValue,
-      this.autofocus = false,
+      this.autoFocus = false,
       this.flipIcon = false,
       this.validator,
       this.icon});
@@ -41,32 +41,32 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: this.widget.icon == null
+      leading: widget.icon == null
           ? null
-          : this.widget.flipIcon
+          : widget.flipIcon
               ? Transform(
                   alignment: Alignment.center,
                   transform: Matrix4.rotationY(math.pi),
-                  child: Icon(this.widget.icon),
+                  child: Icon(widget.icon),
                 )
-              : Icon(this.widget.icon),
+              : Icon(widget.icon),
       title: TextFormField(
-        validator: this.widget.validator,
-        initialValue: this.widget.defaultValue ?? "",
+        validator: widget.validator,
+        initialValue: widget.defaultValue ?? '',
         textAlign: TextAlign.center,
-        autofocus: this.widget.autofocus,
+        autofocus: widget.autoFocus,
         keyboardType:
-            keyboardTypes[this.widget.labelText] ?? TextInputType.text,
-        onChanged: this.widget.onChanged,
+            keyboardTypes[widget.labelText] ?? TextInputType.text,
+        onChanged: widget.onChanged,
         obscureText:
-            (this.widget.labelText == "Password") ? !_showPassword : false,
+            (widget.labelText == 'Password') ? !_showPassword : false,
         decoration: kTextFieldDecoration.copyWith(
 //          border: InputBorder.,
-          hintText: "Enter ${widget.labelText}",
+          hintText: 'Enter ${widget.labelText}',
           labelText: widget.labelText,
         ),
       ),
-      trailing: (widget.labelText == "Password")
+      trailing: (widget.labelText == 'Password')
           ? IconButton(
               color: Colors.lightBlueAccent,
               icon: _showPassword
