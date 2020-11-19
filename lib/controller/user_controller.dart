@@ -50,15 +50,16 @@ class UserController {
   }
 
   static Future<String> loginController({
-    String email,
-    String password,
+    @required String email,
+    @required String password,
   }) async {
     try {
       final res =
           await _dio.post(login, data: {'password': password, 'email': email});
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        return (res.data['jwt'] as String);
+        return (res.data['idToken'] as String);
       } else {
+        logger.w(res);
         return '';
       }
     } catch (e) {
@@ -99,7 +100,7 @@ class UserController {
   }
 
   static Future<User> patchProfileController(
-      {@required String name,@required  String phone_number}) async {
+      {@required String name, @required String phone_number}) async {
     try {
       final res = await _dio.patch(patchProfile,
           data: {'name': name, 'phone_number': phone_number});
