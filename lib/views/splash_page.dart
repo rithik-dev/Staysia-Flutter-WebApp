@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/DeviceDimension.dart';
 import 'package:staysia_web/utils/constants.dart';
-import 'package:staysia_web/utils/jwt_provider.dart';
 import 'package:staysia_web/views/login_page.dart';
 
 import '../main.dart';
@@ -69,8 +68,6 @@ class _SplashPage extends State<SplashPage> {
     });
     Provider.of<DeviceDimension>(context, listen: false)
         .updateDeviceInProvider(device: device);
-    Provider.of<JwtProvider>(context, listen: false)
-        .updateTokenInProvider(token: jwt);
     Provider.of<User>(context, listen: false).updateUserInProvider(user);
   }
 
