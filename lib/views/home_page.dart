@@ -8,7 +8,7 @@ import 'package:staysia_web/models/get_citites.dart';
 import 'package:staysia_web/models/review.dart';
 
 class HomePage extends StatelessWidget {
-  static const id = 'homePage';
+  static const id = '/';
 
   @override
   Widget build(BuildContext context) {
