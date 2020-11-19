@@ -9,9 +9,9 @@ Dio getDioInstance() {
       baseUrl: 'https://staysia.herokuapp.com/api/',
       headers: {
         'Authorization': 'Bearer $ACCESS_TOKEN',
-        'X-Requested-With': 'XMLHttpRequest',
+        // 'X-Requested-With': 'XMLHttpRequest',
       },
-      contentType: Headers.formUrlEncodedContentType,
+      // contentType: Headers.formUrlEncodedContentType,
     ),
   )..interceptors.addAll([
       PrettyDioLogger(requestBody: true),
