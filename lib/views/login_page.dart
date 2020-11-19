@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
                   //   name: 'sv',
                   //   phone_number: '9988',
                   // );
-                  print(Provider.of<User>(context, listen: false).isLoggedIn);
                   // logger.d(jwt);
                   // await BookingController.editBookingController(
                   //     booking: Booking.fromJson({

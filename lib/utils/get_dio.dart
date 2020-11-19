@@ -18,6 +18,7 @@ Dio getDioInstance() {
       InterceptorsWrapper(
         onError: (DioError error) async {
           if (error.response.statusCode == 401) {
+            ACCESS_TOKEN = null;
             final preferences = await SharedPreferences.getInstance();
             await preferences.remove('jwt');
             //TODO: push to login page
