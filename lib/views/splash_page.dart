@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/DeviceDimension.dart';
+import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/jwt_provider.dart';
 import 'package:staysia_web/views/login_page.dart';
 
@@ -35,8 +36,8 @@ class _SplashPage extends State<SplashPage> {
     String jwt = prefs.getString('jwt');
     jwt = await _handleJwt(jwt);
     await getState(jwt);
+    ACCESS_TOKEN = jwt;
     await Navigator.pushNamed(context, LoginPage.id);
-
   }
 
   @override

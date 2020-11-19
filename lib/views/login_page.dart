@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
 import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/booking.dart';
+import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,8 +28,8 @@ class _LoginPageState extends State<LoginPage> {
               child: Text('test api'),
               onPressed: () async {
                 try {
-                  String jwt = await FirebaseAuthService().signInWithGoogle();
-                  logger.d(jwt);
+                  await BookingController.getBookingsController();
+                  // logger.d(jwt);
                   // await BookingController.editBookingController(
                   //     booking: Booking.fromJson({
                   //   "status": "booked",
