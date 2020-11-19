@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/utils/constants.dart';
 
 Dio getDioInstance() {
@@ -12,5 +13,16 @@ Dio getDioInstance() {
       },
       contentType: Headers.formUrlEncodedContentType,
     ),
-  )..interceptors.add(PrettyDioLogger(requestBody: true));
+  )..interceptors.addAll([
+      PrettyDioLogger(requestBody: true),
+      InterceptorsWrapper(
+        onError: (DioError error) async {
+          if (error.response.statusCode == 401) {
+            final preferences = await SharedPreferences.getInstance();
+            await preferences.remove('jwt');
+            //TODO: push to login page
+          }
+        },
+      ),
+    ]);
 }
