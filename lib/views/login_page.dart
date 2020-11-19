@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
-import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/booking.dart';
-import 'package:staysia_web/models/get_citites.dart';
+import 'package:staysia_web/utils/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   final String email, password;
@@ -26,9 +25,24 @@ class _LoginPageState extends State<LoginPage> {
             Text('logs'),
             FlatButton(
               child: Text('test api'),
-              onPressed: () async{
-                GetCities a= await NavigationController.getCitiesController();
-                logger.d(a);
+              onPressed: () async {
+                try {
+                  String jwt = await FirebaseAuthService().signInWithGoogle();
+                  logger.d(jwt);
+                  // await BookingController.editBookingController(
+                  //     booking: Booking.fromJson({
+                  //   "status": "booked",
+                  //   "bookingDetails": {
+                  //     "bookingName": "string",
+                  //     "guests": 1,
+                  //     "room": {"roomType": 1},
+                  //     "check_In": "dd/mm/yyyy",
+                  //     "check_Out": "dd/mm/yyyy"
+                  //   }
+                  // }));
+                } catch (e) {
+                  logger.e(e);
+                }
               },
             ),
           ],
