@@ -30,17 +30,12 @@ class Booking {
     title = json['title'] as String;
   }
 
-  Map<String, dynamic> toJson(Booking booking) {
+  Map<String, dynamic> toMap() {
     final data = <String, dynamic>{};
-    if (booking.bookingDetails != null) {
-      data['bookingDetails'] = booking.bookingDetails.toJson();
+    if (bookingDetails != null) {
+      data['bookingDetails'] = bookingDetails.toMap();
     }
-    data['bookingId'] = booking.bookingId;
-    data['hotelId'] = booking.hotelId;
-    data['price'] = booking.price;
-    data['status'] = booking.status;
-    data['timestamp'] = booking.timestamp;
-    data['title'] = booking.title;
+    data['status'] = status;
     return data;
   }
 }
@@ -65,7 +60,7 @@ class BookingDetails {
         : null;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     final data = <String, dynamic>{};
     data['bookingName'] = bookingName;
     data['check_In'] = checkIn;

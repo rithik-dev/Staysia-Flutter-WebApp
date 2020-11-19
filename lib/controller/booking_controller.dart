@@ -8,37 +8,21 @@ import 'package:staysia_web/utils/routes.dart';
 class BookingController {
   static final Dio _dio = getDioInstance();
 
-  static Future addNewBookingController({@required String hotelId}) async {
-    //   {
-    //     "status": "booked",
-    //   "bookingDetails": {
-    //   "bookingName": "string",
-    //   "guests": 1,
-    //   "room": {
-    //   "roomType": 1
-    //   },
-    //   "check_In": "dd/mm/yyyy",
-    //   "check_Out": "dd/mm/yyyy"
-    //   }
-    // }
-
-    //   {
-    //     "bookingDetails": {
-    //   "bookingName": "string",
-    //   "check_In": "string",
-    //   "check_Out": "string",
-    //   "guests": 0,
-    //   "room": {
-    //   "roomType": 0
-    //   }
-    //   },
-    //   "bookingId": "string",
-    //   "hotelId": "string",
-    //   "price": 0,
-    //   "status": "booked",
-    //   "timestamp": "string",
-    //   "title": "string"
-    // }
+  static Future<Booking> addNewBookingController(
+      {@required String hotelId, @required Booking booking}) async {
+    try {
+      final res =
+          await _dio.put(addNewBooking + hotelId, data: booking.toMap());
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return Booking.fromJson(res.data as Map<String, dynamic>);
+      } else {
+        logger.w(res);
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
   }
 
   static Future<bool> deleteBookingController(
@@ -59,8 +43,8 @@ class BookingController {
   static Future<Booking> editBookingController(
       {String bookingId, Booking booking}) async {
     try {
-      final res = await _dio.patch(editBookingById + bookingId,
-          data: booking.toJson(booking));
+      final res =
+          await _dio.patch(editBookingById + bookingId, data: booking.toMap());
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return Booking.fromJson(res.data);
       } else {

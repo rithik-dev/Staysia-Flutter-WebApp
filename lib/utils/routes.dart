@@ -18,7 +18,7 @@ const getHotelRecommendationById =
 
 // Booking routes
 const getBookings = '/profile/bookings';
-const addNewBooking = '/profile/bookings'; //needs {hotelId}
+const addNewBooking = '/profile/bookings/'; //needs {hotelId}
 const deleteBookingById = '/profile/bookings'; //needs {bookingId}
 const editBookingById = '/profile/bookings'; //needs {bookingId}
 
