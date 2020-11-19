@@ -31,13 +31,7 @@ class UserController {
 
   static Future<String> googleSignupController({String idToken}) async {
     try {
-      final res = await _dio.put(googleSignup,
-          options: Options(
-            headers: {
-              'Authorization': 'Bearer $idToken',
-              'X-Requested-With': 'XMLHttpRequest',
-            },
-          ));
+      final res = await _dio.put(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return (res.data['jwt'] as String);
       } else {
