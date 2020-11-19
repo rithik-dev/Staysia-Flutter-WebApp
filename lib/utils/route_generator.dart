@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:staysia_web/views/error_page.dart';
+import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/login_page.dart';
 import 'package:staysia_web/views/splash_page.dart';
 
@@ -16,6 +17,10 @@ class RouteGenerator {
       //     ),
       //     type: PageTransitionType.bottomToTop,
       //   );
+
+      case HomePage.id:
+        return PageTransition(
+            child: HomePage(), type: PageTransitionType.leftToRightWithFade);
       case SplashPage.id:
         return PageTransition(
             child: SplashPage(), type: PageTransitionType.leftToRightWithFade);
@@ -28,8 +33,7 @@ class RouteGenerator {
             type: PageTransitionType.rightToLeftWithFade);
       default:
         return PageTransition(
-            child: ErrorPage(),
-            type: PageTransitionType.rightToLeftWithFade);
+            child: ErrorPage(), type: PageTransitionType.rightToLeftWithFade);
     }
   }
 }

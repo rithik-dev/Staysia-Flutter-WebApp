@@ -4,7 +4,7 @@ class Hotel {
   int id;
   String neighbourhood;
   Price price;
-  int rating;
+  double rating;
   int starRating;
   String thumbnail;
   String title;
@@ -28,7 +28,7 @@ class Hotel {
     price = json['price'] != null
         ? Price.fromJson(json['price'] as Map<String, dynamic>)
         : null;
-    rating = json['rating'] as int;
+    rating = json['rating'] as double;
     starRating = json['starRating'] as int;
     thumbnail = json['thumbnail'] as String;
     title = json['title'] as String;

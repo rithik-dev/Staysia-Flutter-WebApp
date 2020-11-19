@@ -44,7 +44,23 @@ class NavigationController {
     }
   }
 
-  static Future searchHotelWithNameController() async {}
+  static Future searchHotelWithNameController() async {
+    try {
+      final res = await _dio.get(searchHotelsWithName, queryParameters: {
+      });
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return (res.data as List<dynamic>)
+            .map((e) => Hotel.fromJson(e as Map<String, dynamic>))
+            .toList()
+            .cast<Hotel>();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
 
   // static Future fuzzySearchController() async {}
   //

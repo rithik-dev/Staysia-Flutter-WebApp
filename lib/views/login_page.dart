@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/components/custom_text_form_field.dart';
+import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/controller/user_controller.dart';
+import 'package:staysia_web/main.dart';
+import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/views/home_page.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -87,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                             email: _email?.trim(),
                             password: _password,
                           );
+                          logger.d(ACCESS_TOKEN);
 
                           if (ACCESS_TOKEN == '') {
                             showSimpleNotification(
@@ -97,9 +104,18 @@ class _LoginPageState extends State<LoginPage> {
                               background: Colors.red,
                             );
                           } else {
+                            final pref = await SharedPreferences.getInstance();
+                            await pref.setString('jwt', ACCESS_TOKEN);
                             showSimpleNotification(
                               Text('Logged in successfully'),
                               background: Colors.green,
+                            );
+                            Provider.of<User>(context, listen: false)
+                                .setLoggedInStatus(true);
+                            await Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              HomePage.id,
+                              (route) => false,
                             );
                           }
                         } catch (e) {

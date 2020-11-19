@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/DeviceDimension.dart';
 import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/login_page.dart';
 
 import '../main.dart';
@@ -36,7 +37,7 @@ class _SplashPage extends State<SplashPage> {
     jwt = await _handleJwt(jwt);
     await getState(jwt);
     ACCESS_TOKEN = jwt;
-    await Navigator.pushNamed(context, LoginPage.id);
+    await Navigator.pushNamed(context, HomePage.id);
   }
 
   @override
