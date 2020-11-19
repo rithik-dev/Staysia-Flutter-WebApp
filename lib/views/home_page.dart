@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:staysia_web/main.dart';
-import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/components/city_card.dart';
+import 'package:staysia_web/components/custom_error_widget.dart';
+import 'package:staysia_web/controller/navigation_controller.dart';
+import 'package:staysia_web/models/get_citites.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   static const id = '/homePage';
 
-  HomePage({Key key}) : super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: ListView(
           children: [
-            Text("hi"),
-            FlatButton(
-              onPressed: () {
-                logger.d(ACCESS_TOKEN);
+            FutureBuilder<GetCities>(
+              future: NavigationController.getCitiesController(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    height: 300,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return CityCard(city: snapshot.data.cities[index]);
+                      },
+                      itemCount: snapshot.data.cities.length,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return CustomErrorWidget();
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
               },
-              child: Text("print"),
-            )
+            ),
           ],
         ),
       ),
