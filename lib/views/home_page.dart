@@ -44,14 +44,10 @@ class HomePage extends StatelessWidget {
             FlatButton(
               child: Text('click'),
               onPressed: () async {
-                final newReviews=await ReviewController.addReviewToHotelController(
-                    hotelId: '424978',
-                    review: Review(
-                        rating: 3,
-                        review:
-                            'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
-                        title: "It's great"));
-
+                final a = await NavigationController.getHotelRecommendationByIdController(
+                  hotelId: '424978',
+                );
+                logger.d(a);
               },
             )
           ],

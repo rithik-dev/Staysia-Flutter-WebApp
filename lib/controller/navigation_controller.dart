@@ -76,7 +76,7 @@ class NavigationController {
   //
   // static Future fuzzyTagSearchController() async {}
 
-  static Future getHotelByIdController({@required String hotelId}) async {
+  static Future<DetailedHotel> getHotelByIdController({@required String hotelId}) async {
     try {
       final res = await _dio.get(getHotelById + hotelId);
       if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -90,5 +90,23 @@ class NavigationController {
     }
   }
 
-  static Future getHotelRecommendationByIdController({String hotelId}) async {}
+  static Future<List<DetailedHotel>> getHotelRecommendationByIdController(
+      {@required String hotelId}) async {
+    try {
+      final res = await _dio.get(
+        getHotelRecommendationById.replaceAll('{hotelId}', hotelId),
+      );
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return (res.data as List<dynamic>)
+            .map((e) => DetailedHotel.fromJson(e as Map<String, dynamic>))
+            .toList()
+            .cast<DetailedHotel>();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
 }
