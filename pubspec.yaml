@@ -20,9 +20,12 @@ dependencies:
   pretty_dio_logger: ^1.1.1
   firebase_auth: null
   google_sign_in: null
+  lottie: ^0.7.0+1
   overlay_support: ^1.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
