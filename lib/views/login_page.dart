@@ -12,7 +12,7 @@ import 'package:staysia_web/views/home_page.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
-  static const id = '/login';
+  static const id = 'login';
   final String password, email;
 
   LoginPage({this.password = '', this.email = ''});

@@ -37,7 +37,11 @@ class _SplashPage extends State<SplashPage> {
     jwt = await _handleJwt(jwt);
     await getState(jwt);
     ACCESS_TOKEN = jwt;
-    await Navigator.pushNamed(context, HomePage.id);
+    await Navigator.pushNamedAndRemoveUntil(
+      context,
+      HomePage.id,
+      (route) => false,
+    );
   }
 
   @override

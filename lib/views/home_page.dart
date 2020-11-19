@@ -5,12 +5,15 @@ import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/get_citites.dart';
 
 class HomePage extends StatelessWidget {
-  static const id = '/homePage';
+  static const id = 'homePage';
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Staysia'),
+        ),
         body: ListView(
           children: [
             FutureBuilder<GetCities>(
