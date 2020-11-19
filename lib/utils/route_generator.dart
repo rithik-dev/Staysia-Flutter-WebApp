@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:staysia_web/views/error_page.dart';
 import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/login_page.dart';
 import 'package:staysia_web/views/splash_page.dart';
@@ -32,8 +31,20 @@ class RouteGenerator {
             ),
             type: PageTransitionType.rightToLeftWithFade);
       default:
-        return PageTransition(
-            child: ErrorPage(), type: PageTransitionType.rightToLeftWithFade);
+        return _errorRoute();
     }
+  }
+
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(builder: (_) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Error'),
+        ),
+        body: Center(
+          child: Text('ERROR'),
+        ),
+      );
+    });
   }
 }
