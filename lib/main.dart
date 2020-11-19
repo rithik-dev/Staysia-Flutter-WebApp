@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
 
@@ -68,12 +69,14 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<User>(
             create: (_) => User(phone_number: '', email: '', name: '')),
       ],
-      child: MaterialApp(
-        navigatorKey: nav,
-        theme: kDefaultTheme,
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: RouteGenerator.generateRoute,
-        initialRoute: SplashPage.id,
+      child: OverlaySupport(
+        child: MaterialApp(
+          navigatorKey: nav,
+          theme: kDefaultTheme,
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: RouteGenerator.generateRoute,
+          initialRoute: SplashPage.id,
+        ),
       ),
     );
   }
