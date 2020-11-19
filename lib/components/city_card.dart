@@ -29,7 +29,7 @@ class CityCard extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.75),
+                color: Colors.black54,
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(10),
                 ),
@@ -39,7 +39,9 @@ class CityCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 maxLines: 1,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline2.copyWith(
+                      color: Colors.white,
+                    ),
               ),
             ),
           ],
