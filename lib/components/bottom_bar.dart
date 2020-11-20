@@ -42,23 +42,23 @@ class BottomBar extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  color: Colors.blueGrey,
+                  color: Colors.black,
                   width: double.maxFinite,
                   height: 1,
                 ),
                 SizedBox(height: 20),
                 InfoText(
                   type: 'Email',
-                  text: 'explore@gmail.com',
+                  text: 'staysia@gmail.com',
                 ),
                 SizedBox(height: 5),
                 InfoText(
                   type: 'Address',
-                  text: '128, Trymore Road, Delft, MN - 56124',
+                  text: 'Silicon Valley, Chandigarh',
                 ),
                 SizedBox(height: 20),
                 Container(
-                  color: Colors.blueGrey,
+                  color: Colors.black,
                   width: double.maxFinite,
                   height: 1,
                 ),
@@ -66,7 +66,7 @@ class BottomBar extends StatelessWidget {
                 Text(
                   'Copyright © 2020 | STAYSIA',
                   style: TextStyle(
-                    color: Colors.blueGrey[300],
+                    color: Colors.black,
                     fontSize: 14,
                   ),
                 ),
@@ -97,7 +97,7 @@ class BottomBar extends StatelessWidget {
                       s3: 'YouTube',
                     ),
                     Container(
-                      color: Colors.white,
+                      color: Colors.black,
                       width: 2,
                       height: 150,
                     ),
@@ -120,7 +120,7 @@ class BottomBar extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    color: Colors.white,
+                    color: Colors.black,
                     width: double.maxFinite,
                     height: 1,
                   ),

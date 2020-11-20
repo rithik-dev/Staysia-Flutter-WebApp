@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:staysia_web/components/custom_text_form_field.dart';
-import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 
 class SearchBar extends StatefulWidget {
@@ -67,23 +66,12 @@ class _SearchBarState extends State<SearchBar> {
           ),
           InkWell(
             onTap: () async {
-              if (searchText == null) {
+              if (searchText == null || searchText.trim().isEmpty) {
                 toast('Please enter some text');
               } else {
-                final response =
-                    await NavigationController.searchHotelWithNameController(
-                  q: searchText,
-                  checkIn: checkInDateTime == null
-                      ? null
-                      : printDate(checkInDateTime),
-                  checkOut: checkOutDateTime == null
-                      ? null
-                      : printDate(checkOutDateTime),
-                );
-                //push to search details page
+
                 await Navigator.pushNamed(context, SearchResultsPage.id,
                     arguments: {
-                      'results': response,
                       'q': searchText,
                       'checkIn': checkInDateTime == null
                           ? null

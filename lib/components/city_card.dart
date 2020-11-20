@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:staysia_web/models/get_citites.dart';
+import 'package:staysia_web/models/get_cities.dart';
 
 class CityCard extends StatelessWidget {
   final Cities city;

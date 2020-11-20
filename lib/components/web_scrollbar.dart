@@ -38,7 +38,7 @@ class _WebScrollbarState extends State<WebScrollbar> {
   bool _isUpdating;
   Timer timer;
 
-  _scrollListener() {
+  void _scrollListener() {
     setState(() {
       _scrollPosition = widget.controller.position.pixels;
     });
@@ -54,8 +54,10 @@ class _WebScrollbarState extends State<WebScrollbar> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    // ignore: omit_local_variable_types
     double _scrollerHeight = screenSize.height * widget.heightFraction;
 
+    // ignore: omit_local_variable_types
     double _topMargin = widget.controller.hasClients
         ? ((screenSize.height *
                 _scrollPosition /
