@@ -38,8 +38,6 @@ class _SplashPage extends State<SplashPage> {
     await Navigator.pushNamedAndRemoveUntil(
       context,
       HomePage.id,
-
-
       (route) => false,
     );
   }
@@ -50,7 +48,7 @@ class _SplashPage extends State<SplashPage> {
       body: Column(
         children: [
           Center(
-            child: SpinKitCubeGrid(
+            child: SpinKitCircle(
               color: Theme.of(context).accentColor,
             ),
           ),

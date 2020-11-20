@@ -4,26 +4,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
 
-// void main() {
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (_) => Counter()),
-//       ],
-//       child: MyApp(),
-//     ),
-//   );
-// }
-// class Counter with ChangeNotifier {
-//   int _count = 0;
-//
-//   int get count => _count;
-//
-//   void increment() {
-//     _count++;
-//     notifyListeners();
-//   }
-// }
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/route_generator.dart';
@@ -64,7 +44,8 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<User>(
-            create: (_) => User(phone_number: '', email: '', name: '')),
+          create: (_) => User(phone_number: '', email: '', name: ''),
+        ),
       ],
       child: OverlaySupport(
         child: MaterialApp(
