@@ -5,14 +5,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/user.dart';
-import 'package:staysia_web/utils/DeviceDimension.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/views/home_page.dart';
 
 import '../main.dart';
 
 class SplashPage extends StatefulWidget {
-  static const String id = '/splashScreen';
+  static const String id = '/';
 
   @override
   _SplashPage createState() => _SplashPage();
@@ -39,6 +38,8 @@ class _SplashPage extends State<SplashPage> {
     await Navigator.pushNamedAndRemoveUntil(
       context,
       HomePage.id,
+
+
       (route) => false,
     );
   }
@@ -65,13 +66,6 @@ class _SplashPage extends State<SplashPage> {
   }
 
   Future getState(String jwt) async {
-    setState(() {
-      device = DeviceDimension(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width);
-    });
-    Provider.of<DeviceDimension>(context, listen: false)
-        .updateDeviceInProvider(device: device);
     Provider.of<User>(context, listen: false).updateUserInProvider(user);
     Provider.of<User>(context, listen: false)
         .setLoggedInStatus(jwt != null && jwt != '');
@@ -82,7 +76,6 @@ class _SplashPage extends State<SplashPage> {
     email: '',
     name: '',
   );
-  DeviceDimension device = DeviceDimension(width: 0.0, height: 0.0);
 
   Future<String> _handleJwt(String jwt) async {
     if (jwt == null) {

@@ -25,7 +25,6 @@ import 'package:logger/logger.dart';
 //   }
 // }
 import 'package:staysia_web/models/user.dart';
-import 'package:staysia_web/utils/DeviceDimension.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/route_generator.dart';
 import 'package:staysia_web/views/splash_page.dart';
@@ -64,8 +63,6 @@ class _MyAppState extends State<MyApp> {
     ));
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<DeviceDimension>(
-            create: (_) => DeviceDimension(width: 0.0, height: 0.0)),
         ChangeNotifierProvider<User>(
             create: (_) => User(phone_number: '', email: '', name: '')),
       ],
