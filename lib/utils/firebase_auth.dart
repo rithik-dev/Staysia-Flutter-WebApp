@@ -3,12 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
 
 class FirebaseAuthService {
-  final FirebaseAuth _firebaseAuth;
+  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseAuthService({FirebaseAuth firebaseAuth});
 
-  FirebaseAuthService({FirebaseAuth firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-
-  Future<String> signInWithGoogle() async {
+  static Future<String> signInWithGoogle() async {
     try {
       final userCredentials =
           await _firebaseAuth.signInWithPopup(GoogleAuthProvider());
