@@ -13,6 +13,7 @@ class CustomTextFormField extends StatefulWidget {
   final String Function(String) validator;
   final IconData icon;
   final bool flipIcon;
+  final bool overrideLabel;
 
   CustomTextFormField(
       {@required this.labelText,
@@ -23,6 +24,7 @@ class CustomTextFormField extends StatefulWidget {
       this.autoFocus = false,
       this.flipIcon = false,
       this.validator,
+      this.overrideLabel = false,
       this.icon});
 
   @override
@@ -55,14 +57,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         initialValue: widget.defaultValue ?? '',
         textAlign: TextAlign.center,
         autofocus: widget.autoFocus,
-        keyboardType:
-            keyboardTypes[widget.labelText] ?? TextInputType.text,
+        keyboardType: keyboardTypes[widget.labelText] ?? TextInputType.text,
         onChanged: widget.onChanged,
-        obscureText:
-            (widget.labelText == 'Password') ? !_showPassword : false,
+        obscureText: (widget.labelText == 'Password') ? !_showPassword : false,
         decoration: kTextFieldDecoration.copyWith(
 //          border: InputBorder.,
-          hintText: 'Enter ${widget.labelText}',
+          hintText: widget.overrideLabel
+              ? widget.labelText
+              : 'Enter ${widget.labelText}',
           labelText: widget.labelText,
         ),
       ),
