@@ -96,7 +96,7 @@ var kDefaultTheme = ThemeData(
         color: Colors.black,
         fontFamily: 'karla'),
     headline1: TextStyle(
-        fontSize: 22.0,
+        fontSize: 122.0,
         fontWeight: FontWeight.w300,
         color: Colors.black,
         fontFamily: 'karla'),
