@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:staysia_web/models/detailed_hotel.dart';
-import 'package:staysia_web/models/get_citites.dart';
+import 'package:staysia_web/models/get_cities.dart';
 import 'package:staysia_web/models/hotel.dart';
 import 'package:staysia_web/utils/get_dio.dart';
 import 'package:staysia_web/utils/routes.dart';

@@ -29,7 +29,7 @@ class UserController {
     }
   }
 
-  static Future<String> googleSignupController({String idToken}) async {
+  static Future<String> googleSignupController({@required String idToken}) async {
     try {
       final res = await _dio.put(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
