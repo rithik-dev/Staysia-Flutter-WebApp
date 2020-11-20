@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/login_page.dart';
+import 'package:staysia_web/views/search_results_page.dart';
 import 'package:staysia_web/views/splash_page.dart';
 
 class RouteGenerator {
@@ -17,6 +18,10 @@ class RouteGenerator {
       //     type: PageTransitionType.bottomToTop,
       //   );
 
+      case SearchResultsPage.id:
+        return PageTransition(
+            child: SearchResultsPage(results: args as Map<String, dynamic>),
+            type: PageTransitionType.leftToRightWithFade);
       case HomePage.id:
         return PageTransition(
             child: HomePage(), type: PageTransitionType.leftToRightWithFade);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:staysia_web/components/custom_text_form_field.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
+import 'package:staysia_web/views/search_results_page.dart';
 
 class SearchBar extends StatefulWidget {
   @override
@@ -79,8 +80,18 @@ class _SearchBarState extends State<SearchBar> {
                       ? null
                       : printDate(checkOutDateTime),
                 );
-                print(response);
                 //push to search details page
+                await Navigator.pushNamed(context, SearchResultsPage.id,
+                    arguments: {
+                      'results': response,
+                      'q': searchText,
+                      'checkIn': checkInDateTime == null
+                          ? null
+                          : printDate(checkInDateTime),
+                      'checkOut': checkOutDateTime == null
+                          ? null
+                          : printDate(checkOutDateTime),
+                    });
               }
             },
             child: CircleAvatar(
