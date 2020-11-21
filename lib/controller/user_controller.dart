@@ -1,17 +1,49 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/get_dio.dart';
+import 'package:staysia_web/utils/Jwt.dart';
 import 'package:staysia_web/utils/routes.dart';
 
 import '../main.dart';
 
 class UserController {
-  static final Dio _dio = getDioInstance();
-
   static Future<String> signupController(
-      {@required String name,@required String email,@required String password,@required String phone_number}) async {
+      {@required String name,
+      @required String email,
+      @required String password,
+      @required String phone_number}) async {
     try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      )..interceptors.addAll([
+        PrettyDioLogger(requestBody: true, requestHeader: true),
+        InterceptorsWrapper(
+          onError: (DioError error) async {
+            if (error.response == null) {
+              // ignore: avoid_print
+              print(error);
+            } else if (error.response.statusCode == 401) {
+              Get.find<Jwt>()
+                  .setToken(null);
+              final preferences = await SharedPreferences.getInstance();
+              await preferences.remove('jwt');
+              //TODO: push to login page
+            }
+          },
+        ),
+      ]);
       final res = await _dio.post(signup, data: {
         'name': name,
         'email': email,
@@ -29,8 +61,36 @@ class UserController {
     }
   }
 
-  static Future<String> googleSignupController({@required String idToken}) async {
+  static Future<String> googleSignupController(
+      {@required String idToken}) async {
     try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      )..interceptors.addAll([
+        PrettyDioLogger(requestBody: true, requestHeader: true),
+        InterceptorsWrapper(
+          onError: (DioError error) async {
+            if (error.response == null) {
+              // ignore: avoid_print
+              print(error);
+            } else if (error.response.statusCode == 401) {
+              Get.find<Jwt>()
+                  .setToken(null);
+              final preferences = await SharedPreferences.getInstance();
+              await preferences.remove('jwt');
+              //TODO: push to login page
+            }
+          },
+        ),
+      ]);
       final res = await _dio.put(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         print(res.data);
@@ -49,6 +109,33 @@ class UserController {
     @required String password,
   }) async {
     try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      )..interceptors.addAll([
+        PrettyDioLogger(requestBody: true, requestHeader: true),
+        InterceptorsWrapper(
+          onError: (DioError error) async {
+            if (error.response == null) {
+              // ignore: avoid_print
+              print(error);
+            } else if (error.response.statusCode == 401) {
+              Get.find<Jwt>()
+                  .setToken(null);
+              final preferences = await SharedPreferences.getInstance();
+              await preferences.remove('jwt');
+              //TODO: push to login page
+            }
+          },
+        ),
+      ]);
       final res =
           await _dio.post(login, data: {'password': password, 'email': email});
       if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -65,6 +152,33 @@ class UserController {
 
   static Future<bool> logoutController() async {
     try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      )..interceptors.addAll([
+        PrettyDioLogger(requestBody: true, requestHeader: true),
+        InterceptorsWrapper(
+          onError: (DioError error) async {
+            if (error.response == null) {
+              // ignore: avoid_print
+              print(error);
+            } else if (error.response.statusCode == 401) {
+              Get.find<Jwt>()
+                  .setToken(null);
+              final preferences = await SharedPreferences.getInstance();
+              await preferences.remove('jwt');
+              //TODO: push to login page
+            }
+          },
+        ),
+      ]);
       final res = await _dio.get(logout);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return true;
@@ -79,6 +193,33 @@ class UserController {
 
   static Future<User> getProfileController() async {
     try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      )..interceptors.addAll([
+        PrettyDioLogger(requestBody: true, requestHeader: true),
+        InterceptorsWrapper(
+          onError: (DioError error) async {
+            if (error.response == null) {
+              // ignore: avoid_print
+              print(error);
+            } else if (error.response.statusCode == 401) {
+              Get.find<Jwt>()
+                  .setToken(null);
+              final preferences = await SharedPreferences.getInstance();
+              await preferences.remove('jwt');
+              //TODO: push to login page
+            }
+          },
+        ),
+      ]);
       final res = await _dio.get(getProfile);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return User(
@@ -97,6 +238,33 @@ class UserController {
   static Future<User> patchProfileController(
       {@required String name, @required String phone_number}) async {
     try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      )..interceptors.addAll([
+        PrettyDioLogger(requestBody: true, requestHeader: true),
+        InterceptorsWrapper(
+          onError: (DioError error) async {
+            if (error.response == null) {
+              // ignore: avoid_print
+              print(error);
+            } else if (error.response.statusCode == 401) {
+              Get.find<Jwt>()
+                  .setToken(null);
+              final preferences = await SharedPreferences.getInstance();
+              await preferences.remove('jwt');
+              //TODO: push to login page
+            }
+          },
+        ),
+      ]);
       final res = await _dio.patch(patchProfile,
           data: {'name': name, 'phone_number': phone_number});
       if (res.statusCode >= 200 && res.statusCode < 300) {
