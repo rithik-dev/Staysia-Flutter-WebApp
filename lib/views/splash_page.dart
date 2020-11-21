@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/utils/Jwt.dart';
 import 'package:staysia_web/views/home_page.dart';
 
 import '../main.dart';
@@ -29,13 +32,15 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPage extends State<SplashPage> {
   Future checkFirstSeen() async {
+    Get.put(Jwt());
+
     // ignore: omit_local_variable_types
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // ignore: omit_local_variable_types
     String jwt = prefs.getString('jwt');
     jwt = await _handleJwt(jwt);
     await getState(jwt);
-    ACCESS_TOKEN = jwt;
+    Get.find<Jwt>().setToken(jwt);
     await Navigator.pushNamedAndRemoveUntil(
       context,
       HomePage.id,
@@ -61,7 +66,7 @@ class _SplashPage extends State<SplashPage> {
   }
 
   Future getState(String jwt) async {
-    if(jwt!=''){
+    if (jwt != '') {
       user = await UserController.getProfileController();
     }
     logger.d(user);
