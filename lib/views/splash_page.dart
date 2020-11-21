@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/views/home_page.dart';
@@ -45,14 +46,10 @@ class _SplashPage extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Center(
-            child: SpinKitCircle(
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ],
+      body: Center(
+        child: SpinKitCircle(
+          color: Theme.of(context).accentColor,
+        ),
       ),
     );
   }
@@ -64,6 +61,10 @@ class _SplashPage extends State<SplashPage> {
   }
 
   Future getState(String jwt) async {
+    if(jwt!=''){
+      user = await UserController.getProfileController();
+    }
+    logger.d(user);
     Provider.of<User>(context, listen: false).updateUserInProvider(user);
     Provider.of<User>(context, listen: false)
         .setLoggedInStatus(jwt != null && jwt != '');
