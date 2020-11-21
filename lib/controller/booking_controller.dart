@@ -21,12 +21,10 @@ class BookingController {
           baseUrl: 'https://staysia.herokuapp.com/api/',
           headers: {
             'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
-            // 'X-Requested-With': 'XMLHttpRequest',
           },
-          contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
+        PrettyDioLogger(requestBody: true),
         InterceptorsWrapper(
           onError: (DioError error) async {
             if (error.response == null) {
@@ -37,7 +35,6 @@ class BookingController {
                   .setToken(null);
               final preferences = await SharedPreferences.getInstance();
               await preferences.remove('jwt');
-              //TODO: push to login page
             }
           },
         ),

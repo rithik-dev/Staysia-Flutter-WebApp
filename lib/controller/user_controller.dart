@@ -28,22 +28,21 @@ class UserController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.post(signup, data: {
         'name': name,
         'email': email,
@@ -51,7 +50,7 @@ class UserController {
         'phone_number': phone_number
       });
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        return (res.data['jwt'] as String);
+        return (res.data['idToken'] as String);
       } else {
         return '';
       }
@@ -75,22 +74,21 @@ class UserController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.put(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         print(res.data);
@@ -120,22 +118,21 @@ class UserController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res =
           await _dio.post(login, data: {'password': password, 'email': email});
       if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -163,22 +160,21 @@ class UserController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(logout);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return true;
@@ -204,22 +200,21 @@ class UserController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(getProfile);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return User(
@@ -244,27 +239,24 @@ class UserController {
           baseUrl: 'https://staysia.herokuapp.com/api/',
           headers: {
             'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
-            // 'X-Requested-With': 'XMLHttpRequest',
           },
-          contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.patch(patchProfile,
           data: {'name': name, 'phone_number': phone_number});
       if (res.statusCode >= 200 && res.statusCode < 300) {
