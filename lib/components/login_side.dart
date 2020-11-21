@@ -190,81 +190,91 @@ class _LogInSideState extends State<LogInSide> {
                             color: Colors.blueGrey[800],
                             hoverColor: Colors.blueGrey[900],
                             highlightColor: Colors.black,
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                setState(() {
-                                  isLogIn = true;
-                                });
-                                try {
-                                  Get.find<Jwt>()
-.setToken(
-                                      await UserController.loginController(
-                                    email: _email?.trim(),
-                                    password: _password,
-                                  ));
-                                  if (Get.find<Jwt>().token.value == '') {
-                                    logger.d('here lol');
-                                    setState(() {
-                                      isLogIn = false;
-                                    });
-                                    showSimpleNotification(
-                                      Text(
-                                        'An error occurred while logging in',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      background: Colors.red,
-                                    );
-                                  } else {
-                                    final pref =
-                                        await SharedPreferences.getInstance();
-                                    await pref.setString(
-                                        'jwt', Get.find<Jwt>().token.value);
-                                    logger.d(
-                                        'here ${Get.find<Jwt>().token.value}');
-                                    // ignore: omit_local_variable_types
-                                    User currentUser = await UserController
-                                        .getProfileController();
+                            disabledColor: Colors.blueGrey[800],
+                            onPressed: isLogIn
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState.validate()) {
+                                      setState(() {
+                                        isLogIn = true;
+                                      });
+                                      try {
+                                        Get.find<Jwt>().setToken(
+                                            await UserController
+                                                .loginController(
+                                          email: _email?.trim(),
+                                          password: _password,
+                                        ));
+                                        if (Get.find<Jwt>().token.value == '') {
+                                          logger.d('here lol');
+                                          setState(() {
+                                            isLogIn = false;
+                                          });
+                                          showSimpleNotification(
+                                            Text(
+                                              'An error occurred while logging in',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            background: Colors.red,
+                                          );
+                                        } else {
+                                          final pref = await SharedPreferences
+                                              .getInstance();
+                                          await pref.setString('jwt',
+                                              Get.find<Jwt>().token.value);
+                                          logger.d(
+                                              'here ${Get.find<Jwt>().token.value}');
+                                          // ignore: omit_local_variable_types
+                                          User currentUser =
+                                              await UserController
+                                                  .getProfileController();
 
-                                    if (currentUser != null) {
-                                      Provider.of<User>(context, listen: false)
-                                          .updateUserInProvider(currentUser);
-                                      Provider.of<User>(context, listen: false)
-                                          .setLoggedInStatus(true);
-                                      showSimpleNotification(
-                                        Text('Logged in successfully'),
-                                        background: Colors.green,
-                                      );
-                                    } else {
-                                      showSimpleNotification(
-                                        Text(
-                                          'An error occurred while logging in',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        background: Colors.red,
-                                      );
+                                          if (currentUser != null) {
+                                            Provider.of<User>(context,
+                                                    listen: false)
+                                                .updateUserInProvider(
+                                                    currentUser);
+                                            Provider.of<User>(context,
+                                                    listen: false)
+                                                .setLoggedInStatus(true);
+                                            showSimpleNotification(
+                                              Text('Logged in successfully'),
+                                              background: Colors.green,
+                                            );
+                                          } else {
+                                            showSimpleNotification(
+                                              Text(
+                                                'An error occurred while logging in',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              background: Colors.red,
+                                            );
+                                          }
+                                          setState(() {
+                                            isLogIn = false;
+                                          });
+                                          logger.d(Provider.of<User>(context,
+                                              listen: false));
+                                          Navigator.pop(context);
+                                        }
+                                      } catch (e) {
+                                        logger.e(e);
+                                        showSimpleNotification(
+                                          Text(
+                                            'An error occurred while logging in',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          background: Colors.red,
+                                        );
+                                        setState(() {
+                                          isLogIn = false;
+                                        });
+                                      }
                                     }
-                                    setState(() {
-                                      isLogIn = false;
-                                    });
-                                    logger.d(Provider.of<User>(context,
-                                        listen: false));
-                                    Navigator.pop(context);
-                                  }
-                                } catch (e) {
-                                  logger.e(e);
-                                  showSimpleNotification(
-                                    Text(
-                                      'An error occurred while logging in',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    background: Colors.red,
-                                  );
-                                  setState(() {
-                                    isLogIn = false;
-                                  });
-                                }
-                              }
-                            },
+                                  },
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -311,7 +321,7 @@ class _LogInSideState extends State<LogInSide> {
                   ),
                 ),
                 SizedBox(height: 30),
-                Center(child: GoogleButton()),
+                Center(child: GoogleButton(disableOnTap: isLogIn,)),
                 SizedBox(height: 30),
                 Center(
                     child: FlatButton(
@@ -319,7 +329,9 @@ class _LogInSideState extends State<LogInSide> {
                   color: Theme.of(context).accentColor,
                   hoverColor: Theme.of(context).hintColor,
                   shape: StadiumBorder(),
-                  onPressed: () {
+                  onPressed:isLogIn
+                      ? null
+                      : () {
                     widget.toggleDialog();
                   },
                   child: Text(
