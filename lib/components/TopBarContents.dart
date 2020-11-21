@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +7,7 @@ import 'package:staysia_web/components/auth_dialog.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/utils/Jwt.dart';
 
 class TopBarContents extends StatefulWidget {
   final double opacity;
@@ -181,7 +183,8 @@ class _TopBarContentsState extends State<TopBarContents> {
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     await pref.remove('jwt');
-                                    ACCESS_TOKEN = '';
+                                    Get.find<Jwt>()
+.setToken('');
                                     showSimpleNotification(
                                       Text(
                                         'Successfully Logged out!',

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/main.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/firebase_auth.dart';
+import 'package:staysia_web/utils/Jwt.dart';
 
 class GoogleButton extends StatefulWidget {
   @override
@@ -31,7 +33,7 @@ class _GoogleButtonState extends State<GoogleButton> {
           });
           // ignore: omit_local_variable_types
           String jwt = await FirebaseAuthService.signInWithGoogle();
-          ACCESS_TOKEN = jwt;
+          Get.find<Jwt>().setToken(jwt);
           // ignore: omit_local_variable_types
           String result =
               await UserController.googleSignupController(idToken: jwt);

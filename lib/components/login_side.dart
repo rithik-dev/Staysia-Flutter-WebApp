@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/utils/Jwt.dart';
 
 import '../main.dart';
 import 'google_sign_in_button.dart';
@@ -194,13 +196,13 @@ class _LogInSideState extends State<LogInSide> {
                                   isLogIn = true;
                                 });
                                 try {
-                                  ACCESS_TOKEN =
+                                  Get.find<Jwt>()
+.setToken(
                                       await UserController.loginController(
                                     email: _email?.trim(),
                                     password: _password,
-                                  );
-
-                                  if (ACCESS_TOKEN == '') {
+                                  ));
+                                  if (Get.find<Jwt>().token.value == '') {
                                     logger.d('here lol');
                                     setState(() {
                                       isLogIn = false;
@@ -215,13 +217,15 @@ class _LogInSideState extends State<LogInSide> {
                                   } else {
                                     final pref =
                                         await SharedPreferences.getInstance();
-                                    await pref.setString('jwt', ACCESS_TOKEN);
-                                    logger.d('here $ACCESS_TOKEN');
+                                    await pref.setString(
+                                        'jwt', Get.find<Jwt>().token.value);
+                                    logger.d(
+                                        'here ${Get.find<Jwt>().token.value}');
                                     // ignore: omit_local_variable_types
                                     User currentUser = await UserController
                                         .getProfileController();
 
-                                    if(currentUser != null){
+                                    if (currentUser != null) {
                                       Provider.of<User>(context, listen: false)
                                           .updateUserInProvider(currentUser);
                                       Provider.of<User>(context, listen: false)
@@ -230,7 +234,7 @@ class _LogInSideState extends State<LogInSide> {
                                         Text('Logged in successfully'),
                                         background: Colors.green,
                                       );
-                                    }else{
+                                    } else {
                                       showSimpleNotification(
                                         Text(
                                           'An error occurred while logging in',

@@ -23,6 +23,7 @@ dependencies:
   lottie: ^0.7.0+1
   overlay_support: ^1.0.5
   carousel_slider: ^2.3.1
+  get: ^3.17.1
 
 dev_dependencies:
   flutter_test:

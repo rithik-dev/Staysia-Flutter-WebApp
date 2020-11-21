@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/constants.dart';
+import 'package:staysia_web/utils/Jwt.dart';
 
 import '../main.dart';
 import 'google_sign_in_button.dart';
 
 class SignUpSide extends StatefulWidget {
   final Function toggleDialog;
-  const SignUpSide({Key key,this.toggleDialog}) : super(key: key);
+
+  const SignUpSide({Key key, this.toggleDialog}) : super(key: key);
 
   @override
   _SignUpSideState createState() => _SignUpSideState();
@@ -32,7 +35,9 @@ class _SignUpSideState extends State<SignUpSide> {
         padding: const EdgeInsets.all(16.0),
         child: Container(
           width: 400,
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
           child: Form(
             key: _formKey,
             child: Column(
@@ -43,7 +48,11 @@ class _SignUpSideState extends State<SignUpSide> {
                   child: Text(
                     'STAYSIA',
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.headline1.color,
+                      color: Theme
+                          .of(context)
+                          .textTheme
+                          .headline1
+                          .color,
                       fontSize: 24,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -61,7 +70,11 @@ class _SignUpSideState extends State<SignUpSide> {
                     'Name',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2.color,
+                      color: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle2
+                          .color,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       // letterSpacing: 3,
@@ -121,7 +134,11 @@ class _SignUpSideState extends State<SignUpSide> {
                     'Phone Number',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2.color,
+                      color: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle2
+                          .color,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       // letterSpacing: 3,
@@ -183,7 +200,11 @@ class _SignUpSideState extends State<SignUpSide> {
                     'Email address',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2.color,
+                      color: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle2
+                          .color,
                       fontSize: 18,
                       // fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -246,7 +267,11 @@ class _SignUpSideState extends State<SignUpSide> {
                     'Password',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2.color,
+                      color: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle2
+                          .color,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       // letterSpacing: 3,
@@ -318,14 +343,18 @@ class _SignUpSideState extends State<SignUpSide> {
                                   isRegistering = true;
                                 });
                                 try {
-                                  ACCESS_TOKEN =
+                                  Get.find<Jwt>()
+.setToken(
                                       await UserController.signupController(
                                           email: _email?.trim(),
                                           password: _password,
                                           name: _name,
-                                          phone_number: _phone_number);
-
-                                  if (ACCESS_TOKEN == '') {
+                                          phone_number: _phone_number)
+                                  );
+                                  if (Get
+                                      .find<Jwt>()
+                                      .token
+                                      .value == '') {
                                     logger.d('here lol');
                                     setState(() {
                                       isRegistering = false;
@@ -339,9 +368,13 @@ class _SignUpSideState extends State<SignUpSide> {
                                     );
                                   } else {
                                     final pref =
-                                        await SharedPreferences.getInstance();
-                                    await pref.setString('jwt', ACCESS_TOKEN);
+                                    await SharedPreferences.getInstance();
+                                    await pref.setString('jwt', Get
+                                        .find<Jwt>()
+                                        .token
+                                        .value);
                                     logger.d('here');
+                                    // ignore: omit_local_variable_types
                                     User currentUser = await UserController
                                         .getProfileController();
                                     showSimpleNotification(
@@ -384,23 +417,23 @@ class _SignUpSideState extends State<SignUpSide> {
                               ),
                               child: isRegistering
                                   ? SizedBox(
-                                      height: 16,
-                                      width: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          Colors.white,
-                                        ),
-                                      ),
-                                    )
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor:
+                                  AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              )
                                   : Text(
-                                      'Sign up',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                'Sign up',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -424,26 +457,33 @@ class _SignUpSideState extends State<SignUpSide> {
                 SizedBox(height: 30),
                 Center(
                     child: FlatButton(
-                  padding: EdgeInsets.all(20),
-                  color: Theme.of(context).accentColor,
-                  hoverColor: Theme.of(context).hintColor,
-                  shape: StadiumBorder(),
-                  onPressed: () {
-                    widget.toggleDialog();
-
-                  },
-                  child: Text(
-                    'Login Instead',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )),
+                      padding: EdgeInsets.all(20),
+                      color: Theme
+                          .of(context)
+                          .accentColor,
+                      hoverColor: Theme
+                          .of(context)
+                          .hintColor,
+                      shape: StadiumBorder(),
+                      onPressed: () {
+                        widget.toggleDialog();
+                      },
+                      child: Text(
+                        'Login Instead',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'By proceeding, you agree to our Terms of Use and confirm you have read our Privacy Policy.',
                     maxLines: 2,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2.color,
+                      color: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle2
+                          .color,
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
                       // letterSpacing: 3,
