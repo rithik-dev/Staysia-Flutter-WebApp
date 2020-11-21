@@ -10,7 +10,7 @@ class UserController {
   static final Dio _dio = getDioInstance();
 
   static Future<String> signupController(
-      {String name, String email, String password, String phone_number}) async {
+      {@required String name,@required String email,@required String password,@required String phone_number}) async {
     try {
       final res = await _dio.post(signup, data: {
         'name': name,
