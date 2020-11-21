@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staysia_web/controller/user_controller.dart';
+import 'package:staysia_web/main.dart';
 import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/firebase_auth.dart';
 
@@ -34,6 +35,7 @@ class _GoogleButtonState extends State<GoogleButton> {
           // ignore: omit_local_variable_types
           String result =
               await UserController.googleSignupController(idToken: jwt);
+          logger.d(result);
           setState(() {
             _isProcessing = false;
           });
