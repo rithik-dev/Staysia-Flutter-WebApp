@@ -39,8 +39,8 @@ class _SplashPage extends State<SplashPage> {
     // ignore: omit_local_variable_types
     String jwt = prefs.getString('jwt');
     jwt = await _handleJwt(jwt);
-    await getState(jwt);
     Get.find<Jwt>().setToken(jwt);
+    await getState(jwt);
     await Navigator.pushNamedAndRemoveUntil(
       context,
       HomePage.id,
