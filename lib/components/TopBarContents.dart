@@ -35,6 +35,7 @@ class _TopBarContentsState extends State<TopBarContents> {
         padding: EdgeInsets.all(20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'STAYSIA',
@@ -46,83 +47,76 @@ class _TopBarContentsState extends State<TopBarContents> {
                 letterSpacing: 3,
               ),
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: screenSize.width / 8),
-                  InkWell(
-                    onHover: (value) {
-                      setState(() {
-                        value ? _isHovering[0] = true : _isHovering[0] = false;
-                      });
-                    },
-                    onTap: () {},
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Discover',
-                          style: TextStyle(
-                            color: _isHovering[0]
-                                ? Theme.of(context).hintColor
-                                : Theme.of(context).accentColor,
-                          ),
+            Row(
+              children: [
+                InkWell(
+                  onHover: (value) {
+                    setState(() {
+                      value ? _isHovering[0] = true : _isHovering[0] = false;
+                    });
+                  },
+                  onTap: () {},
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Discover',
+                        style: TextStyle(
+                          color: _isHovering[0]
+                              ? Theme.of(context).hintColor
+                              : Theme.of(context).accentColor,
                         ),
-                        SizedBox(height: 5),
-                        Visibility(
-                          maintainAnimation: true,
-                          maintainState: true,
-                          maintainSize: true,
-                          visible: _isHovering[0],
-                          child: Container(
-                            height: 2,
-                            width: 20,
-                            color: Theme.of(context).accentColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: screenSize.width / 20),
-                  InkWell(
-                    onHover: (value) {
-                      setState(() {
-                        value ? _isHovering[1] = true : _isHovering[1] = false;
-                      });
-                    },
-                    onTap: () {},
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Contact Us',
-                          style: TextStyle(
-                            color: _isHovering[1]
-                                ? Theme.of(context).hintColor
-                                : Theme.of(context).accentColor,
-                          ),
+                      ),
+                      SizedBox(height: 5),
+                      Visibility(
+                        maintainAnimation: true,
+                        maintainState: true,
+                        maintainSize: true,
+                        visible: _isHovering[0],
+                        child: Container(
+                          height: 2,
+                          width: 20,
+                          color: Theme.of(context).accentColor,
                         ),
-                        SizedBox(height: 5),
-                        Visibility(
-                          maintainAnimation: true,
-                          maintainState: true,
-                          maintainSize: true,
-                          visible: _isHovering[1],
-                          child: Container(
-                            height: 2,
-                            width: 20,
-                            color: Theme.of(context).hintColor,
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: screenSize.width / 50,
+                ),
+                SizedBox(width: 50,),
+                InkWell(
+                  onHover: (value) {
+                    setState(() {
+                      value ? _isHovering[1] = true : _isHovering[1] = false;
+                    });
+                  },
+                  onTap: () {},
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Contact Us',
+                        style: TextStyle(
+                          color: _isHovering[1]
+                              ? Theme.of(context).hintColor
+                              : Theme.of(context).accentColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Visibility(
+                        maintainAnimation: true,
+                        maintainState: true,
+                        maintainSize: true,
+                        visible: _isHovering[1],
+                        child: Container(
+                          height: 2,
+                          width: 20,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
             InkWell(
               onHover: (value) {
@@ -151,23 +145,26 @@ class _TopBarContentsState extends State<TopBarContents> {
                       children: [
                         CircleAvatar(
                             radius: 15,
+                            backgroundColor: Theme.of(context).primaryColor,
                             child: Icon(
                               Icons.account_circle,
                               size: 30,
+                              color: Theme.of(context).accentColor,
                             )),
                         SizedBox(width: 5),
                         Text(
                           Provider.of<User>(context).name,
                           style: TextStyle(
-                            color:
-                                _isHovering[2] ? Colors.white : Colors.white70,
+                            color: _isHovering[2]
+                                ? Theme.of(context).hintColor
+                                : Theme.of(context).accentColor,
                           ),
                         ),
                         SizedBox(width: 10),
                         FlatButton(
-                          color: Colors.blueGrey,
-                          hoverColor: Colors.blueGrey[700],
-                          highlightColor: Colors.blueGrey[800],
+                          color: Theme.of(context).accentColor,
+                          hoverColor: Theme.of(context).hintColor,
+                          highlightColor: Theme.of(context).hintColor,
                           onPressed: _isProcessing
                               ? null
                               : () async {
