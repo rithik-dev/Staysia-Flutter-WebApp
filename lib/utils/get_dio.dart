@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:staysia_web/main.dart';
 import 'package:staysia_web/utils/constants.dart';
 
 Dio getDioInstance({bool removeBaseHeaders = false}) {
@@ -46,6 +47,7 @@ Dio getDioInstance({bool removeBaseHeaders = false}) {
             // ignore: avoid_print
             print(error);
           } else if (error.response.statusCode == 401) {
+            logger.d('before null $ACCESS_TOKEN');
             ACCESS_TOKEN = null;
             final preferences = await SharedPreferences.getInstance();
             await preferences.remove('jwt');

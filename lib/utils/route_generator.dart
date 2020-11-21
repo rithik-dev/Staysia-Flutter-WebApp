@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:staysia_web/views/home_page.dart';
-import 'package:staysia_web/views/login_page.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 import 'package:staysia_web/views/splash_page.dart';
 
@@ -28,14 +27,7 @@ class RouteGenerator {
       case SplashPage.id:
         return PageTransition(
             child: SplashPage(), type: PageTransitionType.leftToRightWithFade);
-      case LoginPage.id:
-        return PageTransition(
-            child: LoginPage(
-              email: args != null ? (args as List)[0] as String : '',
-              password: args != null ? (args as List)[1] as String : '',
-            ),
-            type: PageTransitionType.rightToLeftWithFade);
-      default:
+        default:
         return _errorRoute();
     }
   }
