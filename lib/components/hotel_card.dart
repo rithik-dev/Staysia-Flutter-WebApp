@@ -9,8 +9,8 @@ class HotelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      margin: EdgeInsets.all(10),
+      height: 150,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -18,16 +18,74 @@ class HotelCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.network(hotel.thumbnail),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(hotel.title),
-              Text(hotel.city),
-              Text(hotel.rating.toString()),
-              Text('Rs ${hotel.price.currentPrice}'),
-              Text(hotel.neighbourhood),
-            ],
+          Image.network(
+            hotel.thumbnail,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            width: 300,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          hotel.title,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              hotel.neighbourhood,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            Text(
+                              hotel.city,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Rs ${hotel.price.currentPrice}',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.star, color: Colors.yellow[700]),
+                                Text(
+                                  hotel.rating.toString(),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
