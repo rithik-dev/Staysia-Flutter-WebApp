@@ -180,7 +180,52 @@ class HotelDetailsPage extends StatelessWidget {
                           )
                         ],
                       ),
-
+                      Text(
+                        'Rooms',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Wrap(
+                        children: hotel.rooms
+                            .map((e) => Container(
+                                  margin: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5,
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  height: 150,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        e.name,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                          'Price : ${hotel.price.currency} ${e.price}'),
+                                      Text('Max Occupants : ${e.maxOccupants}'),
+                                      Text(
+                                          'Rooms Available : ${e.roomsAvailable}'),
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                      ),
                       SizedBox(height: 15),
                       Text(
                         'Main Amenities',
@@ -196,14 +241,14 @@ class HotelDetailsPage extends StatelessWidget {
                         children: hotel.featureBullets.mainAmenities
                             .map(
                               (e) => Chip(
-                            label: Text(
-                              e,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
+                                label: Text(
+                                  e,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
+                            )
                             .toList(),
                       ),
                       SizedBox(height: 15),
@@ -221,22 +266,17 @@ class HotelDetailsPage extends StatelessWidget {
                         children: hotel.featureBullets.whatIsAround
                             .map(
                               (e) => Chip(
-                            label: Text(
-                              e,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
+                                label: Text(
+                                  e,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
+                            )
                             .toList(),
                       ),
                       SizedBox(height: 15),
-                      // Text(hotel.rooms.nameOfRoom.name),
-                      // Text(hotel.rooms.nameOfRoom.price.toString()),
-                      // Text(hotel.rooms.nameOfRoom.maxOccupants.toString()),
-                      // Text(
-                      //     hotel.rooms.nameOfRoom.roomsAvailable.toString()),
                     ],
                   );
                 } else {

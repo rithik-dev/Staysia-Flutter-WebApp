@@ -13,7 +13,7 @@ class DetailedHotel {
   Price price;
   double rating;
   List<Review> review;
-  Rooms rooms;
+  List<Room> rooms;
   int starRating;
   String title;
 
@@ -62,9 +62,17 @@ class DetailedHotel {
         review.add(Review.fromJson(v as Map<String, dynamic>));
       });
     }
-    rooms = json['rooms'] != null
-        ? Rooms.fromJson(json['rooms'] as Map<String, dynamic>)
-        : null;
+    rooms = [];
+    for (var _room in (json['rooms'] as Map).keys) {
+      rooms.add(
+        Room(
+          name: _room as String,
+          maxOccupants: json['rooms'][_room]['maxOccupants'] as int,
+          price: json['rooms'][_room]['price'] as int,
+          roomsAvailable: json['rooms'][_room]['roomsAvailable'] as int,
+        ),
+      );
+    }
     starRating = json['starRating'] as int;
     title = json['title'] as String;
   }
@@ -90,9 +98,6 @@ class DetailedHotel {
     data['rating'] = rating;
     if (review != null) {
       data['review'] = review.map((v) => v.toJson()).toList();
-    }
-    if (rooms != null) {
-      data['rooms'] = rooms.toJson();
     }
     data['starRating'] = starRating;
     data['title'] = title;
@@ -184,35 +189,15 @@ class Review {
   }
 }
 
-class Rooms {
-  NameOfRoom nameOfRoom;
-
-  Rooms({this.nameOfRoom});
-
-  Rooms.fromJson(Map<String, dynamic> json) {
-    nameOfRoom = json['Name of Room'] != null
-        ? NameOfRoom.fromJson(json['Name of Room'] as Map<String, dynamic>)
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    if (nameOfRoom != null) {
-      data['Name of Room'] = nameOfRoom.toJson();
-    }
-    return data;
-  }
-}
-
-class NameOfRoom {
+class Room {
   String name;
   int price;
   int maxOccupants;
   int roomsAvailable;
 
-  NameOfRoom({this.name, this.price, this.maxOccupants, this.roomsAvailable});
+  Room({this.name, this.price, this.maxOccupants, this.roomsAvailable});
 
-  NameOfRoom.fromJson(Map<String, dynamic> json) {
+  Room.fromJson(Map<String, dynamic> json) {
     name = json['name'] as String;
     price = json['price'] as int;
     maxOccupants = json['maxOccupants'] as int;
