@@ -5,16 +5,14 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/review.dart';
 import 'package:staysia_web/utils/Jwt.dart';
-import 'package:staysia_web/utils/get_dio.dart';
 import 'package:staysia_web/utils/routes.dart';
 
 import '../main.dart';
 
 class ReviewController {
-  static final Dio _dio = getDioInstance();
 
   static Future<NewReviews> addReviewToHotelController(
-      {@required String hotelId, @required Review review}) async {
+      {@required int hotelId, @required Review review}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -43,7 +41,7 @@ class ReviewController {
           ),
         ]);
       final res = await _dio.put(
-          addReviewToHotel.replaceAll('{hotelId}', hotelId),
+          addReviewToHotel.replaceAll('{hotelId}', hotelId.toString()),
           data: review.toMap());
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return NewReviews.fromJson(res.data as Map<String, dynamic>);

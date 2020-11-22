@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/main.dart';
 import 'package:staysia_web/models/booking.dart';
 import 'package:staysia_web/utils/Jwt.dart';
-import 'package:staysia_web/utils/get_dio.dart';
 import 'package:staysia_web/utils/routes.dart';
 
 class BookingController {

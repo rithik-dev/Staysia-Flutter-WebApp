@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/user.dart';
-import 'package:staysia_web/utils/get_dio.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 import 'package:staysia_web/utils/routes.dart';
 
