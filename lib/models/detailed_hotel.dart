@@ -56,9 +56,9 @@ class DetailedHotel {
         ? Price.fromJson(json['price'] as Map<String, dynamic>)
         : null;
     rating = json['rating'] as double;
-    if (json['review'] != null) {
+    if (json['reviews'] != null) {
       review = <Review>[];
-      json['review'].forEach((v) {
+      json['reviews'].forEach((v) {
         review.add(Review.fromJson(v as Map<String, dynamic>));
       });
     }
@@ -97,7 +97,7 @@ class DetailedHotel {
     }
     data['rating'] = rating;
     if (review != null) {
-      data['review'] = review.map((v) => v.toJson()).toList();
+      data['reviews'] = review.map((v) => v.toJson()).toList();
     }
     data['starRating'] = starRating;
     data['title'] = title;
@@ -183,7 +183,7 @@ class Review {
     data['id'] = id;
     data['name'] = name;
     data['rating'] = rating;
-    data['review'] = review;
+    data['reviews'] = review;
     data['title'] = title;
     return data;
   }

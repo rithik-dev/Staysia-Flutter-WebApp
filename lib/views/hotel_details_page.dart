@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:staysia_web/components/recommend_hotel_card.dart';
-import 'package:staysia_web/components/hotel_card.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/detailed_hotel.dart';
 import 'package:staysia_web/models/hotel.dart';
@@ -271,6 +271,82 @@ class HotelDetailsPage extends StatelessWidget {
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        'Reviews',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: hotel.review
+                            .map(
+                              (e) => Container(
+                                margin: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 5,
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                width: 300,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.name,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        '${e.review}',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        'Rating : ${e.rating}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      leading: Icon(
+                                        Icons.star,
+                                        color: Theme.of(context).accentColor,
+                                        size: 25,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             )
