@@ -191,7 +191,7 @@ class HotelDetailsPage extends StatelessWidget {
                         children: hotel.rooms
                             .map((e) => Container(
                                   margin: EdgeInsets.all(10),
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(20),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     boxShadow: [
@@ -217,10 +217,23 @@ class HotelDetailsPage extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                          'Price : ${hotel.price.currency} ${e.price}'),
-                                      Text('Max Occupants : ${e.maxOccupants}'),
+                                        'Price : ${hotel.price.currency} ${e.price}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                       Text(
-                                          'Rooms Available : ${e.roomsAvailable}'),
+                                        'Max Occupants : ${e.maxOccupants}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Rooms Available : ${e.roomsAvailable}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ))
