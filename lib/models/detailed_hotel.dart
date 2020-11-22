@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class DetailedHotel {
   String address;
   String checkIn;
@@ -168,7 +170,12 @@ class Review {
   String review;
   String title;
 
-  Review({this.id, this.name, this.rating, this.review, this.title});
+  Review(
+      {this.id,
+      this.name,
+      @required this.rating,
+      @required this.review,
+      @required this.title});
 
   Review.fromJson(Map<String, dynamic> json) {
     id = json['id'] as String;
