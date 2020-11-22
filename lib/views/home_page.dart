@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/bottom_bar.dart';
 import 'package:staysia_web/components/city_carousel.dart';
@@ -111,7 +112,9 @@ class _HomePageState extends State<HomePage> {
                 } else if (snapshot.hasError) {
                   return CustomErrorWidget();
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: SpinKitCircle(
+          color: Theme.of(context).accentColor,
+        ));
                 }
               },
             ),

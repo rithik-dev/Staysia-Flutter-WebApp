@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
 import 'package:staysia_web/components/booking_card.dart';
+import 'package:staysia_web/components/custom_error_widget.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
-import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/booking.dart';
 import 'package:staysia_web/views/home_page.dart';
 
@@ -55,11 +56,15 @@ class _MyBookingPageState extends State<MyBookingPage> {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data.length == 0) {
-                  return Center(
-                      child: Text(
-                    'You do not have any bookings',
-                    style: TextStyle(),
-                  ));
+                  return Column(
+                    children: [
+                      Lottie.asset('lottie/404.json'),
+                      Text('No bookings found....',
+                          style: Theme.of(context).textTheme.headline4)
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return CustomErrorWidget();
                 } else {
                   return ListView.builder(
                     itemBuilder: (context, index) {

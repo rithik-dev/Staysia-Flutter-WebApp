@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:staysia_web/components/custom_error_widget.dart';
 import 'package:staysia_web/components/hotel_card.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/hotel.dart';
+
+import 'home_page.dart';
 
 class SearchResultsPage extends StatelessWidget {
   static const id = '/searchResults';
@@ -15,7 +18,35 @@ class SearchResultsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          actions: [
+            IconButton(
+              padding: EdgeInsets.all(10),
+              icon: Icon(
+                Icons.home_outlined,
+                size: 30,
+              ),
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.id, (route) => false);
+              },
+            )
+          ],
+          title: Text(
+            'STAYSIA',
+            style: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontSize: 20,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w400,
+              letterSpacing: 3,
+            ),
+          ),
+        ),
         body: FutureBuilder(
             future: NavigationController.searchHotelWithNameController(
               q: queryParams['q'] as String,
@@ -25,12 +56,50 @@ class SearchResultsPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
+                // ignore: omit_local_variable_types
+                List<Widget> result = [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "\nShowing results for ${queryParams['q'] as String}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        Text(
+                          "${queryParams['checkIn'] == null ? '' : 'Check-In date: ${queryParams['checkIn'] as String}\n'}${queryParams['checkOut'] == null ? '' : 'Check-Out date: ${queryParams['checkOut'] as String}'}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ];
+                (snapshot.data as List).forEach((element) {
+                  result.add(HotelCard(element as Hotel));
+                });
                 return ListView.builder(
+                  shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return HotelCard(snapshot.data[index] as Hotel);
+                    return result[index];
                   },
-                  itemCount: (snapshot.data as List).length,
+                  itemCount: result.length,
                 );
+              } else if (snapshot.hasError) {
+                return CustomErrorWidget();
               } else {
                 return Center(
                   child: SpinKitCircle(

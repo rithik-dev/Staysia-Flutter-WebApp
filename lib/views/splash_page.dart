@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
-import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 import 'package:staysia_web/views/home_page.dart';
 
