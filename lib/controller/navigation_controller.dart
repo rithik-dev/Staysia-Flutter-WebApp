@@ -200,7 +200,7 @@ class NavigationController {
     }
   }
 
-  static Future<List<DetailedHotel>> getHotelRecommendationByIdController(
+  static Future<List<Hotel>> getHotelRecommendationByIdController(
       {@required String hotelId}) async {
     try {
       // ignore: omit_local_variable_types
@@ -235,9 +235,9 @@ class NavigationController {
       );
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return (res.data as List<dynamic>)
-            .map((e) => DetailedHotel.fromJson(e as Map<String, dynamic>))
+            .map((e) => Hotel.fromJson(e as Map<String, dynamic>))
             .toList()
-            .cast<DetailedHotel>();
+            .cast<Hotel>();
       } else {
         return null;
       }
