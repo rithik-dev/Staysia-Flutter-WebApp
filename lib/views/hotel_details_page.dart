@@ -414,7 +414,7 @@ class HotelDetailsPage extends StatelessWidget {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return SizedBox.shrink();
         }
       },
     );
