@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:staysia_web/views/home_page.dart';
+import 'package:staysia_web/views/hotel_details_page.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 import 'package:staysia_web/views/splash_page.dart';
 
@@ -17,6 +18,10 @@ class RouteGenerator {
       //     type: PageTransitionType.bottomToTop,
       //   );
 
+      case HotelDetailsPage.id:
+        return PageTransition(
+            child: HotelDetailsPage(hotelId: args as int),
+            type: PageTransitionType.leftToRightWithFade);
       case SearchResultsPage.id:
         return PageTransition(
             child: SearchResultsPage(queryParams: args as Map<String, dynamic>),
@@ -27,7 +32,7 @@ class RouteGenerator {
       case SplashPage.id:
         return PageTransition(
             child: SplashPage(), type: PageTransitionType.leftToRightWithFade);
-        default:
+      default:
         return _errorRoute();
     }
   }
