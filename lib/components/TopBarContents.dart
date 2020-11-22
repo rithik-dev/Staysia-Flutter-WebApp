@@ -4,9 +4,9 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/components/auth_dialog.dart';
+import 'package:staysia_web/components/edit_profile.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
-import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 
 class TopBarContents extends StatefulWidget {
@@ -19,11 +19,7 @@ class TopBarContents extends StatefulWidget {
 }
 
 class _TopBarContentsState extends State<TopBarContents> {
-  final List<bool> _isHovering = [
-    false,
-    false,
-    false,
-  ];
+  final List<bool> _isHovering = [false, false, false, false, false];
 
   bool _isProcessing = false;
 
@@ -84,7 +80,9 @@ class _TopBarContentsState extends State<TopBarContents> {
                     ],
                   ),
                 ),
-                SizedBox(width: 50,),
+                SizedBox(
+                  width: 50,
+                ),
                 InkWell(
                   onHover: (value) {
                     setState(() {
@@ -145,23 +143,109 @@ class _TopBarContentsState extends State<TopBarContents> {
                     )
                   : Row(
                       children: [
-                        CircleAvatar(
-                            radius: 15,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Icon(
-                              Icons.account_circle,
-                              size: 30,
-                              color: Theme.of(context).accentColor,
-                            )),
-                        SizedBox(width: 5),
-                        Text(
-                          Provider.of<User>(context).name,
-                          style: TextStyle(
-                            color: _isHovering[2]
-                                ? Theme.of(context).hintColor
-                                : Theme.of(context).accentColor,
+                        Chip(
+                          padding: EdgeInsets.only(
+                            top: 8.0,
+                            bottom: 8.0,
+                          ),
+                          backgroundColor: Theme.of(context).accentColor,
+                          label: Row(
+                            children: [
+                              CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  child: Icon(
+                                    Icons.account_circle,
+                                    size: 30,
+                                    color: Theme.of(context).accentColor,
+                                  )),
+                              SizedBox(width: 5),
+                              Text(
+                                Provider.of<User>(context).name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        SizedBox(width: 10),
+                        InkWell(
+                            onHover: (value) {
+                              setState(() {
+                                value
+                                    ? _isHovering[4] = true
+                                    : _isHovering[4] = false;
+                              });
+                            },
+                            child: Provider.of<User>(context).isLoggedIn
+                                ? FlatButton(
+                                    color: Theme.of(context).accentColor,
+                                    hoverColor: Theme.of(context).hintColor,
+                                    highlightColor: Theme.of(context).hintColor,
+                                    shape: StadiumBorder(),
+                                    onPressed:
+                                        Provider.of<User>(context).isLoggedIn
+                                            ? () {
+                                                print('push to next page');
+                                              }
+                                            : null,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: 8.0,
+                                      ),
+                                      child: Text(
+                                        'My Bookings',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox()),
+                        SizedBox(width: 10),
+                        InkWell(
+                            onHover: (value) {
+                              setState(() {
+                                value
+                                    ? _isHovering[3] = true
+                                    : _isHovering[3] = false;
+                              });
+                            },
+                            child: Provider.of<User>(context).isLoggedIn
+                                ? FlatButton(
+                                    color: Theme.of(context).accentColor,
+                                    hoverColor: Theme.of(context).hintColor,
+                                    highlightColor: Theme.of(context).hintColor,
+                                    shape: StadiumBorder(),
+                                    onPressed:
+                                        Provider.of<User>(context).isLoggedIn
+                                            ? () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      EditProfile(),
+                                                );
+                                              }
+                                            : null,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: 8.0,
+                                      ),
+                                      child: Text(
+                                        'Edit Profile',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox()),
                         SizedBox(width: 10),
                         FlatButton(
                           color: Theme.of(context).accentColor,
@@ -183,8 +267,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     await pref.remove('jwt');
-                                    Get.find<Jwt>()
-.setToken('');
+                                    Get.find<Jwt>().setToken('');
                                     showSimpleNotification(
                                       Text(
                                         'Successfully Logged out!',

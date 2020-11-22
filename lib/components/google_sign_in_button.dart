@@ -7,6 +7,8 @@ import 'package:staysia_web/utils/firebase_auth.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 
 class GoogleButton extends StatefulWidget {
+  final bool disableOnTap;
+  GoogleButton({@required this.disableOnTap});
   @override
   _GoogleButtonState createState() => _GoogleButtonState();
 }
@@ -27,7 +29,7 @@ class _GoogleButtonState extends State<GoogleButton> {
       child: OutlineButton(
         highlightColor: Colors.blueGrey[100],
         splashColor: Colors.blueGrey[200],
-        onPressed: () async {
+        onPressed: widget.disableOnTap?null:() async {
           setState(() {
             _isProcessing = true;
           });
