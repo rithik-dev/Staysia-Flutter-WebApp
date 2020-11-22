@@ -174,128 +174,122 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Container(
-                            width: double.maxFinite,
-                            child: FlatButton(
-                              color: Colors.blueGrey[800],
-                              hoverColor: Colors.blueGrey[900],
-                              highlightColor: Colors.black,
-                              disabledColor: Colors.blueGrey[800],
-                              onPressed: isLoading
-                                  ? null
-                                  : () async {
-                                      if (_formKey.currentState.validate()) {
-                                        if (_name == null &&
-                                            _phone_number == null) {
-                                          toast(
-                                              'Please Change at least one field');
-                                        } else {
-                                          setState(() {
-                                            isLoading = true;
-                                          });
-                                          try {
-                                            // ignore: omit_local_variable_types
-                                            User newUser = await UserController
-                                                .patchProfileController(
-                                                    name: _name ??
+                    child: Flexible(
+                      flex: 1,
+                      child: Container(
+                        width: double.maxFinite,
+                        child: FlatButton(
+                          color: Colors.blueGrey[800],
+                          hoverColor: Colors.blueGrey[900],
+                          highlightColor: Colors.black,
+                          disabledColor: Colors.blueGrey[800],
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  if (_formKey.currentState.validate()) {
+                                    if (_name == null &&
+                                        _phone_number == null) {
+                                      toast(
+                                          'Please Change at least one field');
+                                    } else {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      try {
+                                        // ignore: omit_local_variable_types
+                                        User newUser = await UserController
+                                            .patchProfileController(
+                                                name: _name ??
+                                                    Provider.of<User>(
+                                                            context,
+                                                            listen: false)
+                                                        .name,
+                                                phone_number:
+                                                    _phone_number ??
                                                         Provider.of<User>(
                                                                 context,
-                                                                listen: false)
-                                                            .name,
-                                                    phone_number:
-                                                        _phone_number ??
-                                                            Provider.of<User>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .phone_number);
-                                            if (newUser == null) {
-                                              logger.d('here lol');
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                              showSimpleNotification(
-                                                Text(
-                                                  'An error occurred while editing profile',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                background: Colors.red,
-                                              );
-                                            } else {
-                                              logger.d('here');
-                                              showSimpleNotification(
-                                                Text(
-                                                    'Profile Updated successfully'),
-                                                background: Colors.green,
-                                              );
-                                              Provider.of<User>(context,
-                                                      listen: false)
-                                                  .updateUserInProvider(
-                                                      newUser);
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                              logger.d(Provider.of<User>(
-                                                  context,
-                                                  listen: false));
-                                              Navigator.pop(context);
-                                            }
-                                          } catch (e) {
-                                            logger.e(e);
-                                            showSimpleNotification(
-                                              Text(
-                                                'An error occurred while editing profile',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              background: Colors.red,
-                                            );
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                          }
+                                                                listen:
+                                                                    false)
+                                                            .phone_number);
+                                        if (newUser == null) {
+                                          logger.d('here lol');
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          showSimpleNotification(
+                                            Text(
+                                              'An error occurred while editing profile',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            background: Colors.red,
+                                          );
+                                        } else {
+                                          logger.d('here');
+                                          showSimpleNotification(
+                                            Text(
+                                                'Profile Updated successfully'),
+                                            background: Colors.green,
+                                          );
+                                          Provider.of<User>(context,
+                                                  listen: false)
+                                              .updateUserInProvider(
+                                                  newUser);
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          logger.d(Provider.of<User>(
+                                              context,
+                                              listen: false));
+                                          Navigator.pop(context);
                                         }
-                                      }
-                                    },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  top: 15.0,
-                                  bottom: 15.0,
-                                ),
-                                child: isLoading
-                                    ? SizedBox(
-                                        height: 16,
-                                        width: 16,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            Colors.white,
+                                      } catch (e) {
+                                        logger.e(e);
+                                        showSimpleNotification(
+                                          Text(
+                                            'An error occurred while editing profile',
+                                            style: TextStyle(
+                                                color: Colors.white),
                                           ),
-                                        ),
-                                      )
-                                    : Text(
-                                        'Edit Profile',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                              ),
+                                          background: Colors.red,
+                                        );
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      }
+                                    }
+                                  }
+                                },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 15.0,
+                              bottom: 15.0,
                             ),
+                            child: isLoading
+                                ? SizedBox(
+                                    height: 16,
+                                    width: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    'Edit Profile',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],

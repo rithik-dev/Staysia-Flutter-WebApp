@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -304,7 +305,9 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                                 bottom: 8.0,
                               ),
                               child: _isProcessing
-                                  ? CircularProgressIndicator()
+                                  ? SpinKitCircle(
+          color: Theme.of(context).accentColor,
+        )
                                   : Text(
                                       'Sign out',
                                       style: TextStyle(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/main.dart';
-import 'package:staysia_web/utils/constants.dart';
 import 'package:staysia_web/utils/firebase_auth.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 
