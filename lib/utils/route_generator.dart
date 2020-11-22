@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:staysia_web/views/home_page.dart';
+import 'package:staysia_web/views/my_booking_page.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 import 'package:staysia_web/views/splash_page.dart';
 
@@ -21,13 +22,17 @@ class RouteGenerator {
         return PageTransition(
             child: SearchResultsPage(queryParams: args as Map<String, dynamic>),
             type: PageTransitionType.leftToRightWithFade);
+      case MyBookingPage.id:
+        return PageTransition(
+            child: MyBookingPage(),
+            type: PageTransitionType.leftToRightWithFade);
       case HomePage.id:
         return PageTransition(
             child: HomePage(), type: PageTransitionType.leftToRightWithFade);
       case SplashPage.id:
         return PageTransition(
             child: SplashPage(), type: PageTransitionType.leftToRightWithFade);
-        default:
+      default:
         return _errorRoute();
     }
   }
