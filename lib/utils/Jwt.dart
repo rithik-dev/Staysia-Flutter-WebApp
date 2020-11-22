@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+
 import 'package:get/get.dart';
 import 'package:staysia_web/main.dart';
 

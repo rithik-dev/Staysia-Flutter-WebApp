@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:staysia_web/views/error_page.dart';
 import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/hotel_details_page.dart';
 import 'package:staysia_web/views/my_booking_page.dart';
@@ -37,20 +38,8 @@ class RouteGenerator {
         return PageTransition(
             child: SplashPage(), type: PageTransitionType.leftToRightWithFade);
       default:
-        return _errorRoute();
+        return PageTransition(
+            child: ErrorPage(), type: PageTransitionType.leftToRightWithFade);
     }
-  }
-
-  static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Error'),
-        ),
-        body: Center(
-          child: Text('ERROR'),
-        ),
-      );
-    });
   }
 }
