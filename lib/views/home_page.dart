@@ -53,7 +53,10 @@ class _HomePageState extends State<HomePage> {
               ResponsiveWidget.isMediumScreen(context)
           ? PreferredSize(
               preferredSize: Size(screenSize.width, 1000),
-              child: TopBarContents(opacity: _opacity,showLeading: false,),
+              child: TopBarContents(
+                opacity: _opacity,
+                showLeading: false,
+              ),
             )
           : AppBar(
               backgroundColor:
@@ -94,8 +97,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  margin: ResponsiveWidget.isLargeScreen(context)
-                      ? EdgeInsets.symmetric(horizontal: screenSize.width * 0.3)
+                  margin: !(ResponsiveWidget.isSmallScreen(context) ||
+                          ResponsiveWidget.isSemiMediumScreen(context))
+                      ? EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.3)
                       : EdgeInsets.all(20),
                   child: SearchBar(),
                 )
@@ -110,11 +115,14 @@ class _HomePageState extends State<HomePage> {
                     cities: snapshot.data.cities,
                   );
                 } else if (snapshot.hasError) {
-                  return CustomErrorWidget(message: 'Error in fetching Cities....',);
+                  return CustomErrorWidget(
+                    message: 'Error in fetching Cities....',
+                  );
                 } else {
-                  return Center(child: SpinKitCircle(
-          color: Theme.of(context).accentColor,
-        ));
+                  return Center(
+                      child: SpinKitCircle(
+                    color: Theme.of(context).accentColor,
+                  ));
                 }
               },
             ),
