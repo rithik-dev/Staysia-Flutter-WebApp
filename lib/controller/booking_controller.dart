@@ -10,7 +10,7 @@ import 'package:staysia_web/utils/routes.dart';
 
 class BookingController {
   static Future<Booking> addNewBookingController(
-      {@required String hotelId, @required Booking booking}) async {
+      {@required String hotelId, @required BookingDetails booking}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -91,7 +91,7 @@ class BookingController {
   }
 
   static Future<Booking> editBookingController(
-      {String bookingId, Booking booking}) async {
+      {@required String bookingId,@required BookingDetails booking}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(

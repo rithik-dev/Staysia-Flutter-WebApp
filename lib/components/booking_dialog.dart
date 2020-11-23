@@ -1,34 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:provider/provider.dart';
-import 'package:staysia_web/controller/user_controller.dart';
-import 'package:staysia_web/models/user.dart';
+import 'package:staysia_web/controller/booking_controller.dart';
+import 'package:staysia_web/models/booking.dart';
 
 import '../main.dart';
 
-class EditProfile extends StatefulWidget {
+class BookingDialog extends StatefulWidget {
+  final String status;
+  final BookingDetails bookingDetails;
+  final String bookingId;
+  final int hotelId;
+
+  BookingDialog(
+      {Key key,
+      this.hotelId,
+      this.bookingId,
+      @required this.bookingDetails,
+      @required this.status})
+      : super(key: key);
+
   @override
-  _EditProfileState createState() => _EditProfileState();
+  _BookingDialogState createState() => _BookingDialogState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _BookingDialogState extends State<BookingDialog> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  String _name;
+  int noOfGuests;
 
   // ignore: omit_local_variable_types
-  String _phone_number;
+  String bookingName;
+
+  Future<Booking> addBooking() async {
+    // ignore: omit_local_variable_types
+    return await BookingController.addNewBookingController(
+        hotelId: widget.hotelId.toString(), booking: widget.bookingDetails);
+  }
+
+  Future<Booking> editBooking() async {
+    // ignore: omit_local_variable_types
+    return await BookingController.editBookingController(
+        booking: widget.bookingDetails, bookingId: widget.bookingId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: omit_local_variable_types
-
     return Dialog(
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(16.0),
           width: 400,
           color: Theme.of(context).primaryColor,
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -80,10 +102,10 @@ class _EditProfileState extends State<EditProfile> {
                     textInputAction: TextInputAction.done,
                     obscureText: false,
                     autofocus: false,
-                    initialValue: Provider.of<User>(context).name,
+                    // initialValue: Provider.of<User>(context).name,
                     onChanged: (value) {
                       setState(() {
-                        _name = value;
+                        // noOfGuests = value;
                       });
                     },
                     style: TextStyle(color: Colors.black),
@@ -143,10 +165,10 @@ class _EditProfileState extends State<EditProfile> {
                     textInputAction: TextInputAction.done,
                     obscureText: false,
                     autofocus: false,
-                    initialValue: Provider.of<User>(context).phone_number,
+                    // initialValue: Provider.of<User>(context).phone_number,
                     onChanged: (value) {
                       setState(() {
-                        _phone_number = value;
+                        bookingName = value;
                       });
                     },
                     style: TextStyle(color: Colors.black),
@@ -190,8 +212,8 @@ class _EditProfileState extends State<EditProfile> {
                                 ? null
                                 : () async {
                                     if (_formKey.currentState.validate()) {
-                                      if (_name == null &&
-                                          _phone_number == null) {
+                                      if (noOfGuests == null &&
+                                          bookingName == null) {
                                         toast(
                                             'Please Change at least one field');
                                       } else {
@@ -200,21 +222,12 @@ class _EditProfileState extends State<EditProfile> {
                                         });
                                         try {
                                           // ignore: omit_local_variable_types
-                                          User newUser = await UserController
-                                              .patchProfileController(
-                                                  name: _name ??
-                                                      Provider.of<User>(
-                                                              context,
-                                                              listen: false)
-                                                          .name,
-                                                  phone_number:
-                                                      _phone_number ??
-                                                          Provider.of<User>(
-                                                                  context,
-                                                                  listen:
-                                                                      false)
-                                                              .phone_number);
-                                          if (newUser == null) {
+                                          Booking booking =
+                                              widget.bookingId != null
+                                                  ? await addBooking()
+                                                  : await editBooking();
+
+                                          if (booking == null) {
                                             logger.d('here lol');
                                             setState(() {
                                               isLoading = false;
@@ -234,16 +247,11 @@ class _EditProfileState extends State<EditProfile> {
                                                   'Profile Updated successfully'),
                                               background: Colors.green,
                                             );
-                                            Provider.of<User>(context,
-                                                    listen: false)
-                                                .updateUserInProvider(
-                                                    newUser);
+
                                             setState(() {
                                               isLoading = false;
                                             });
-                                            logger.d(Provider.of<User>(
-                                                context,
-                                                listen: false));
+
                                             Navigator.pop(context);
                                           }
                                         } catch (e) {
