@@ -12,7 +12,7 @@ import '../main.dart';
 class ReviewController {
 
   static Future<NewReviews> addReviewToHotelController(
-      {@required int hotelId, @required Review review}) async {
+      {@required int hotelId, @required ReviewBody reviewBody}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -20,9 +20,7 @@ class ReviewController {
           baseUrl: 'https://staysia.herokuapp.com/api/',
           headers: {
             'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
-            // 'X-Requested-With': 'XMLHttpRequest',
           },
-          contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
           PrettyDioLogger(requestBody: true, requestHeader: true),
@@ -42,7 +40,7 @@ class ReviewController {
         ]);
       final res = await _dio.put(
           addReviewToHotel.replaceAll('{hotelId}', hotelId.toString()),
-          data: review.toMap());
+          data: reviewBody.toMap());
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return NewReviews.fromJson(res.data as Map<String, dynamic>);
       } else {
