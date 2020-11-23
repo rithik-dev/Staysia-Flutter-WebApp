@@ -5,7 +5,7 @@ import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/add_review.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
 import 'package:staysia_web/components/explore_drawer.dart';
-import 'package:staysia_web/components/recommend_hotel_card.dart';
+import 'package:staysia_web/components/hotel_card.dart';
 import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/detailed_hotel.dart';
@@ -32,6 +32,22 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
       hotel.rating = newReviews.rating;
       hotel.review = newReviews.reviews;
     });
+  }
+
+  Future<DetailedHotel> getHotel;
+  Future<List<Hotel>> getRecommendations;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getHotel = NavigationController.getHotelByIdController(
+      hotelId: widget.hotelId.toString(),
+    );
+    getRecommendations =
+        NavigationController.getHotelRecommendationByIdController(
+      hotelId: widget.hotelId.toString(),
+    );
+    super.initState();
   }
 
   @override
@@ -79,9 +95,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           padding: EdgeInsets.all(20),
           children: [
             FutureBuilder<DetailedHotel>(
-              future: NavigationController.getHotelByIdController(
-                hotelId: widget.hotelId.toString(),
-              ),
+              future: getHotel,
               builder: (context, snapshot) {
                 hotel = snapshot.data;
                 if (snapshot.hasData) {
@@ -89,161 +103,42 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 400,
-                            height: 350,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      hotel.mainImage,
-                                    ))),
-                          ),
-                          SizedBox(width: 30),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      ResponsiveWidget.isSmallScreen(context)
+                          ? Column(
                               children: [
-                                SizedBox(height: 15),
-                                ListTile(
-                                  title: Text(
-                                    hotel.title,
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    hotel.description,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  isThreeLine: true,
-                                  leading: Icon(
-                                    Icons.location_city,
-                                    color: Theme.of(context).accentColor,
-                                    size: 25,
-                                  ),
+                                Container(
+                                  width: 350,
+                                  height: 300,
+                                  margin: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            hotel.mainImage,
+                                          ))),
                                 ),
-                                SizedBox(height: 15),
-                                ListTile(
-                                  title: Text(
-                                    'Address',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    hotel.address,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  leading: Icon(
-                                    Icons.location_on_rounded,
-                                    color: Theme.of(context).accentColor,
-                                    size: 25,
-                                  ),
-                                  isThreeLine: true,
+                                SizedBox(height: 30),
+                                _getHotelDetails()
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                Container(
+                                  width: 400,
+                                  height: 350,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            hotel.mainImage,
+                                          ))),
                                 ),
-                                Wrap(
-                                  children: [
-                                    ListTile(
-                                      title: Text(
-                                        'Check In Time',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        hotel.checkIn,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                      leading: Icon(
-                                        Icons.check_circle,
-                                        color: Colors.green,
-                                        size: 25,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 30,
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        'Check Out Time',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        hotel.checkOut,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                      leading: Icon(
-                                        Icons.cancel,
-                                        color: Colors.red,
-                                        size: 25,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 15),
-                                ListTile(
-                                  title: Text(
-                                    'Price',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  subtitle: hotel.price.discounted
-                                      ? Row(
-                                          children: [
-                                            Text(
-                                              '${hotel.price.currency} ${hotel.price.beforePrice}',
-                                              style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              '${hotel.price.currency} ${hotel.price.currentPrice}',
-                                            ),
-                                          ],
-                                        )
-                                      : Text(
-                                          '${hotel.price.currency} ${hotel.price.currentPrice}',
-                                        ),
-                                  leading: Icon(
-                                    Icons.money,
-                                    color: Colors.green,
-                                    size: 25,
-                                  ),
-                                ),
-                                SizedBox(height: 15),
-                                ListTile(
-                                  title: Text(
-                                    'Rating : ${hotel.rating}',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  leading: Icon(
-                                    Icons.star,
-                                    color: Theme.of(context).accentColor,
-                                    size: 25,
-                                  ),
-                                ),
+                                SizedBox(width: 30),
+                                Expanded(child: _getHotelDetails())
                               ],
                             ),
-                          )
-                        ],
-                      ),
                       Text(
                         'Rooms',
                         style: TextStyle(
@@ -456,9 +351,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
 
   Widget _recommendedHotels() {
     return FutureBuilder<List<Hotel>>(
-      future: NavigationController.getHotelRecommendationByIdController(
-        hotelId: widget.hotelId.toString(),
-      ),
+      future: getRecommendations,
       builder: (context, snapshot) {
         final hotels = snapshot.data;
         if (snapshot.hasData) {
@@ -479,7 +372,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return RecommendHotelCard(hotels[index]);
+                      return HotelCard(hotels[index]);
                     },
                     itemCount: hotels.length,
                   ),
@@ -493,6 +386,145 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           return SizedBox.shrink();
         }
       },
+    );
+  }
+
+  Widget _getHotelDetails() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 15),
+        ListTile(
+          title: Text(
+            hotel.title,
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(
+            hotel.description,
+            style: TextStyle(fontSize: 15),
+          ),
+          isThreeLine: true,
+          leading: Icon(
+            Icons.location_city,
+            color: Theme.of(context).accentColor,
+            size: 25,
+          ),
+        ),
+        SizedBox(height: 15),
+        ListTile(
+          title: Text(
+            'Address',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(
+            hotel.address,
+            style: TextStyle(fontSize: 15),
+          ),
+          leading: Icon(
+            Icons.location_on_rounded,
+            color: Theme.of(context).accentColor,
+            size: 25,
+          ),
+          isThreeLine: true,
+        ),
+        Wrap(
+          children: [
+            ListTile(
+              title: Text(
+                'Check In Time',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(
+                hotel.checkIn,
+                style: TextStyle(fontSize: 15),
+              ),
+              leading: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 25,
+              ),
+            ),
+            SizedBox(
+              width: 30,
+            ),
+            ListTile(
+              title: Text(
+                'Check Out Time',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(
+                hotel.checkOut,
+                style: TextStyle(fontSize: 15),
+              ),
+              leading: Icon(
+                Icons.cancel,
+                color: Colors.red,
+                size: 25,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 15),
+        ListTile(
+          title: Text(
+            'Price',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          subtitle: hotel.price.discounted
+              ? Row(
+                  children: [
+                    Text(
+                      '${hotel.price.currency} ${hotel.price.beforePrice}',
+                      style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      '${hotel.price.currency} ${hotel.price.currentPrice}',
+                    ),
+                  ],
+                )
+              : Text(
+                  '${hotel.price.currency} ${hotel.price.currentPrice}',
+                ),
+          leading: Icon(
+            Icons.money,
+            color: Colors.green,
+            size: 25,
+          ),
+        ),
+        SizedBox(height: 15),
+        ListTile(
+          title: Text(
+            'Rating : ${hotel.rating}',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          leading: Icon(
+            Icons.star,
+            color: Theme.of(context).accentColor,
+            size: 25,
+          ),
+        ),
+      ],
     );
   }
 }
