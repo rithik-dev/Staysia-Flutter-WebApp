@@ -25,17 +25,17 @@ class _MyBookingPageState extends State<MyBookingPage> {
   List<Booking> bookings;
 
   void deleteBooking(String bookingId) {
-    var _newBookings = <Booking>[];
+    var newBookings = <Booking>[];
     for (var booking in bookings) {
-      if (booking.bookingId != bookingId) _newBookings.add(booking);
-      else print("not adding ${booking.bookingId}");
+      if (booking.bookingId != bookingId) {
+        newBookings.add(booking);
+      } else {
+        print('not adding ${booking.bookingId}');
+      }
     }
-
-
     setState(() {
-      bookings = _newBookings;
+      bookings = newBookings;
     });
-
     print(bookings);
   }
 
@@ -87,44 +87,33 @@ class _MyBookingPageState extends State<MyBookingPage> {
                 ),
               ),
         drawer: ExploreDrawer(),
-        body: FutureBuilder(
+        body: FutureBuilder<List<Booking>>(
             future: myBookings,
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data.length == 0) {
+                if (snapshot.data.isEmpty || bookings.isEmpty) {
                   return NoData(message: "You don't have any bookings");
-                } else if (snapshot.hasError) {
-                  return CustomErrorWidget(
-                    message: 'Failed to fetch bookings....',
-                  );
                 } else {
-                  return FutureBuilder<List<Booking>>(
-                    future: myBookings,
-                    builder: (context, snapshot) {
-                      bookings = snapshot.data;
-                      if (snapshot.hasData) {
-                        print("in snapshot");
-                        print(bookings);
-                        return SingleChildScrollView(
-                          child: Wrap(
-                            children: bookings
-                                .map((e) => BookingCard(
-                                    booking: e, deleteCallback: deleteBooking))
-                                .toList(),
-                          ),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
+                  bookings ??= snapshot.data;
+                  return SingleChildScrollView(
+                    child: Wrap(
+                      children: bookings
+                          .map((e) => BookingCard(
+                              booking: e, deleteCallback: deleteBooking))
+                          .toList(),
+                    ),
                   );
                 }
-              } else {
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: SpinKitCircle(
                     color: Theme.of(context).accentColor,
                   ),
+                );
+              } else {
+                return CustomErrorWidget(
+                  message: 'Failed to fetch bookings....',
                 );
               }
             }),
