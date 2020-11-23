@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/add_review.dart';
+import 'package:staysia_web/components/booking_dialog.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
 import 'package:staysia_web/components/explore_drawer.dart';
 import 'package:staysia_web/components/hotel_card.dart';
@@ -139,6 +140,19 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                 Expanded(child: _getHotelDetails())
                               ],
                             ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.add_circle_outline,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => BookingDialog(
+                                  hotelId: hotel.id,
+                                  ));
+                        },
+                      ),
                       Text(
                         'Rooms',
                         style: TextStyle(

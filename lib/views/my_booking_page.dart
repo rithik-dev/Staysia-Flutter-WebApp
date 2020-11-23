@@ -71,7 +71,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
               ),
         drawer: ExploreDrawer(),
         body: FutureBuilder(
-            future: BookingController.getBookingsController(),
+            future: myBookings,
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
