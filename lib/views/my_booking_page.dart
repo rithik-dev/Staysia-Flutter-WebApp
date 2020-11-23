@@ -86,10 +86,12 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     future: myBookings,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Wrap(
-                          children: snapshot.data
-                              .map((e) => BookingCard(booking: e))
-                              .toList(),
+                        return SingleChildScrollView(
+                          child: Wrap(
+                            children: snapshot.data
+                                .map((e) => BookingCard(booking: e))
+                                .toList(),
+                          ),
                         );
                       } else {
                         return Center(child: CircularProgressIndicator());

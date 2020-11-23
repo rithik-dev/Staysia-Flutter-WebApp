@@ -154,7 +154,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           showDialog(
                               context: context,
                               builder: (context) => BookingDialog(
-                                    hotelId: hotel.id,
+                                hotel:hotel,
                                   ));
                         },
                       ),

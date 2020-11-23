@@ -10,7 +10,7 @@ import 'package:staysia_web/utils/routes.dart';
 
 class BookingController {
   static Future<Booking> addNewBookingController(
-      {@required String hotelId, @required BookingDetails booking}) async {
+      {@required String hotelId, @required Map bookingData}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -36,7 +36,7 @@ class BookingController {
           ),
         ]);
       final res =
-          await _dio.put(addNewBooking + hotelId, data: booking.toMap());
+          await _dio.put(addNewBooking + hotelId, data: bookingData);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return Booking.fromJson(res.data as Map<String, dynamic>);
       } else {

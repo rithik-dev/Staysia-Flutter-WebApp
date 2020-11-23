@@ -4,12 +4,14 @@ class AddButton extends StatefulWidget {
   final int width;
   final int height;
   final String addText;
+  final int maxValue;
   final Function(int) onChanged;
 
   AddButton({
     this.addText = 'ADD',
     this.height,
     this.onChanged,
+    this.maxValue,
     this.width,
   });
 
@@ -21,14 +23,14 @@ class _AddButtonState extends State<AddButton> {
   int count = 0;
 
   void increment() => setState(() {
-    count++;
-    widget.onChanged(count);
-  });
+        count++;
+        return widget.onChanged(count);
+      });
 
   void decrement() => setState(() {
-    count--;
-    widget.onChanged(count);
-  });
+        count--;
+        return widget.onChanged(count);
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +50,16 @@ class _AddButtonState extends State<AddButton> {
             count == 0
                 ? SizedBox.shrink()
                 : _buildButton(
-              onTap: decrement,
-              iconData: Icons.remove,
-            ),
+                    onTap: decrement,
+                    iconData: Icons.remove,
+                  ),
             Expanded(
               child: InkWell(
-                onTap: () => count == 0 ? increment() : null,
+                onTap: () => count == 0
+                    ? count == widget.maxValue
+                        ? null
+                        : increment()
+                    : null,
                 child: Text(
                   count == 0 ? widget.addText : count.toString(),
                   textAlign: TextAlign.center,
@@ -66,7 +72,7 @@ class _AddButtonState extends State<AddButton> {
               ),
             ),
             _buildButton(
-              onTap: increment,
+              onTap: count == widget.maxValue ? null : increment,
               iconData: Icons.add,
             ),
           ],
