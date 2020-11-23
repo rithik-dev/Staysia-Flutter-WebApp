@@ -149,6 +149,12 @@ class BookingCard extends StatelessWidget {
               child: Row(
                 children: [
                   IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async {
+                      // await BookingController.editBookingController(bookingId: booking.bookingId,booking: );
+                    },
+                  ),
+                  IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () async {
                       try {
@@ -161,12 +167,6 @@ class BookingCard extends StatelessWidget {
                       }
                     },
                   ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () async {
-                      // await BookingController.editBookingController(bookingId: booking.bookingId,booking: );
-                    },
-                  )
                 ],
               ),
             ),
