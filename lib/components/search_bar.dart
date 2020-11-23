@@ -33,6 +33,19 @@ class _SearchBarState extends State<SearchBar> {
                 Expanded(
                   flex: 2,
                   child: CustomTextFormField(
+                    textInputAction: TextInputAction.search,
+                    onFieldSubmitted: (value) async {
+                      await Navigator.pushNamed(context, SearchResultsPage.id,
+                          arguments: {
+                            'q': value,
+                            'checkIn': checkInDateTime == null
+                                ? null
+                                : printDate(checkInDateTime),
+                            'checkOut': checkOutDateTime == null
+                                ? null
+                                : printDate(checkOutDateTime),
+                          });
+                    },
                     labelText: 'Search',
                     overrideLabel: true,
                     onChanged: (s) => searchText = s,
@@ -69,7 +82,6 @@ class _SearchBarState extends State<SearchBar> {
               if (searchText == null || searchText.trim().isEmpty) {
                 toast('Please enter some text');
               } else {
-
                 await Navigator.pushNamed(context, SearchResultsPage.id,
                     arguments: {
                       'q': searchText,

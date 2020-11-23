@@ -9,12 +9,14 @@ import 'package:staysia_web/components/edit_profile.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/Jwt.dart';
+import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/my_booking_page.dart';
 
 class TopBarContents extends StatefulWidget {
   final double opacity;
+  final bool showLeading;
 
-  TopBarContents(this.opacity);
+  TopBarContents({this.opacity, this.showLeading = true});
 
   @override
   _TopBarContentsState createState() => _TopBarContentsState();
@@ -28,96 +30,39 @@ class _TopBarContentsState extends State<TopBarContents> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white.withOpacity(widget.opacity),
+      color: widget.opacity == null
+          ? Colors.white
+          : Colors.white.withOpacity(widget.opacity),
       child: Padding(
         padding: EdgeInsets.all(20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'STAYSIA',
-              style: TextStyle(
-                color: Theme.of(context).accentColor,
-                fontSize: 20,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w400,
-                letterSpacing: 3,
+            widget.showLeading
+                ? IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                : SizedBox.shrink(),
+            InkWell(
+              onTap:widget.showLeading? () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.id, (route) => false);
+              }:null,
+              child: Text(
+                'STAYSIA',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                  fontSize: 20,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 3,
+                ),
               ),
             ),
-            // Row(
-            //   children: [
-            //     InkWell(
-            //       onHover: (value) {
-            //         setState(() {
-            //           value ? _isHovering[0] = true : _isHovering[0] = false;
-            //         });
-            //       },
-            //       onTap: () {},
-            //       child: Column(
-            //         mainAxisSize: MainAxisSize.min,
-            //         children: [
-            //           Text(
-            //             'Discover',
-            //             style: TextStyle(
-            //               color: _isHovering[0]
-            //                   ? Theme.of(context).hintColor
-            //                   : Theme.of(context).accentColor,
-            //             ),
-            //           ),
-            //           SizedBox(height: 5),
-            //           Visibility(
-            //             maintainAnimation: true,
-            //             maintainState: true,
-            //             maintainSize: true,
-            //             visible: _isHovering[0],
-            //             child: Container(
-            //               height: 2,
-            //               width: 20,
-            //               color: Theme.of(context).accentColor,
-            //             ),
-            //           )
-            //         ],
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 50,
-            //     ),
-            //     InkWell(
-            //       onHover: (value) {
-            //         setState(() {
-            //           value ? _isHovering[1] = true : _isHovering[1] = false;
-            //         });
-            //       },
-            //       onTap: () {},
-            //       child: Column(
-            //         mainAxisSize: MainAxisSize.min,
-            //         children: [
-            //           Text(
-            //             'Contact Us',
-            //             style: TextStyle(
-            //               color: _isHovering[1]
-            //                   ? Theme.of(context).hintColor
-            //                   : Theme.of(context).accentColor,
-            //             ),
-            //           ),
-            //           SizedBox(height: 5),
-            //           Visibility(
-            //             maintainAnimation: true,
-            //             maintainState: true,
-            //             maintainSize: true,
-            //             visible: _isHovering[1],
-            //             child: Container(
-            //               height: 2,
-            //               width: 20,
-            //               color: Theme.of(context).hintColor,
-            //             ),
-            //           )
-            //         ],
-            //       ),
-            //     ),
-            //   ],
-            // ),
             InkWell(
               onHover: (value) {
                 setState(() {
@@ -299,8 +244,8 @@ class _TopBarContentsState extends State<TopBarContents> {
                             ),
                             child: _isProcessing
                                 ? SpinKitCircle(
-          color: Theme.of(context).accentColor,
-        )
+                                    color: Theme.of(context).accentColor,
+                                  )
                                 : Text(
                                     'Sign out',
                                     style: TextStyle(
