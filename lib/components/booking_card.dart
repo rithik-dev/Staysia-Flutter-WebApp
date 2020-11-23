@@ -9,7 +9,113 @@ class BookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(booking.title),
+      width: 600,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            booking.title,
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          Row(
+            children: [
+              Text(
+                booking.status.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.green,
+                ),
+              ),
+              Text(
+                '  on ${booking.timestamp}',
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          ListTile(
+            title: Text(
+              'Number of Guests',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              booking.bookingDetails.guests.toString(),
+              style: TextStyle(fontSize: 15),
+            ),
+            leading: Icon(
+              Icons.group,
+              color: Theme.of(context).accentColor,
+              size: 25,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              'Check In Time',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              booking.bookingDetails.checkIn,
+              style: TextStyle(fontSize: 15),
+            ),
+            leading: Icon(
+              Icons.check_circle,
+              color: Colors.green,
+              size: 25,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              'Check Out Time',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Text(
+              booking.bookingDetails.checkOut,
+              style: TextStyle(fontSize: 15),
+            ),
+            leading: Icon(
+              Icons.cancel,
+              color: Colors.red,
+              size: 25,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              'Price',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Text('Rs ${booking.price}'),
+            leading: Icon(
+              Icons.money,
+              color: Colors.green,
+              size: 25,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
