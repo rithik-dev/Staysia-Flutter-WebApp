@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:staysia_web/components/NoData.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
 import 'package:staysia_web/components/explore_drawer.dart';
 
@@ -25,6 +26,7 @@ class SearchResultsPage extends StatefulWidget {
 
 class _SearchResultsPageState extends State<SearchResultsPage> {
   Future getResults;
+
   @override
   void initState() {
     getResults = NavigationController.searchHotelWithNameController(
@@ -34,6 +36,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     );
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -78,8 +81,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         body: Column(
           children: [
             Padding(
-              padding:
-              const EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 50),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -116,15 +118,21 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                     (snapshot.data as List).forEach((element) {
                       result.add(HotelCard(element as Hotel));
                     });
-                    return Expanded(
-                      child: SingleChildScrollView(
-                        child: Wrap(
-                          children: result,
+                    if (result.isEmpty) {
+                      return NoData(message: 'No results found');
+                    } else {
+                      return Expanded(
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            children: result,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   } else if (snapshot.hasError) {
-                    return CustomErrorWidget();
+                    return CustomErrorWidget(
+                      message: 'Error in fetching search result....',
+                    );
                   } else {
                     return Center(
                       child: SpinKitCircle(

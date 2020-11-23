@@ -149,7 +149,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           showDialog(
                               context: context,
                               builder: (context) => BookingDialog(
-                                  hotelId: hotel.id,
+                                    hotelId: hotel.id,
                                   ));
                         },
                       ),
@@ -361,7 +361,9 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     ],
                   );
                 } else if (snapshot.hasError) {
-                  return CustomErrorWidget();
+                  return CustomErrorWidget(
+                    message: 'Error in fetching Reviews....',
+                  );
                 } else {
                   return Center(
                       child: SpinKitCircle(
@@ -409,7 +411,9 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             ),
           );
         } else if (snapshot.hasError) {
-          return CustomErrorWidget();
+          return CustomErrorWidget(
+            message: 'Failed to fetch recommendations....',
+          );
         } else {
           return SizedBox.shrink();
         }

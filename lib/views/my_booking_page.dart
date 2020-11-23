@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:lottie/lottie.dart';
+import 'package:staysia_web/components/NoData.dart';
 import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/booking_card.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
@@ -75,16 +75,12 @@ class _MyBookingPageState extends State<MyBookingPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data.length == 0) {
-                  return Column(
-                    children: [
-                      Lottie.asset('lottie/404.json'),
-                      Text('No bookings found....',
-                          style: Theme.of(context).textTheme.headline4)
-                    ],
-                  );
+                if (snapshot.data.length != 0) {
+                  return NoData(message: "You don't have any bookings");
                 } else if (snapshot.hasError) {
-                  return CustomErrorWidget();
+                  return CustomErrorWidget(
+                    message: 'Failed to fetch bookings....',
+                  );
                 } else {
                   return FutureBuilder<List<Booking>>(
                     future: myBookings,

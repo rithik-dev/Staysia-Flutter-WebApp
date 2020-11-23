@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                     cities: snapshot.data.cities,
                   );
                 } else if (snapshot.hasError) {
-                  return CustomErrorWidget();
+                  return CustomErrorWidget(message: 'Error in fetching Cities....',);
                 } else {
                   return Center(child: SpinKitCircle(
           color: Theme.of(context).accentColor,
