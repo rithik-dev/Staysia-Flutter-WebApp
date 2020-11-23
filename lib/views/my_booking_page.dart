@@ -20,48 +20,55 @@ class MyBookingPage extends StatefulWidget {
 }
 
 class _MyBookingPageState extends State<MyBookingPage> {
+  Future<List<Booking>> myBookings;
+
+  @override
+  void initState() {
+    myBookings = BookingController.getBookingsController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: ResponsiveWidget.isLargeScreen(context) ||
-            ResponsiveWidget.isMediumScreen(context)
+                ResponsiveWidget.isMediumScreen(context)
             ? PreferredSize(
-          preferredSize: Size(MediaQuery.of(context).size.width, 1000),
-          child: TopBarContents(),
-        )
+                preferredSize: Size(MediaQuery.of(context).size.width, 1000),
+                child: TopBarContents(),
+              )
             : AppBar(
-          backgroundColor:
-          Theme.of(context).primaryColor,
-          automaticallyImplyLeading: true,
-          elevation: 0,
-          title: Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, HomePage.id, (route) => false);
-                },
-                child: Text(
-                  'STAYSIA',
-                  style: TextStyle(
-                    color: Theme.of(context).accentColor,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 3,
-                  ),
+                backgroundColor: Theme.of(context).primaryColor,
+                automaticallyImplyLeading: true,
+                elevation: 0,
+                title: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, HomePage.id, (route) => false);
+                      },
+                      child: Text(
+                        'STAYSIA',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 20,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 3,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
         drawer: ExploreDrawer(),
         body: FutureBuilder(
             future: BookingController.getBookingsController(),
@@ -79,13 +86,19 @@ class _MyBookingPageState extends State<MyBookingPage> {
                 } else if (snapshot.hasError) {
                   return CustomErrorWidget();
                 } else {
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return BookingCard(
-                        booking: snapshot.data[index] as Booking,
-                      );
+                  return FutureBuilder<List<Booking>>(
+                    future: myBookings,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Wrap(
+                          children: snapshot.data
+                              .map((e) => BookingCard(booking: e))
+                              .toList(),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
                     },
-                    itemCount: (snapshot.data as List).length,
                   );
                 }
               } else {
