@@ -11,7 +11,7 @@ class CustomErrorWidget extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Image.asset('images/404.gif'),
+            Image.asset('images/error.gif'),
             Text(message, style: Theme.of(context).textTheme.headline4)
           ],
         ),
