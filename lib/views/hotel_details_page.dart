@@ -1,64 +1,89 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/add_review.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
-import 'package:staysia_web/components/custom_text_form_field.dart';
+import 'package:staysia_web/components/explore_drawer.dart';
 import 'package:staysia_web/components/recommend_hotel_card.dart';
+import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/detailed_hotel.dart';
 import 'package:staysia_web/models/hotel.dart';
+import 'package:staysia_web/models/review.dart';
 
 import 'home_page.dart';
 
-class HotelDetailsPage extends StatelessWidget {
+class HotelDetailsPage extends StatefulWidget {
   static const id = 'hotel_details_page';
   final int hotelId;
 
   const HotelDetailsPage({this.hotelId});
 
   @override
+  _HotelDetailsPageState createState() => _HotelDetailsPageState();
+}
+
+class _HotelDetailsPageState extends State<HotelDetailsPage> {
+  DetailedHotel hotel;
+
+  void updateHotel({@required NewReviews newReviews}) {
+    setState(() {
+      hotel.rating = newReviews.rating;
+      hotel.review = newReviews.reviews;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          elevation: 0,
-          automaticallyImplyLeading: true,
-          actions: [
-            IconButton(
-              padding: EdgeInsets.all(10),
-              icon: Icon(
-                Icons.home_outlined,
-                size: 30,
+        appBar: ResponsiveWidget.isLargeScreen(context) ||
+                ResponsiveWidget.isMediumScreen(context)
+            ? PreferredSize(
+                preferredSize: Size(MediaQuery.of(context).size.width, 1000),
+                child: TopBarContents(),
+              )
+            : AppBar(
+                backgroundColor: Theme.of(context).primaryColor,
+                elevation: 0,
+                title: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, HomePage.id, (route) => false);
+                      },
+                      child: Text(
+                        'STAYSIA',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 20,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              color: Theme.of(context).accentColor,
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, HomePage.id, (route) => false);
-              },
-            )
-          ],
-          title: Text(
-            'STAYSIA',
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 20,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              letterSpacing: 3,
-            ),
-          ),
-        ),
+        drawer: ExploreDrawer(),
         body: ListView(
           padding: EdgeInsets.all(20),
           children: [
             FutureBuilder<DetailedHotel>(
               future: NavigationController.getHotelByIdController(
-                hotelId: hotelId.toString(),
+                hotelId: widget.hotelId.toString(),
               ),
               builder: (context, snapshot) {
-                final hotel = snapshot.data;
+                hotel = snapshot.data;
                 if (snapshot.hasData) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -404,8 +429,9 @@ class HotelDetailsPage extends StatelessWidget {
                                   ),
                                 ),
                               )
-                              .toList(),
-                          AddReview(hotelId: hotel.id)
+                              .toList()
+                              .reversed,
+                          AddReview(hotelId: hotel.id, updateHotel: updateHotel)
                         ],
                       ),
                       SizedBox(height: 15),
@@ -431,7 +457,7 @@ class HotelDetailsPage extends StatelessWidget {
   Widget _recommendedHotels() {
     return FutureBuilder<List<Hotel>>(
       future: NavigationController.getHotelRecommendationByIdController(
-        hotelId: hotelId.toString(),
+        hotelId: widget.hotelId.toString(),
       ),
       builder: (context, snapshot) {
         final hotels = snapshot.data;

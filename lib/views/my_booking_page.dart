@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/booking_card.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
+import 'package:staysia_web/components/explore_drawer.dart';
+import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
 import 'package:staysia_web/models/booking.dart';
 import 'package:staysia_web/views/home_page.dart';
@@ -21,35 +24,45 @@ class _MyBookingPageState extends State<MyBookingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          elevation: 0,
+        appBar: ResponsiveWidget.isLargeScreen(context) ||
+            ResponsiveWidget.isMediumScreen(context)
+            ? PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, 1000),
+          child: TopBarContents(),
+        )
+            : AppBar(
+          backgroundColor:
+          Theme.of(context).primaryColor,
           automaticallyImplyLeading: true,
-          actions: [
-            IconButton(
-              padding: EdgeInsets.all(10),
-              icon: Icon(
-                Icons.home_outlined,
-                size: 30,
+          elevation: 0,
+          title: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              color: Theme.of(context).accentColor,
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, HomePage.id, (route) => false);
-              },
-            )
-          ],
-          title: Text(
-            'STAYSIA',
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 20,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              letterSpacing: 3,
-            ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, HomePage.id, (route) => false);
+                },
+                child: Text(
+                  'STAYSIA',
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 3,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
+        drawer: ExploreDrawer(),
         body: FutureBuilder(
             future: BookingController.getBookingsController(),
             builder: (context, snapshot) {

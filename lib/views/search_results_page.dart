@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staysia_web/components/custom_error_widget.dart';
+import 'package:staysia_web/components/explore_drawer.dart';
 import 'package:staysia_web/components/hotel_card.dart';
+import 'package:staysia_web/components/TopBarContents.dart';
+
+import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/hotel.dart';
 
@@ -18,35 +22,45 @@ class SearchResultsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
+        appBar: ResponsiveWidget.isLargeScreen(context) ||
+            ResponsiveWidget.isMediumScreen(context)
+            ? PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, 1000),
+          child: TopBarContents(),
+        )
+            : AppBar(
+          backgroundColor:
+          Theme.of(context).primaryColor,
           elevation: 0,
-          automaticallyImplyLeading: true,
-          actions: [
-            IconButton(
-              padding: EdgeInsets.all(10),
-              icon: Icon(
-                Icons.home_outlined,
-                size: 30,
+          title: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              color: Theme.of(context).accentColor,
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, HomePage.id, (route) => false);
-              },
-            )
-          ],
-          title: Text(
-            'STAYSIA',
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 20,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              letterSpacing: 3,
-            ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, HomePage.id, (route) => false);
+                },
+                child: Text(
+                  'STAYSIA',
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 3,
+                  ),
+                ),
+              ),
+            ],
           ),
+
         ),
+        drawer: ExploreDrawer(),
         body: FutureBuilder(
             future: NavigationController.searchHotelWithNameController(
               q: queryParams['q'] as String,

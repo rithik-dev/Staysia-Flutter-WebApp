@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               ResponsiveWidget.isMediumScreen(context)
           ? PreferredSize(
               preferredSize: Size(screenSize.width, 1000),
-              child: TopBarContents(_opacity),
+              child: TopBarContents(opacity: _opacity,showLeading: false,),
             )
           : AppBar(
               backgroundColor:
