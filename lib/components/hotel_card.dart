@@ -28,13 +28,16 @@ class HotelCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Image.network(
-              hotel.thumbnail,
-              height: 170,
-              fit: BoxFit.cover,
-              width: double.infinity,
+            Expanded(
+              flex: 2,
+              child: Image.network(
+                hotel.thumbnail,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
             ),
             Expanded(
+              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -44,8 +47,11 @@ class HotelCard extends StatelessWidget {
                   children: [
                     Text(
                       hotel.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 15,
+                        fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -54,11 +60,17 @@ class HotelCard extends StatelessWidget {
                       children: [
                         Text(
                           hotel.neighbourhood,
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'Montserrat',
+                          ),
                         ),
                         Text(
                           hotel.city,
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'Montserrat',
+                          ),
                         ),
                       ],
                     ),
@@ -69,6 +81,7 @@ class HotelCard extends StatelessWidget {
                           'Rs ${hotel.price.currentPrice}',
                           style: TextStyle(
                             fontSize: 15,
+                            fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -79,6 +92,7 @@ class HotelCard extends StatelessWidget {
                               hotel.rating.toString(),
                               style: TextStyle(
                                 fontSize: 15,
+                                fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
