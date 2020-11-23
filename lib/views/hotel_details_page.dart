@@ -249,13 +249,28 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                             .toList(),
                       ),
                       SizedBox(height: 15),
-                      Text(
-                        'Reviews',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                      Row(children: [
+                        Text(
+                          'Reviews',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.add_circle_outline,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AddReview(
+                                    hotelId: hotel.id,
+                                    updateHotel: updateHotel));
+                          },
+                        )
+                      ]),
                       SizedBox(height: 15),
                       Wrap(
                         spacing: 10,
@@ -326,7 +341,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                               )
                               .toList()
                               .reversed,
-                          AddReview(hotelId: hotel.id, updateHotel: updateHotel)
                         ],
                       ),
                       SizedBox(height: 15),
