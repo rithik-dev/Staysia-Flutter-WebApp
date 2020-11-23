@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class AddButton extends StatefulWidget {
   final int width;
@@ -32,6 +33,10 @@ class _AddButtonState extends State<AddButton> {
         return widget.onChanged(count);
       });
 
+  void showToast() {
+    toast('You have already selected maximum rooms of this type');
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,7 +62,7 @@ class _AddButtonState extends State<AddButton> {
               child: InkWell(
                 onTap: () => count == 0
                     ? count == widget.maxValue
-                        ? null
+                        ? showToast()
                         : increment()
                     : null,
                 child: Text(
@@ -72,7 +77,7 @@ class _AddButtonState extends State<AddButton> {
               ),
             ),
             _buildButton(
-              onTap: count == widget.maxValue ? null : increment,
+              onTap: count == widget.maxValue ? showToast : increment,
               iconData: Icons.add,
             ),
           ],
