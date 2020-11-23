@@ -50,6 +50,24 @@ class BookingCard extends StatelessWidget {
               SizedBox(height: 15),
               ListTile(
                 title: Text(
+                  'Person Name',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  booking.bookingDetails.bookingName,
+                  style: TextStyle(fontSize: 15),
+                ),
+                leading: Icon(
+                  Icons.person,
+                  color: Theme.of(context).accentColor,
+                  size: 25,
+                ),
+              ),
+              ListTile(
+                title: Text(
                   'Number of Guests',
                   style: TextStyle(
                     fontSize: 20,
