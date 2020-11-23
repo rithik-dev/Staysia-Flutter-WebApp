@@ -145,16 +145,30 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                 Expanded(child: _getHotelDetails())
                               ],
                             ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.add_circle_outline,
-                          color: Theme.of(context).accentColor,
+                      FlatButton(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            Text(
+                              'Book Hotel',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontSize: 20,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 3,
+                              ),
+                            )
+                          ],
                         ),
                         onPressed: () {
                           showDialog(
                               context: context,
                               builder: (context) => BookingDialog(
-                                hotel:hotel,
+                                    hotel: hotel,
                                   ));
                         },
                       ),
@@ -538,7 +552,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             ),
           ),
           leading: Icon(
-            Icons.check_circle,
+            Icons.login,
             color: Colors.green,
             size: 25,
           ),
@@ -560,7 +574,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             ),
           ),
           leading: Icon(
-            Icons.cancel,
+            Icons.logout,
             color: Colors.red,
             size: 25,
           ),

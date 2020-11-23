@@ -87,36 +87,38 @@ class _MyBookingPageState extends State<MyBookingPage> {
                 ),
               ),
         drawer: ExploreDrawer(),
-        body: FutureBuilder<List<Booking>>(
-            future: myBookings,
-            builder: (context, snapshot) {
-              if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data.isEmpty || bookings.isEmpty) {
-                  return NoData(message: "You don't have any bookings");
-                } else {
+        body: bookings != null && bookings.isEmpty
+            ? NoData(message: "You don't have any bookings")
+            : FutureBuilder<List<Booking>>(
+                future: myBookings,
+                builder: (context, snapshot) {
                   bookings ??= snapshot.data;
-                  return SingleChildScrollView(
-                    child: Wrap(
-                      children: bookings
-                          .map((e) => BookingCard(
-                              booking: e, deleteCallback: deleteBooking))
-                          .toList(),
-                    ),
-                  );
-                }
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: SpinKitCircle(
-                    color: Theme.of(context).accentColor,
-                  ),
-                );
-              } else {
-                return CustomErrorWidget(
-                  message: 'Failed to fetch bookings....',
-                );
-              }
-            }),
+                  if (snapshot.hasData) {
+                    if (snapshot.data.isEmpty || bookings == null) {
+                      return NoData(message: "You don't have any bookings");
+                    } else {
+                      return SingleChildScrollView(
+                        child: Wrap(
+                          children: bookings
+                              .map((e) => BookingCard(
+                                  booking: e, deleteCallback: deleteBooking))
+                              .toList(),
+                        ),
+                      );
+                    }
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(
+                      child: SpinKitCircle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    );
+                  } else {
+                    return CustomErrorWidget(
+                      message: 'Failed to fetch bookings....',
+                    );
+                  }
+                }),
       ),
     );
   }
