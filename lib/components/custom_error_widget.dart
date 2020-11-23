@@ -8,11 +8,13 @@ class CustomErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Image.asset('images/404.gif'),
-          Text(message, style: Theme.of(context).textTheme.headline4)
-        ],
+      child: Center(
+        child: Column(
+          children: [
+            Image.asset('images/404.gif'),
+            Text(message, style: Theme.of(context).textTheme.headline4)
+          ],
+        ),
       ),
     );
   }

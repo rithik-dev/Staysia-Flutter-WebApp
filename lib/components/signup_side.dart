@@ -309,7 +309,7 @@ class _SignUpSideState extends State<SignUpSide> {
                       Flexible(
                         flex: 1,
                         child: Container(
-                          width: double.maxFinite,
+                          width: 200,
                           child: FlatButton(
                             color: Colors.blueGrey[800],
                             hoverColor: Colors.blueGrey[900],
@@ -434,17 +434,24 @@ class _SignUpSideState extends State<SignUpSide> {
                   ),
                 ),
                 SizedBox(height: 30),
-                Center(child: GoogleButton(disableOnTap: isRegistering,)),
+                Center(
+                    child: GoogleButton(
+                  disableOnTap: isRegistering,
+                )),
                 SizedBox(height: 30),
                 Center(
                     child: FlatButton(
                   padding: EdgeInsets.all(20),
                   color: Theme.of(context).accentColor,
                   hoverColor: Theme.of(context).hintColor,
-                  shape: StadiumBorder(),
-                  onPressed: isRegistering?null: () {
-                    widget.toggleDialog();
-                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  onPressed: isRegistering
+                      ? null
+                      : () {
+                          widget.toggleDialog();
+                        },
                   child: Text(
                     'Login Instead',
                     style: TextStyle(color: Colors.white),

@@ -184,7 +184,7 @@ class _LogInSideState extends State<LogInSide> {
                       Flexible(
                         flex: 1,
                         child: Container(
-                          width: double.maxFinite,
+                          width: 200,
                           child: FlatButton(
                             color: Colors.blueGrey[800],
                             hoverColor: Colors.blueGrey[900],
@@ -327,7 +327,9 @@ class _LogInSideState extends State<LogInSide> {
                   padding: EdgeInsets.all(20),
                   color: Theme.of(context).accentColor,
                   hoverColor: Theme.of(context).hintColor,
-                  shape: StadiumBorder(),
+                  shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                   onPressed:isLogIn
                       ? null
                       : () {

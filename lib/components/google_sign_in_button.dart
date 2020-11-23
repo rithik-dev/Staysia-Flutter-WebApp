@@ -7,7 +7,9 @@ import 'package:staysia_web/utils/Jwt.dart';
 
 class GoogleButton extends StatefulWidget {
   final bool disableOnTap;
+
   GoogleButton({@required this.disableOnTap});
+
   @override
   _GoogleButtonState createState() => _GoogleButtonState();
 }
@@ -20,29 +22,31 @@ class _GoogleButtonState extends State<GoogleButton> {
     return DecoratedBox(
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.blueGrey, width: 3),
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Theme.of(context).accentColor, width: 1),
         ),
         color: Colors.white,
       ),
       child: OutlineButton(
         highlightColor: Colors.blueGrey[100],
         splashColor: Colors.blueGrey[200],
-        onPressed: widget.disableOnTap?null:() async {
-          setState(() {
-            _isProcessing = true;
-          });
-          // ignore: omit_local_variable_types
-          String jwt = await FirebaseAuthService.signInWithGoogle();
-          Get.find<Jwt>().setToken(jwt);
-          // ignore: omit_local_variable_types
-          String result =
-              await UserController.googleSignupController(idToken: jwt);
-          logger.d(result);
-          setState(() {
-            _isProcessing = false;
-          });
-        },
+        onPressed: widget.disableOnTap
+            ? null
+            : () async {
+                setState(() {
+                  _isProcessing = true;
+                });
+                // ignore: omit_local_variable_types
+                String jwt = await FirebaseAuthService.signInWithGoogle();
+                Get.find<Jwt>().setToken(jwt);
+                // ignore: omit_local_variable_types
+                String result =
+                    await UserController.googleSignupController(idToken: jwt);
+                logger.d(result);
+                setState(() {
+                  _isProcessing = false;
+                });
+              },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(color: Theme.of(context).accentColor, width: 3),

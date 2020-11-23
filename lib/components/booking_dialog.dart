@@ -18,11 +18,7 @@ class BookingDialog extends StatefulWidget {
   final DetailedHotel hotel;
 
   BookingDialog(
-      {Key key,
-      this.hotel,
-      this.bookingId,
-      @required this.bookingDetails,
-      @required this.status})
+      {Key key, this.hotel, this.bookingId, this.bookingDetails, this.status})
       : super(key: key);
 
   @override
@@ -39,7 +35,6 @@ class _BookingDialogState extends State<BookingDialog> {
   bool statusBool = false;
   Map<String, dynamic> roomsData = {};
 
-  //TODO: check if user is logged in
   Future<Booking> addBooking() async {
     // ignore: omit_local_variable_types
     return await BookingController.addNewBookingController(
@@ -219,7 +214,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   style: TextStyle(fontSize: 15),
                 ),
                 leading: Icon(
-                  Icons.check_circle,
+                  Icons.login,
                   color: Colors.green,
                   size: 25,
                 ),
@@ -241,7 +236,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   style: TextStyle(fontSize: 15),
                 ),
                 leading: Icon(
-                  Icons.cancel,
+                  Icons.logout,
                   color: Colors.red,
                   size: 25,
                 ),
@@ -257,7 +252,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   bottom: 8,
                 ),
                 child: Text(
-                  'Person Name',
+                  'Booked Under',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Theme.of(context).textTheme.subtitle2.color,
@@ -320,7 +315,7 @@ class _BookingDialogState extends State<BookingDialog> {
                     Flexible(
                       flex: 1,
                       child: Container(
-                        width: double.maxFinite,
+                        width: 200,
                         child: FlatButton(
                           color: Colors.blueGrey[800],
                           hoverColor: Colors.blueGrey[900],
@@ -350,7 +345,7 @@ class _BookingDialogState extends State<BookingDialog> {
                                     } else if (checkOutDateTime == null) {
                                       toast('Please select check out date');
                                     } else if (bookingName == null) {
-                                      toast('Please enter person name');
+                                      toast('Please enter booking name');
                                     } else {
                                       setState(() {
                                         isLoading = true;

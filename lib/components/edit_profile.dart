@@ -180,7 +180,7 @@ class _EditProfileState extends State<EditProfile> {
                       Flexible(
                         flex: 1,
                         child: Container(
-                          width: double.maxFinite,
+                          width: 200,
                           child: FlatButton(
                             color: Colors.blueGrey[800],
                             hoverColor: Colors.blueGrey[900],

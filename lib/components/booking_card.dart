@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:staysia_web/controller/booking_controller.dart';
 import 'package:staysia_web/models/booking.dart';
 
-class BookingCard extends StatelessWidget {
+import '../main.dart';
+
+class BookingCard extends StatefulWidget {
   final Booking booking;
   final Function(String) deleteCallback;
 
@@ -10,6 +13,13 @@ class BookingCard extends StatelessWidget {
     @required this.booking,
     this.deleteCallback,
   });
+
+  @override
+  _BookingCardState createState() => _BookingCardState();
+}
+
+class _BookingCardState extends State<BookingCard> {
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +38,7 @@ class BookingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                booking.title,
+                widget.booking.title,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -38,7 +48,7 @@ class BookingCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    booking.status.toUpperCase(),
+                    widget.booking.status.toUpperCase(),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -46,7 +56,7 @@ class BookingCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '  on ${booking.timestamp}',
+                    '  on ${widget.booking.timestamp}',
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -54,14 +64,14 @@ class BookingCard extends StatelessWidget {
               SizedBox(height: 15),
               ListTile(
                 title: Text(
-                  'Person Name',
+                  'Booked Under',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 subtitle: Text(
-                  booking.bookingDetails.bookingName,
+                  widget.booking.bookingDetails.bookingName,
                   style: TextStyle(fontSize: 15),
                 ),
                 leading: Icon(
@@ -79,7 +89,7 @@ class BookingCard extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  booking.bookingDetails.guests.toString(),
+                  widget.booking.bookingDetails.guests.toString(),
                   style: TextStyle(fontSize: 15),
                 ),
                 leading: Icon(
@@ -97,11 +107,11 @@ class BookingCard extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  booking.bookingDetails.checkIn,
+                  widget.booking.bookingDetails.checkIn,
                   style: TextStyle(fontSize: 15),
                 ),
                 leading: Icon(
-                  Icons.check_circle,
+                  Icons.login,
                   color: Colors.green,
                   size: 25,
                 ),
@@ -115,11 +125,11 @@ class BookingCard extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  booking.bookingDetails.checkOut,
+                  widget.booking.bookingDetails.checkOut,
                   style: TextStyle(fontSize: 15),
                 ),
                 leading: Icon(
-                  Icons.cancel,
+                  Icons.logout,
                   color: Colors.red,
                   size: 25,
                 ),
@@ -132,7 +142,7 @@ class BookingCard extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                subtitle: Text('Rs ${booking.price}'),
+                subtitle: Text('Rs ${widget.booking.price}'),
                 leading: Icon(
                   Icons.money,
                   color: Colors.green,
@@ -161,15 +171,202 @@ class BookingCard extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () async {
-                      try {
-                        // ignore: omit_local_variable_types
-                        bool deleted =
-                            await BookingController.deleteBookingController(
-                                bookingId: booking.bookingId);
-                        deleteCallback(booking.bookingId);
-                      } catch (e) {
-                        print(e);
-                      }
+                      await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              child: Container(
+                                width: 400,
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Are you sure?',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .color,
+                                        fontSize: 24,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 3,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(
+                                              20.0),
+                                          width: 200,
+                                          child: FlatButton(
+                                            color: Colors.blueGrey[800],
+                                            hoverColor:
+                                                Colors.blueGrey[900],
+                                            highlightColor:
+                                                Colors.black,
+                                            disabledColor:
+                                                Colors.blueGrey[800],
+                                            onPressed: isLoading
+                                                ? null
+                                                : () async {
+                                                    try {
+                                                      setState(() {
+                                                        isLoading =
+                                                            true;
+                                                      });
+                                                      // ignore: omit_local_variable_types
+                                                      bool deleted = await BookingController
+                                                          .deleteBookingController(
+                                                              bookingId: widget
+                                                                  .booking
+                                                                  .bookingId);
+                                                      if (deleted) {
+                                                        widget.deleteCallback(
+                                                            widget
+                                                                .booking
+                                                                .bookingId);
+                                                        setState(() {
+                                                          isLoading =
+                                                              false;
+                                                        });
+                                                        Navigator.pop(
+                                                            context);
+                                                        showSimpleNotification(
+                                                          Text(
+                                                            'Successfully deleted booking!!!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          background:
+                                                              Colors
+                                                                  .green,
+                                                        );
+                                                      } else {
+                                                        showSimpleNotification(
+                                                          Text(
+                                                            'An error occurred while deleting booking.',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          background:
+                                                              Colors
+                                                                  .red,
+                                                        );
+                                                        setState(() {
+                                                          isLoading =
+                                                              false;
+                                                        });
+                                                      }
+                                                    } catch (e) {
+                                                      logger.e(e);
+                                                      showSimpleNotification(
+                                                        Text(
+                                                          'An error occurred while deleting booking.',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white),
+                                                        ),
+                                                        background:
+                                                            Colors.red,
+                                                      );
+                                                      setState(() {
+                                                        isLoading =
+                                                            false;
+                                                      });
+                                                    }
+                                                  },
+                                            shape:
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      15),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 15.0,
+                                                bottom: 15.0,
+                                              ),
+                                              child: isLoading
+                                                  ? SizedBox(
+                                                      height: 16,
+                                                      width: 16,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          Colors.white,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      'Yes',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors
+                                                            .white,
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(20.0),
+                                          width: 200,
+                                          child: FlatButton(
+                                            color: Colors.blueGrey[800],
+                                            hoverColor: Colors.blueGrey[900],
+                                            highlightColor: Colors.black,
+                                            disabledColor: Colors.blueGrey[800],
+                                            onPressed: isLoading
+                                                ? null
+                                                : () async {
+                                                    Navigator.pop(context);
+                                                  },
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 15.0,
+                                                bottom: 15.0,
+                                              ),
+                                              child: isLoading
+                                                  ? SizedBox(
+                                                      height: 16,
+                                                      width: 16,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          Colors.white,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      'No',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
                     },
                   ),
                 ],
