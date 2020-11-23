@@ -22,6 +22,23 @@ class MyBookingPage extends StatefulWidget {
 class _MyBookingPageState extends State<MyBookingPage> {
   Future<List<Booking>> myBookings;
 
+  List<Booking> bookings;
+
+  void deleteBooking(String bookingId) {
+    var _newBookings = <Booking>[];
+    for (var booking in bookings) {
+      if (booking.bookingId != bookingId) _newBookings.add(booking);
+      else print("not adding ${booking.bookingId}");
+    }
+
+
+    setState(() {
+      bookings = _newBookings;
+    });
+
+    print(bookings);
+  }
+
   @override
   void initState() {
     myBookings = BookingController.getBookingsController();
@@ -85,11 +102,15 @@ class _MyBookingPageState extends State<MyBookingPage> {
                   return FutureBuilder<List<Booking>>(
                     future: myBookings,
                     builder: (context, snapshot) {
+                      bookings = snapshot.data;
                       if (snapshot.hasData) {
+                        print("in snapshot");
+                        print(bookings);
                         return SingleChildScrollView(
                           child: Wrap(
-                            children: snapshot.data
-                                .map((e) => BookingCard(booking: e))
+                            children: bookings
+                                .map((e) => BookingCard(
+                                    booking: e, deleteCallback: deleteBooking))
                                 .toList(),
                           ),
                         );

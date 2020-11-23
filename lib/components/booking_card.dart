@@ -4,8 +4,12 @@ import 'package:staysia_web/models/booking.dart';
 
 class BookingCard extends StatelessWidget {
   final Booking booking;
+  final Function(String) deleteCallback;
 
-  BookingCard({@required this.booking});
+  BookingCard({
+    @required this.booking,
+    this.deleteCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +166,7 @@ class BookingCard extends StatelessWidget {
                         bool deleted =
                             await BookingController.deleteBookingController(
                                 bookingId: booking.bookingId);
+                        deleteCallback(booking.bookingId);
                       } catch (e) {
                         print(e);
                       }
