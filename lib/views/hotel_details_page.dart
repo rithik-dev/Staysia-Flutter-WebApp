@@ -93,7 +93,11 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
               ),
         drawer: ExploreDrawer(),
         body: ListView(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveWidget.isSmallScreen(context)
+                  ? 20
+                  : MediaQuery.of(context).size.width * 0.15,
+              vertical: 20),
           children: [
             FutureBuilder<DetailedHotel>(
               future: getHotel,
@@ -104,7 +108,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResponsiveWidget.isSmallScreen(context)
+                      (ResponsiveWidget.isSemiMediumScreen(context) ||
+                              ResponsiveWidget.isSmallScreen(context))
                           ? Column(
                               children: [
                                 Container(
@@ -157,6 +162,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                         'Rooms',
                         style: TextStyle(
                           fontSize: 25,
+                          fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -186,6 +192,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                         e.name,
                                         style: TextStyle(
                                           fontSize: 18,
+                                          fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -193,11 +200,13 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                         'Price : ${hotel.price.currency} ${e.price}',
                                         style: TextStyle(
                                           fontSize: 16,
+                                          fontFamily: 'Montserrat',
                                         ),
                                       ),
                                       Text(
                                         'Max Occupants : ${e.maxOccupants}',
                                         style: TextStyle(
+                                          fontFamily: 'Montserrat',
                                           fontSize: 16,
                                         ),
                                       ),
@@ -205,6 +214,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                         'Rooms Available : ${e.roomsAvailable}',
                                         style: TextStyle(
                                           fontSize: 16,
+                                          fontFamily: 'Montserrat',
                                         ),
                                       ),
                                     ],
@@ -217,6 +227,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                         'Main Amenities',
                         style: TextStyle(
                           fontSize: 25,
+                          fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -230,6 +241,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                 label: Text(
                                   e,
                                   style: TextStyle(
+                                    fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
@@ -241,6 +253,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       Text(
                         'What is around',
                         style: TextStyle(
+                          fontFamily: 'Montserrat',
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
@@ -256,6 +269,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                   e,
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
+                                    fontFamily: 'Montserrat',
                                   ),
                                 ),
                               ),
@@ -268,6 +282,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           'Reviews',
                           style: TextStyle(
                             fontSize: 25,
+                            fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -294,7 +309,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                               .map(
                                 (e) => Container(
                                   margin: EdgeInsets.all(10),
-                                  padding: EdgeInsets.all(20),
+                                  padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     boxShadow: [
@@ -305,48 +320,78 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                     ],
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  width: 300,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  width: 250,
+                                  child: Stack(
                                     children: [
-                                      Text(
-                                        e.name,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          ListTile(
+                                            title: Text(
+                                              e.title,
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .headline1
+                                                    .color,
+                                                fontSize: 20,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 3,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              '${e.review}',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontFamily: 'Montserrat',
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '~${e.name}',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textAlign: TextAlign.end,
+                                              ),
+                                            ],
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                          ),
+                                        ],
                                       ),
-                                      ListTile(
-                                        title: Text(
-                                          e.title,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          '${e.review}',
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ),
-                                      ListTile(
-                                        title: Text(
-                                          'Rating : ${e.rating}',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        leading: Icon(
-                                          Icons.star,
-                                          color: Theme.of(context).accentColor,
-                                          size: 25,
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              '${e.rating}',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              size: 25,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -394,6 +439,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   'Recommended',
                   style: TextStyle(
                     fontSize: 25,
+                    fontFamily: 'Montserrat',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -430,13 +476,19 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           title: Text(
             hotel.title,
             style: TextStyle(
+              color: Theme.of(context).textTheme.headline1.color,
               fontSize: 25,
+              fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold,
+              letterSpacing: 3,
             ),
           ),
           subtitle: Text(
             hotel.description,
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Montserrat',
+            ),
           ),
           isThreeLine: true,
           leading: Icon(
@@ -445,18 +497,22 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             size: 25,
           ),
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         ListTile(
           title: Text(
             'Address',
             style: TextStyle(
               fontSize: 20,
+              fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
             hotel.address,
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Montserrat',
+            ),
           ),
           leading: Icon(
             Icons.location_on_rounded,
@@ -465,50 +521,50 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           ),
           isThreeLine: true,
         ),
-        Wrap(
-          children: [
-            ListTile(
-              title: Text(
-                'Check In Time',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                hotel.checkIn,
-                style: TextStyle(fontSize: 15),
-              ),
-              leading: Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 25,
-              ),
+        ListTile(
+          title: Text(
+            'Check In Time',
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(
-              width: 30,
+          ),
+          subtitle: Text(
+            hotel.checkIn,
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Montserrat',
             ),
-            ListTile(
-              title: Text(
-                'Check Out Time',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              subtitle: Text(
-                hotel.checkOut,
-                style: TextStyle(fontSize: 15),
-              ),
-              leading: Icon(
-                Icons.cancel,
-                color: Colors.red,
-                size: 25,
-              ),
-            ),
-          ],
+          ),
+          leading: Icon(
+            Icons.check_circle,
+            color: Colors.green,
+            size: 25,
+          ),
         ),
-        SizedBox(height: 15),
+        ListTile(
+          title: Text(
+            'Check Out Time',
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          subtitle: Text(
+            hotel.checkOut,
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Montserrat',
+            ),
+          ),
+          leading: Icon(
+            Icons.cancel,
+            color: Colors.red,
+            size: 25,
+          ),
+        ),
         ListTile(
           title: Text(
             'Price',
@@ -524,6 +580,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       '${hotel.price.currency} ${hotel.price.beforePrice}',
                       style: TextStyle(
                         decoration: TextDecoration.lineThrough,
+                        fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(width: 10),
@@ -541,13 +598,13 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             size: 25,
           ),
         ),
-        SizedBox(height: 15),
         ListTile(
           title: Text(
             'Rating : ${hotel.rating}',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              fontFamily: 'Montserrat',
             ),
           ),
           leading: Icon(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staysia_web/components/NoData.dart';
@@ -80,33 +81,30 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         drawer: ExploreDrawer(),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "\nShowing results for ${widget.queryParams['q'] as String}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 2,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "\nShowing results for ${widget.queryParams['q'] as String}",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 2,
                   ),
-                  Text(
-                    "${widget.queryParams['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParams['checkIn'] as String}\n'}${widget.queryParams['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParams['checkOut'] as String}'}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1,
-                    ),
+                ),
+                Text(
+                  "${widget.queryParams['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParams['checkIn'] as String}\n'}${widget.queryParams['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParams['checkOut'] as String}'}",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 1,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             FutureBuilder(
                 future: getResults,
@@ -122,10 +120,23 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                       return NoData(message: 'No results found');
                     } else {
                       return Expanded(
-                        child: SingleChildScrollView(
-                          child: Wrap(
-                            children: result,
-                          ),
+                        child: GridView(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:  MediaQuery.of(context).size.width * 0.1,
+                              vertical: 20),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      ResponsiveWidget.isSmallScreen(context)
+                                          ? 1
+                                          : ResponsiveWidget
+                                                  .isSemiMediumScreen(context)
+                                              ? 2
+                                              : ResponsiveWidget
+                                                      .isMediumScreen(context)
+                                                  ? 3
+                                                  : 4),
+                          children: result,
                         ),
                       );
                     }

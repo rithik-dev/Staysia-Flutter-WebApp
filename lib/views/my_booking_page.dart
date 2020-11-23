@@ -75,7 +75,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data.length != 0) {
+                if (snapshot.data.length == 0) {
                   return NoData(message: "You don't have any bookings");
                 } else if (snapshot.hasError) {
                   return CustomErrorWidget(
