@@ -7,10 +7,12 @@ class CustomTextFormField extends StatefulWidget {
   final String labelText;
   final Function(String) onChanged;
   final Function trailingFunction;
+  final Function(String) onFieldSubmitted;
   final String defaultValue;
   final bool showTrailingWidget;
   final bool autoFocus;
   final String Function(String) validator;
+  final TextInputAction textInputAction;
   final IconData icon;
   final bool flipIcon;
   final bool overrideLabel;
@@ -18,6 +20,8 @@ class CustomTextFormField extends StatefulWidget {
   CustomTextFormField(
       {@required this.labelText,
       @required this.onChanged,
+        this.onFieldSubmitted,
+        this.textInputAction,
       this.trailingFunction,
       this.showTrailingWidget = true,
       this.defaultValue,
@@ -53,6 +57,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 )
               : Icon(widget.icon),
       title: TextFormField(
+        textInputAction: widget.textInputAction,
+        onFieldSubmitted: widget.onFieldSubmitted??(value){},
         validator: widget.validator,
         initialValue: widget.defaultValue ?? '',
         textAlign: TextAlign.center,
