@@ -145,32 +145,40 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                 Expanded(child: _getHotelDetails())
                               ],
                             ),
-                      FlatButton(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            Text(
-                              'Book Hotel',
-                              style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontSize: 20,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 3,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: ResponsiveWidget.isSmallScreen(context)
+                                ? MediaQuery.of(context).size.width * 0.14
+                                : MediaQuery.of(context).size.width * 0.24),
+                        child: CupertinoButton(
+                          color: Theme.of(context).accentColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: Theme.of(context).primaryColor,
                               ),
-                            )
-                          ],
+                              Text(
+                                '  Book Hotel',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 20,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 3,
+                                ),
+                              )
+                            ],
+                          ),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => BookingDialog(
+                                      hotel: hotel,
+                                    ));
+                          },
                         ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => BookingDialog(
-                                    hotel: hotel,
-                                  ));
-                        },
                       ),
                       Text(
                         'Rooms',
