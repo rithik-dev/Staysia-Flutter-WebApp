@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/main.dart';
+import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/firebase_auth.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 
@@ -37,12 +40,39 @@ class _GoogleButtonState extends State<GoogleButton> {
                   _isProcessing = true;
                 });
                 // ignore: omit_local_variable_types
-                String jwt = await FirebaseAuthService.signInWithGoogle();
-                Get.find<Jwt>().setToken(jwt);
-                // ignore: omit_local_variable_types
-                String result =
-                    await UserController.googleSignupController(idToken: jwt);
-                logger.d(result);
+                try {
+                  // ignore: omit_local_variable_types
+                  Map jwt = await FirebaseAuthService.signInWithGoogle();
+                  logger.d(jwt);
+                  // ignore: omit_local_variable_types
+                  String result = await UserController.googleSignupController(
+                      idToken: jwt['idToken'] as String);
+                  Get.find<Jwt>().setToken(result);
+                  Provider.of<User>(context, listen: false)
+                      .updateUserInProvider(User(
+                    name: jwt['name'] as String,
+                    phone_number: jwt['phone_number'] as String,
+                    email: jwt['email'] as String,
+                  ));
+                  Provider.of<User>(context, listen: false)
+                      .setLoggedInStatus(true);
+                  showSimpleNotification(
+                    Text(
+                      'Logged in!!!',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    background: Colors.green,
+                  );
+                } catch (e) {
+                  logger.e(e);
+                  showSimpleNotification(
+                    Text(
+                      'An error occurred while logging in',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    background: Colors.red,
+                  );
+                }
                 setState(() {
                   _isProcessing = false;
                 });

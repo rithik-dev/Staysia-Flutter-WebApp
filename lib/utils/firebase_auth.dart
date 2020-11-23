@@ -6,12 +6,15 @@ class FirebaseAuthService {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseAuthService({FirebaseAuth firebaseAuth});
 
-  static Future<String> signInWithGoogle() async {
+  static Future<Map> signInWithGoogle() async {
     try {
       final userCredentials =
           await _firebaseAuth.signInWithPopup(GoogleAuthProvider());
       var jwt = await userCredentials.user.getIdToken();
-      return jwt;
+      var displayName = userCredentials.user.displayName;
+      var email = userCredentials.user.email;
+      var phoneNumber = userCredentials.user.phoneNumber;
+      return {'idToken':jwt,'name':displayName,'email':email,'phone_number':phoneNumber};
     } catch (e) {
       logger.e(e);
       return null;
