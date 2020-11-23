@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:staysia_web/models/detailed_hotel.dart';
 
 class NewReviews {
   double rating;
@@ -17,14 +18,14 @@ class NewReviews {
   }
 }
 
-class Review {
+class ReviewBody {
   String id;
   String name;
   double rating;
   String review;
   String title;
 
-  Review({
+  ReviewBody({
     this.id,
     this.name,
     @required this.rating,
@@ -32,7 +33,7 @@ class Review {
     @required this.title,
   });
 
-  Review.fromJson(Map<String, dynamic> json) {
+  ReviewBody.fromJson(Map<String, dynamic> json) {
     id = json['id'] as String;
     name = json['name'] as String;
     review = json['review'] as String;
