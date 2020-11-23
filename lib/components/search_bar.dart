@@ -125,8 +125,8 @@ class _SearchBarState extends State<SearchBar> {
         );
       },
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: DateTime.now().add(Duration(days: 1)),
+      firstDate: DateTime.now().add(Duration(days: 1)),
       lastDate: DateTime(2025),
     );
     if (dateTime == null) {
