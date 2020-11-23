@@ -39,29 +39,36 @@ class _TopBarContentsState extends State<TopBarContents> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            widget.showLeading
-                ? IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  )
-                : SizedBox.shrink(),
-            InkWell(
-              onTap:widget.showLeading? () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, HomePage.id, (route) => false);
-              }:null,
-              child: Text(
-                'STAYSIA',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                  fontSize: 20,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 3,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                widget.showLeading
+                    ? IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+                    : SizedBox.shrink(),
+                InkWell(
+                  onTap: widget.showLeading
+                      ? () {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, HomePage.id, (route) => false);
+                        }
+                      : null,
+                  child: Text(
+                    'STAYSIA',
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                      fontSize: 20,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 3,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             InkWell(
               onHover: (value) {
