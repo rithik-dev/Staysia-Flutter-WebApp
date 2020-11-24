@@ -12,12 +12,9 @@ import 'package:staysia_web/models/user.dart';
 import '../main.dart';
 
 class BookingDialog extends StatefulWidget {
-
   final DetailedHotel hotel;
 
-  BookingDialog(
-      {Key key, this.hotel})
-      : super(key: key);
+  BookingDialog({Key key, this.hotel}) : super(key: key);
 
   @override
   _BookingDialogState createState() => _BookingDialogState();
@@ -47,6 +44,19 @@ class _BookingDialogState extends State<BookingDialog> {
             'check_Out': printDate(checkOutDateTime),
           }
         });
+  }
+
+  List<String> getRoomsBookedOn(Map<String, dynamic> roomsData) {
+    // ignore: omit_local_variable_types
+    List<String> roomsBookedOn = [];
+    roomsData.keys.forEach((roomName) {
+      widget.hotel.rooms.forEach((hotelRoom) {
+        if (roomName == hotelRoom.name) {
+          roomsBookedOn.addAll(hotelRoom.roomsBookedOn);
+        }
+      });
+    });
+    return roomsBookedOn;
   }
 
   DateTime checkOutDateTime;
@@ -210,7 +220,8 @@ class _BookingDialogState extends State<BookingDialog> {
                   size: 25,
                 ),
                 onTap: () async {
-                  checkInDateTime = await showDatePickerDialog(context,roomsBookedOn: []);
+                  checkInDateTime = await showDatePickerDialog(context,
+                      roomsBookedOn: getRoomsBookedOn(roomsData));
                   setState(() {});
                 },
               ),
@@ -232,8 +243,8 @@ class _BookingDialogState extends State<BookingDialog> {
                   size: 25,
                 ),
                 onTap: () async {
-                  
-                  checkOutDateTime = await showDatePickerDialog(context,roomsBookedOn: []);
+                  checkOutDateTime = await showDatePickerDialog(context,
+                      roomsBookedOn: getRoomsBookedOn(roomsData));
                   setState(() {});
                 },
               ),
@@ -312,16 +323,6 @@ class _BookingDialogState extends State<BookingDialog> {
                           hoverColor: Colors.blueGrey[900],
                           highlightColor: Colors.black,
                           disabledColor: Colors.blueGrey[800],
-                          // onPressed: () {
-                          //
-                          //   print(status);
-                          //   print(roomsData);
-                          //   print(roomsData.isEmpty);
-                          //   print(noOfGuests);
-                          //   print(printDate(checkInDateTime));
-                          //   print(printDate(checkOutDateTime));
-                          //   print(bookingName);
-                          // },
                           onPressed: isLoading
                               ? null
                               : () async {
