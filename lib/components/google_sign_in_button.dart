@@ -39,20 +39,20 @@ class _GoogleButtonState extends State<GoogleButton> {
                 setState(() {
                   _isProcessing = true;
                 });
-                // ignore: omit_local_variable_types
                 try {
                   // ignore: omit_local_variable_types
-                  Map jwt = await FirebaseAuthService.signInWithGoogle();
-                  logger.d(jwt);
+                  Map userCredentials =
+                      await FirebaseAuthService.signInWithGoogle();
+                  logger.d(userCredentials);
                   // ignore: omit_local_variable_types
-                  String result = await UserController.googleSignupController(
-                      idToken: jwt['idToken'] as String);
-                  Get.find<Jwt>().setToken(result);
+                  String jwt = await UserController.googleSignupController(
+                      idToken: userCredentials['idToken'] as String);
+                  Get.find<Jwt>().setToken(jwt);
                   Provider.of<User>(context, listen: false)
                       .updateUserInProvider(User(
-                    name: jwt['name'] as String,
-                    phone_number: jwt['phone_number'] as String,
-                    email: jwt['email'] as String,
+                    name: userCredentials['name'] as String,
+                    phone_number: userCredentials['phone_number'] as String,
+                    email: userCredentials['email'] as String,
                   ));
                   Provider.of<User>(context, listen: false)
                       .setLoggedInStatus(true);

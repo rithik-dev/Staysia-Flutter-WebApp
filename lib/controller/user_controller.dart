@@ -67,7 +67,7 @@ class UserController {
         BaseOptions(
           baseUrl: 'https://staysia.herokuapp.com/api/',
           headers: {
-            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            'Authorization': 'Bearer $idToken',
             // 'X-Requested-With': 'XMLHttpRequest',
           },
           contentType: Headers.formUrlEncodedContentType,
@@ -90,8 +90,7 @@ class UserController {
         ]);
       final res = await _dio.put(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        print(res.data);
-        return (res.data['jwt'] as String);
+        return (res.data['idToken'] as String);
       } else {
         return '';
       }

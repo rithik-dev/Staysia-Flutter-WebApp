@@ -14,6 +14,7 @@ class FirebaseAuthService {
       var displayName = userCredentials.user.displayName;
       var email = userCredentials.user.email;
       var phoneNumber = userCredentials.user.phoneNumber;
+      logger.d(phoneNumber);
       return {'idToken':jwt,'name':displayName,'email':email,'phone_number':phoneNumber};
     } catch (e) {
       logger.e(e);
