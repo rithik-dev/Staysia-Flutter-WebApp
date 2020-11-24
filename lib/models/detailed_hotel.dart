@@ -201,12 +201,14 @@ class Room {
   int price;
   int maxOccupants;
   int roomsAvailable;
+  List<String> roomsBookedOn;
 
-  Room({this.name, this.price, this.maxOccupants, this.roomsAvailable});
+  Room({this.name, this.price,this.roomsBookedOn, this.maxOccupants, this.roomsAvailable});
 
   Room.fromJson(Map<String, dynamic> json) {
     name = json['name'] as String;
     price = json['price'] as int;
+    roomsBookedOn = json['roomsBookedOn'] as List<String>;
     maxOccupants = json['maxOccupants'] as int;
     roomsAvailable = json['roomsAvailable'] as int;
   }
@@ -215,6 +217,7 @@ class Room {
     final data = <String, dynamic>{};
     data['name'] = name;
     data['price'] = price;
+    data['roomsBookedOn'] = roomsBookedOn;
     data['maxOccupants'] = maxOccupants;
     data['roomsAvailable'] = roomsAvailable;
     return data;

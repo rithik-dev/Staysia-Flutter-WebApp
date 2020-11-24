@@ -12,13 +12,11 @@ import 'package:staysia_web/models/user.dart';
 import '../main.dart';
 
 class BookingDialog extends StatefulWidget {
-  final String status;
-  final BookingDetails bookingDetails;
-  final String bookingId;
+
   final DetailedHotel hotel;
 
   BookingDialog(
-      {Key key, this.hotel, this.bookingId, this.bookingDetails, this.status})
+      {Key key, this.hotel})
       : super(key: key);
 
   @override
@@ -31,7 +29,7 @@ class _BookingDialogState extends State<BookingDialog> {
 
   // ignore: omit_local_variable_types
   String bookingName;
-  String status = 'BOOKED';
+  String status = 'reserved';
   bool statusBool = false;
   Map<String, dynamic> roomsData = {};
 
@@ -49,12 +47,6 @@ class _BookingDialogState extends State<BookingDialog> {
             'check_Out': printDate(checkOutDateTime),
           }
         });
-  }
-
-  Future<Booking> editBooking() async {
-    // ignore: omit_local_variable_types
-    return await BookingController.editBookingController(
-        booking: widget.bookingDetails, bookingId: widget.bookingId);
   }
 
   DateTime checkOutDateTime;
@@ -129,7 +121,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   ),
                   child: Column(
                       children: widget.hotel.rooms
-                          .map((e) => Padding(
+                          .map((room) => Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(
                                   mainAxisAlignment:
@@ -137,7 +129,7 @@ class _BookingDialogState extends State<BookingDialog> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        e.name,
+                                        room.name,
                                         style: TextStyle(fontSize: 17),
                                       ),
                                     ),
@@ -145,17 +137,16 @@ class _BookingDialogState extends State<BookingDialog> {
                                     AddButton(
                                       width: 100,
                                       height: 30,
-                                      maxValue: e.roomsAvailable,
+                                      maxValue: room.roomsAvailable,
                                       onChanged: (int v) {
                                         if (v == 0) {
-                                          roomsData.remove(e.name);
+                                          roomsData.remove(room.name);
                                         } else {
-                                          roomsData[e.name] = v;
+                                          roomsData[room.name] = v;
                                         }
                                         if (noOfGuests > getRoomsMaxValue()) {
                                           noOfGuests = getRoomsMaxValue();
                                         }
-                                        print(roomsData);
                                         setState(() {});
                                       },
                                     ),
@@ -219,7 +210,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   size: 25,
                 ),
                 onTap: () async {
-                  checkInDateTime = await showDatePickerDialog(context);
+                  checkInDateTime = await showDatePickerDialog(context,roomsBookedOn: []);
                   setState(() {});
                 },
               ),
@@ -241,7 +232,8 @@ class _BookingDialogState extends State<BookingDialog> {
                   size: 25,
                 ),
                 onTap: () async {
-                  checkOutDateTime = await showDatePickerDialog(context);
+                  
+                  checkOutDateTime = await showDatePickerDialog(context,roomsBookedOn: []);
                   setState(() {});
                 },
               ),
@@ -278,7 +270,6 @@ class _BookingDialogState extends State<BookingDialog> {
                   textInputAction: TextInputAction.done,
                   obscureText: false,
                   autofocus: false,
-                  initialValue: widget.bookingDetails?.bookingName ?? '',
                   onChanged: (value) {
                     setState(() {
                       bookingName = value;
@@ -458,26 +449,39 @@ class _BookingDialogState extends State<BookingDialog> {
     }
   }
 
+  DateTime getInitialDate(List<String> roomsBookedOn) {
+    // ignore: omit_local_variable_types
+    DateTime day = DateTime.now().add(Duration(days: 1));
+    while (roomsBookedOn.contains(day)) {
+      day.add(Duration(days: 1));
+    }
+    return day;
+  }
+
   Future<DateTime> showDatePickerDialog(
     BuildContext context, {
     bool isCheckoutDate = false,
+    List<String> roomsBookedOn,
   }) async {
     var dateTime = await showDatePicker(
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: Theme.of(context).accentColor,
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.light().copyWith(
+                primary: Theme.of(context).accentColor,
+              ),
             ),
-          ),
-          child: child,
-        );
-      },
-      context: context,
-      initialDate: DateTime.now().add(Duration(days: 1)),
-      firstDate: DateTime.now().add(Duration(days: 1)),
-      lastDate: DateTime(2025),
-    );
+            child: child,
+          );
+        },
+        context: context,
+        initialDate: getInitialDate(roomsBookedOn),
+        firstDate: DateTime.now().add(Duration(days: 1)),
+        lastDate: DateTime(2025),
+        selectableDayPredicate: (DateTime date) {
+          return !roomsBookedOn
+              .contains('${date.day}/${date.month}/${date.year}');
+        });
     if (dateTime == null) {
       return isCheckoutDate ? checkOutDateTime : checkInDateTime;
     } else if (isCheckoutDate && checkInDateTime == null) {

@@ -52,7 +52,9 @@ class _BookingCardState extends State<BookingCard> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.green,
+                      color: widget.booking.status.toUpperCase() == 'BOOKED'
+                          ? Colors.green
+                          : Colors.orangeAccent,
                     ),
                   ),
                   Text(
