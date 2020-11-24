@@ -71,6 +71,7 @@ class DetailedHotel {
           name: _room as String,
           maxOccupants: json['rooms'][_room]['maxOccupants'] as int,
           price: json['rooms'][_room]['price'] as int,
+          roomsBookedOn: (json['rooms'][_room]['roomsBookedOn'] as List).cast<String>(),
           roomsAvailable: json['rooms'][_room]['roomsAvailable'] as int,
         ),
       );
@@ -203,7 +204,12 @@ class Room {
   int roomsAvailable;
   List<String> roomsBookedOn;
 
-  Room({this.name, this.price,this.roomsBookedOn, this.maxOccupants, this.roomsAvailable});
+  Room(
+      {this.name,
+      this.price,
+      this.roomsBookedOn,
+      this.maxOccupants,
+      this.roomsAvailable});
 
   Room.fromJson(Map<String, dynamic> json) {
     name = json['name'] as String;

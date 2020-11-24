@@ -251,9 +251,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                               bottom: 8.0,
                             ),
                             child: _isProcessing
-                                ? SpinKitCircle(
-                                    color: Theme.of(context).accentColor,
-                                  )
+                                ? CircularProgressIndicator()
                                 : Text(
                                     'Sign out',
                                     style: TextStyle(

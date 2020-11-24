@@ -52,10 +52,13 @@ class _BookingDialogState extends State<BookingDialog> {
     roomsData.keys.forEach((roomName) {
       widget.hotel.rooms.forEach((hotelRoom) {
         if (roomName == hotelRoom.name) {
-          roomsBookedOn.addAll(hotelRoom.roomsBookedOn);
+          hotelRoom.roomsBookedOn.forEach((element) {
+            roomsBookedOn.add(element);
+          });
         }
       });
     });
+
     return roomsBookedOn;
   }
 
@@ -219,11 +222,15 @@ class _BookingDialogState extends State<BookingDialog> {
                   color: Colors.green,
                   size: 25,
                 ),
-                onTap: () async {
-                  checkInDateTime = await showDatePickerDialog(context,
-                      roomsBookedOn: getRoomsBookedOn(roomsData));
-                  setState(() {});
-                },
+                onTap: roomsData.isEmpty
+                    ? () {
+                        toast('Please select a room');
+                      }
+                    : () async {
+                        checkInDateTime = await showDatePickerDialog(context,
+                            roomsBookedOn: getRoomsBookedOn(roomsData));
+                        setState(() {});
+                      },
               ),
               ListTile(
                 title: Text(
@@ -242,11 +249,15 @@ class _BookingDialogState extends State<BookingDialog> {
                   color: Colors.red,
                   size: 25,
                 ),
-                onTap: () async {
-                  checkOutDateTime = await showDatePickerDialog(context,
-                      roomsBookedOn: getRoomsBookedOn(roomsData));
-                  setState(() {});
-                },
+                onTap: roomsData.isEmpty
+                    ? () {
+                        toast('Please select a room');
+                      }
+                    : () async {
+                        checkOutDateTime = await showDatePickerDialog(context,
+                            roomsBookedOn: getRoomsBookedOn(roomsData));
+                        setState(() {});
+                      },
               ),
               SizedBox(height: 20),
               Padding(
@@ -453,8 +464,8 @@ class _BookingDialogState extends State<BookingDialog> {
   DateTime getInitialDate(List<String> roomsBookedOn) {
     // ignore: omit_local_variable_types
     DateTime day = DateTime.now().add(Duration(days: 1));
-    while (roomsBookedOn.contains(day)) {
-      day.add(Duration(days: 1));
+    while (roomsBookedOn.contains(printDate(day))) {
+      day = day.add(Duration(days: 1));
     }
     return day;
   }
