@@ -37,7 +37,6 @@ class _MyBookingPageState extends State<MyBookingPage> {
     setState(() {
       bookings = newBookings;
     });
-    print(bookings);
   }
 
   void deleteBooking(String bookingId) {
@@ -52,7 +51,6 @@ class _MyBookingPageState extends State<MyBookingPage> {
     setState(() {
       bookings = newBookings;
     });
-    print(bookings);
   }
 
   @override
