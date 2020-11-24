@@ -221,6 +221,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                                         await SharedPreferences.getInstance();
                                     await pref.remove('jwt');
                                     Get.find<Jwt>().setToken('');
+                                    await Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (route) => false);
                                     showSimpleNotification(
                                       Text(
                                         'Successfully Logged out!',

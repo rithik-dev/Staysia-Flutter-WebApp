@@ -45,9 +45,11 @@ class _GoogleButtonState extends State<GoogleButton> {
                       await FirebaseAuthService.signInWithGoogle();
                   logger.d(userCredentials);
                   // ignore: omit_local_variable_types
-                  String jwt = await UserController.googleSignupController(
+                  bool gotJwt = await UserController.googleSignupController(
                       idToken: userCredentials['idToken'] as String);
-                  Get.find<Jwt>().setToken(jwt);
+                  if(gotJwt){
+                  Get.find<Jwt>()
+                      .setToken(userCredentials['idToken'] as String);
                   Provider.of<User>(context, listen: false)
                       .updateUserInProvider(User(
                     name: userCredentials['name'] as String,
@@ -62,7 +64,16 @@ class _GoogleButtonState extends State<GoogleButton> {
                       style: TextStyle(color: Colors.white),
                     ),
                     background: Colors.green,
-                  );
+                  );}
+                  else{
+                    showSimpleNotification(
+                      Text(
+                        'An error occurred while logging in',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      background: Colors.red,
+                    );
+                  }
                 } catch (e) {
                   logger.e(e);
                   showSimpleNotification(
@@ -76,6 +87,7 @@ class _GoogleButtonState extends State<GoogleButton> {
                 setState(() {
                   _isProcessing = false;
                 });
+                Navigator.pop(context);
               },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

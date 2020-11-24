@@ -91,7 +91,7 @@ class BookingController {
   }
 
   static Future<Booking> editBookingController(
-      {@required String bookingId,@required BookingDetails booking}) async {
+      {@required String bookingId}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -120,7 +120,7 @@ class BookingController {
           ),
         ]);
       final res =
-          await _dio.patch(editBookingById + bookingId, data: booking.toMap());
+          await _dio.patch(editBookingById + bookingId);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return Booking.fromJson(res.data);
       } else {

@@ -8,6 +8,7 @@ import 'package:staysia_web/components/edit_profile.dart';
 import 'package:staysia_web/controller/user_controller.dart';
 import 'package:staysia_web/models/user.dart';
 import 'package:staysia_web/utils/Jwt.dart';
+import 'package:staysia_web/views/home_page.dart';
 import 'package:staysia_web/views/my_booking_page.dart';
 
 import 'auth_dialog.dart';
@@ -276,6 +277,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                                           await SharedPreferences.getInstance();
                                       await pref.remove('jwt');
                                       Get.find<Jwt>().setToken('');
+                                      await Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (route) => false);
                                       showSimpleNotification(
                                         Text(
                                           'Successfully Logged out!',

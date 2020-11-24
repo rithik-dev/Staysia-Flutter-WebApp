@@ -24,6 +24,22 @@ class _MyBookingPageState extends State<MyBookingPage> {
 
   List<Booking> bookings;
 
+  void editBooking(String bookingId) {
+    var newBookings = <Booking>[];
+    for (var booking in bookings) {
+      if (booking.bookingId == bookingId) {
+        booking.status = 'booked';
+        newBookings.add(booking);
+      } else {
+        newBookings.add(booking);
+      }
+    }
+    setState(() {
+      bookings = newBookings;
+    });
+    print(bookings);
+  }
+
   void deleteBooking(String bookingId) {
     var newBookings = <Booking>[];
     for (var booking in bookings) {
@@ -99,9 +115,13 @@ class _MyBookingPageState extends State<MyBookingPage> {
                     } else {
                       return SingleChildScrollView(
                         child: Wrap(
+                          alignment: WrapAlignment.center,
                           children: bookings
                               .map((e) => BookingCard(
-                                  booking: e, deleteCallback: deleteBooking))
+                                    booking: e,
+                                    deleteCallback: deleteBooking,
+                                    editCallback: editBooking,
+                                  ))
                               .toList(),
                         ),
                       );

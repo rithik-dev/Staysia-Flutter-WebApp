@@ -59,7 +59,7 @@ class UserController {
     }
   }
 
-  static Future<String> googleSignupController(
+  static Future<bool> googleSignupController(
       {@required String idToken}) async {
     try {
       // ignore: omit_local_variable_types
@@ -90,13 +90,13 @@ class UserController {
         ]);
       final res = await _dio.put(googleSignup);
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        return (res.data['idToken'] as String);
+        return true;
       } else {
-        return '';
+        return false;
       }
     } catch (e) {
       logger.e(e);
-      return '';
+      return false;
     }
   }
 
