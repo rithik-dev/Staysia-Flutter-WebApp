@@ -25,7 +25,7 @@ class RouteGenerator {
             type: PageTransitionType.leftToRightWithFade);
       case SearchResultsPage.id:
         return PageTransition(
-            child: SearchResultsPage(queryParams: args as Map<String, dynamic>),
+            child: SearchResultsPage(queryParamsAndType: args as Map<String, dynamic>),
             type: PageTransitionType.leftToRightWithFade);
       case MyBookingPage.id:
         return PageTransition(

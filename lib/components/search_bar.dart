@@ -77,31 +77,57 @@ class _SearchBarState extends State<SearchBar> {
               ],
             ),
           ),
-          InkWell(
-            onTap: () async {
-              if (searchText == null || searchText.trim().isEmpty) {
-                toast('Please enter some text');
-              } else {
-                await Navigator.pushNamed(context, SearchResultsPage.id,
-                    arguments: {
-                      'q': searchText,
-                      'checkIn': checkInDateTime == null
-                          ? null
-                          : printDate(checkInDateTime),
-                      'checkOut': checkOutDateTime == null
-                          ? null
-                          : printDate(checkOutDateTime),
-                    });
-              }
-            },
-            child: CircleAvatar(
-              backgroundColor: Theme.of(context).accentColor,
-              radius: 30,
-              child: Icon(
-                Icons.search,
-                size: 30,
-                color: Colors.white,
-              ),
+          CircleAvatar(
+            backgroundColor: Theme.of(context).accentColor,
+            child: IconButton(
+              tooltip: 'Search',
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                if (searchText == null || searchText.trim().isEmpty) {
+                  toast('Please enter some text');
+                } else {
+                  await Navigator.pushNamed(context, SearchResultsPage.id,
+                      arguments: {
+                        'q': searchText,
+                        'checkIn': checkInDateTime == null
+                            ? null
+                            : printDate(checkInDateTime),
+                        'checkOut': checkOutDateTime == null
+                            ? null
+                            : printDate(checkOutDateTime),
+                        'useAdvanceSearch': false
+                      });
+                }
+              },
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          CircleAvatar(
+            backgroundColor: Theme.of(context).hintColor,
+            child: IconButton(
+              tooltip: 'Advance search through tag',
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                if (searchText == null || searchText.trim().isEmpty) {
+                  toast('Please enter some text');
+                } else {
+                  await Navigator.pushNamed(context, SearchResultsPage.id,
+                      arguments: {
+                        'q': searchText,
+                        'checkIn': checkInDateTime == null
+                            ? null
+                            : printDate(checkInDateTime),
+                        'checkOut': checkOutDateTime == null
+                            ? null
+                            : printDate(checkOutDateTime),
+                        'useAdvanceSearch': true
+                      });
+                }
+              },
+              color: Colors.white,
             ),
           ),
         ],

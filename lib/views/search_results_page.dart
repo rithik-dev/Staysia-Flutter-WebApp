@@ -17,9 +17,9 @@ import 'home_page.dart';
 class SearchResultsPage extends StatefulWidget {
   static const id = '/searchResults';
 
-  final Map<String, dynamic> queryParams;
+  final Map<String, dynamic> queryParamsAndType;
 
-  const SearchResultsPage({@required this.queryParams});
+  const SearchResultsPage({@required this.queryParamsAndType});
 
   @override
   _SearchResultsPageState createState() => _SearchResultsPageState();
@@ -30,11 +30,15 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
 
   @override
   void initState() {
-    getResults = NavigationController.searchHotelWithNameController(
-      q: widget.queryParams['q'] as String,
-      checkIn: widget.queryParams['checkIn'] as String,
-      checkOut: widget.queryParams['checkOut'] as String,
-    );
+    getResults = (widget.queryParamsAndType['useAdvanceSearch'] as bool)
+        ? NavigationController.getHotelsWithTagController(
+            tag: widget.queryParamsAndType['q'] as String,
+          )
+        : NavigationController.searchHotelWithNameController(
+            q: widget.queryParamsAndType['q'] as String,
+            checkIn: widget.queryParamsAndType['checkIn'] as String,
+            checkOut: widget.queryParamsAndType['checkOut'] as String,
+          );
     super.initState();
   }
 
@@ -90,7 +94,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "\nShowing results for ${widget.queryParams['q'] as String}",
+                    "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
@@ -100,7 +104,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                     ),
                   ),
                   Text(
-                    "${widget.queryParams['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParams['checkIn'] as String}\n'}${widget.queryParams['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParams['checkOut'] as String}'}",
+                    "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}'}",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
