@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:staysia_web/components/custom_text_form_field.dart';
+import 'package:staysia_web/controller/navigation_controller.dart';
+import 'package:staysia_web/models/hotel_overview.dart';
+import 'package:staysia_web/views/hotel_details_page.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 
 class SearchBar extends StatefulWidget {
@@ -12,126 +15,179 @@ class _SearchBarState extends State<SearchBar> {
   DateTime checkInDateTime;
   DateTime checkOutDateTime;
   String searchText;
+  List<HotelOverview> fuzzySearchResults = [];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      margin: EdgeInsets.all(20),
-      height: 75,
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(50),
-        boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CustomTextFormField(
-                    textInputAction: TextInputAction.search,
-                    onFieldSubmitted: (value) async {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+          height: 75,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(50),
+            boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: CustomTextFormField(
+                        textInputAction: TextInputAction.search,
+                        onFieldSubmitted: (value) async {
+                          await Navigator.pushNamed(
+                              context, SearchResultsPage.id,
+                              arguments: {
+                                'q': value,
+                                'checkIn': checkInDateTime == null
+                                    ? null
+                                    : printDate(checkInDateTime),
+                                'checkOut': checkOutDateTime == null
+                                    ? null
+                                    : printDate(checkOutDateTime),
+                              });
+                        },
+                        labelText: 'Search',
+                        overrideLabel: true,
+                        onChanged: (s) async {
+                          searchText = s;
+                          if (s != '') {
+                            fuzzySearchResults = (await NavigationController
+                                    .fuzzySearchController(
+                                  q: s,
+                                )) ??
+                                [];
+                          } else {
+                            fuzzySearchResults = [];
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: ListTile(
+                        title: Text('Check In'),
+                        subtitle: Text(printDate(checkInDateTime)),
+                        onTap: () async {
+                          checkInDateTime = await showDatePickerDialog(context);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: ListTile(
+                        title: Text('Check Out'),
+                        subtitle: Text(printDate(checkOutDateTime)),
+                        onTap: () async {
+                          checkOutDateTime = await showDatePickerDialog(
+                            context,
+                            isCheckoutDate: true,
+                          );
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              CircleAvatar(
+                backgroundColor: Theme.of(context).accentColor,
+                child: IconButton(
+                  tooltip: 'Search',
+                  icon: Icon(Icons.search),
+                  onPressed: () async {
+                    if (searchText == null || searchText.trim().isEmpty) {
+                      toast('Please enter some text');
+                    } else {
                       await Navigator.pushNamed(context, SearchResultsPage.id,
                           arguments: {
-                            'q': value,
+                            'q': searchText,
                             'checkIn': checkInDateTime == null
                                 ? null
                                 : printDate(checkInDateTime),
                             'checkOut': checkOutDateTime == null
                                 ? null
                                 : printDate(checkOutDateTime),
+                            'useAdvanceSearch': false
                           });
-                    },
-                    labelText: 'Search',
-                    overrideLabel: true,
-                    onChanged: (s) => searchText = s,
-                  ),
+                    }
+                  },
+                  color: Colors.white,
                 ),
-                Expanded(
-                  child: ListTile(
-                    title: Text('Check In'),
-                    subtitle: Text(printDate(checkInDateTime)),
-                    onTap: () async {
-                      checkInDateTime = await showDatePickerDialog(context);
-                      setState(() {});
-                    },
-                  ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              CircleAvatar(
+                backgroundColor: Theme.of(context).hintColor,
+                child: IconButton(
+                  tooltip: 'Advance search through tag',
+                  icon: Icon(Icons.search),
+                  onPressed: () async {
+                    if (searchText == null || searchText.trim().isEmpty) {
+                      toast('Please enter some text');
+                    } else {
+                      await Navigator.pushNamed(context, SearchResultsPage.id,
+                          arguments: {
+                            'q': searchText,
+                            'checkIn': checkInDateTime == null
+                                ? null
+                                : printDate(checkInDateTime),
+                            'checkOut': checkOutDateTime == null
+                                ? null
+                                : printDate(checkOutDateTime),
+                            'useAdvanceSearch': true
+                          });
+                    }
+                  },
+                  color: Colors.white,
                 ),
-                Expanded(
-                  child: ListTile(
-                    title: Text('Check Out'),
-                    subtitle: Text(printDate(checkOutDateTime)),
-                    onTap: () async {
-                      checkOutDateTime = await showDatePickerDialog(
-                        context,
-                        isCheckoutDate: true,
-                      );
-                      setState(() {});
-                    },
-                  ),
+              ),
+            ],
+          ),
+        ),
+        if (fuzzySearchResults.isEmpty) SizedBox.shrink() else Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ],
-            ),
-          ),
-          CircleAvatar(
-            backgroundColor: Theme.of(context).accentColor,
-            child: IconButton(
-              tooltip: 'Search',
-              icon: Icon(Icons.search),
-              onPressed: () async {
-                if (searchText == null || searchText.trim().isEmpty) {
-                  toast('Please enter some text');
-                } else {
-                  await Navigator.pushNamed(context, SearchResultsPage.id,
-                      arguments: {
-                        'q': searchText,
-                        'checkIn': checkInDateTime == null
-                            ? null
-                            : printDate(checkInDateTime),
-                        'checkOut': checkOutDateTime == null
-                            ? null
-                            : printDate(checkOutDateTime),
-                        'useAdvanceSearch': false
-                      });
-                }
-              },
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          CircleAvatar(
-            backgroundColor: Theme.of(context).hintColor,
-            child: IconButton(
-              tooltip: 'Advance search through tag',
-              icon: Icon(Icons.search),
-              onPressed: () async {
-                if (searchText == null || searchText.trim().isEmpty) {
-                  toast('Please enter some text');
-                } else {
-                  await Navigator.pushNamed(context, SearchResultsPage.id,
-                      arguments: {
-                        'q': searchText,
-                        'checkIn': checkInDateTime == null
-                            ? null
-                            : printDate(checkInDateTime),
-                        'checkOut': checkOutDateTime == null
-                            ? null
-                            : printDate(checkOutDateTime),
-                        'useAdvanceSearch': true
-                      });
-                }
-              },
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(3),
+                child: Wrap(
+                  spacing: 13,
+                  direction: Axis.vertical,
+                  children: fuzzySearchResults
+                      .map((e) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              HotelDetailsPage.id,
+                              arguments: e.id,
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text(e.starRating.toString()),
+                              Icon(
+                                Icons.star,
+                                color: Colors.yellow[700],
+                              ),
+                              SizedBox(width: 10),
+                              Text(e.title),
+                              SizedBox(width: 10),
+                            ],
+                          )))
+                      .toList(),
+                ),
+              ),
+      ],
     );
   }
 

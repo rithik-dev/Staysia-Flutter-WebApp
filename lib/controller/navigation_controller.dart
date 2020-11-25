@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staysia_web/models/detailed_hotel.dart';
 import 'package:staysia_web/models/get_cities.dart';
 import 'package:staysia_web/models/hotel.dart';
+import 'package:staysia_web/models/hotel_overview.dart';
 import 'package:staysia_web/utils/Jwt.dart';
 import 'package:staysia_web/utils/routes.dart';
 
@@ -25,22 +26,21 @@ class NavigationController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(getCities);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return GetCities.fromJson(res.data as Map<String, dynamic>);
@@ -67,22 +67,21 @@ class NavigationController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(getHotelsWithTags + tag, queryParameters: {
         if (cityName != null) 'city': cityName,
       });
@@ -118,22 +117,21 @@ class NavigationController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(searchHotelsWithName, queryParameters: {
         'q': q,
         if (city != null) 'city': city,
@@ -154,11 +152,8 @@ class NavigationController {
     }
   }
 
-  // static Future fuzzySearchController() async {}
-  //
-  // static Future fuzzyTagSearchController() async {}
-
-  static Future<DetailedHotel> getHotelByIdController({@required String hotelId}) async {
+  static Future<List<HotelOverview>> fuzzySearchController(
+      {@required String q}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -171,22 +166,68 @@ class NavigationController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
+      final res = await _dio.get(fuzzySearch, queryParameters: {'q': q});
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return (res.data as List<dynamic>)
+            .map((e) => HotelOverview.fromJson(e as Map<String, dynamic>))
+            .toList()
+            .cast<HotelOverview>();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  //
+  // static Future fuzzyTagSearchController() async {}
+
+  static Future<DetailedHotel> getHotelByIdController(
+      {@required String hotelId}) async {
+    try {
+      // ignore: omit_local_variable_types
+      Dio _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://staysia.herokuapp.com/api/',
+          headers: {
+            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+            // 'X-Requested-With': 'XMLHttpRequest',
           },
+          contentType: Headers.formUrlEncodedContentType,
         ),
-      ]);
+      )..interceptors.addAll([
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(getHotelById + hotelId);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return DetailedHotel.fromJson(res.data as Map<String, dynamic>);
@@ -213,22 +254,21 @@ class NavigationController {
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
-        PrettyDioLogger(requestBody: true, requestHeader: true),
-        InterceptorsWrapper(
-          onError: (DioError error) async {
-            if (error.response == null) {
-              // ignore: avoid_print
-              print(error);
-            } else if (error.response.statusCode == 401) {
-              Get.find<Jwt>()
-                  .setToken(null);
-              final preferences = await SharedPreferences.getInstance();
-              await preferences.remove('jwt');
-              //TODO: push to login page
-            }
-          },
-        ),
-      ]);
+          PrettyDioLogger(requestBody: true, requestHeader: true),
+          InterceptorsWrapper(
+            onError: (DioError error) async {
+              if (error.response == null) {
+                // ignore: avoid_print
+                print(error);
+              } else if (error.response.statusCode == 401) {
+                Get.find<Jwt>().setToken(null);
+                final preferences = await SharedPreferences.getInstance();
+                await preferences.remove('jwt');
+                //TODO: push to login page
+              }
+            },
+          ),
+        ]);
       final res = await _dio.get(
         getHotelRecommendationById.replaceAll('{hotelId}', hotelId),
       );
