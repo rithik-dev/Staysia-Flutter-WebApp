@@ -7,7 +7,7 @@ const getProfile = '/profile';
 const patchProfile = '/profile';
 
 // Navigation routes
-const getCities = '/';
+const getHome = '/';
 const getHotelsWithTags = '/tags/'; //needs {tag}
 const searchHotelsWithName = '/search';
 // const fuzzySearch = '/searchbar'; //Fuzzy search for search bar
