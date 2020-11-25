@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/models/get_cities.dart';
+import 'package:staysia_web/views/search_results_page.dart';
 
 class CityCarousel extends StatefulWidget {
   final List<Cities> cities;
@@ -37,12 +38,21 @@ class _CityCarouselState extends State<CityCarousel> {
   List<Widget> generateImageTiles(screenSize) {
     return images
         .map(
-          (element) => ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: FadeInImage(
-              placeholder: AssetImage('images/shimmer.gif'),
-              image: NetworkImage(element),
-              fit: BoxFit.cover,
+          (element) => GestureDetector(
+            onTap: () async {
+              await Navigator.pushNamed(context, SearchResultsPage.id,
+                  arguments: {
+                    'q': places[images.indexOf(element)],
+                    'useAdvanceSearch': true
+                  });
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: FadeInImage(
+                placeholder: AssetImage('images/shimmer.gif'),
+                image: NetworkImage(element),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         )
