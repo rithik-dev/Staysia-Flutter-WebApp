@@ -78,7 +78,7 @@ class HotelCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Rs ${hotel.price.currentPrice}',
+                          '${hotel.price.currency} ${hotel.price.currentPrice}',
                           style: TextStyle(
                             fontSize: 15,
                             fontFamily: 'Montserrat',
