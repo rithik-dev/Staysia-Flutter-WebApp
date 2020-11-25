@@ -150,28 +150,34 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                             horizontal: ResponsiveWidget.isSmallScreen(context)
                                 ? MediaQuery.of(context).size.width * 0.14
                                 : MediaQuery.of(context).size.width * 0.24),
-                        child: CupertinoButton(
-                          color: Theme.of(context).accentColor,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_circle_outline,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              Text(
-                                '  Book Hotel',
-                                style: TextStyle(
+                        child: GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_circle_outline,
                                   color: Theme.of(context).primaryColor,
-                                  fontSize: 20,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 3,
                                 ),
-                              )
-                            ],
+                                Text(
+                                  '  Book Hotel',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 20,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 3,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          onPressed: () {
+                          onTap: () {
                             showDialog(
                                 context: context,
                                 builder: (context) => BookingDialog(
