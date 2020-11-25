@@ -1,13 +1,22 @@
-class GetCities {
-  List<Cities> cities;
+class GetHome {
+  List<Data> cities;
+  List<Data> tags;
+  List<Data> stars;
+  GetHome({this.cities,this.stars,this.tags});
 
-  GetCities({this.cities});
-
-  GetCities.fromJson(Map<String, dynamic> json) {
+  GetHome.fromJson(Map<String, dynamic> json) {
     if (json['cities'] != null) {
-      cities = <Cities>[];
+      cities = <Data>[];
+      tags = <Data>[];
+      stars = <Data>[];
       json['cities'].forEach((v) {
-        cities.add(Cities.fromJson(v as Map<String, dynamic>));
+        cities.add(Data.fromJson(v as Map<String, dynamic>));
+      });
+      json['stars'].forEach((v) {
+        stars.add(Data.fromJson(v as Map<String, dynamic>));
+      });
+      json['tags'].forEach((v) {
+        tags.add(Data.fromJson(v as Map<String, dynamic>));
       });
     }
   }
@@ -17,18 +26,24 @@ class GetCities {
     if (cities != null) {
       data['cities'] = cities.map((v) => v.toJson()).toList();
     }
+    if (stars != null) {
+      data['stars'] = stars.map((v) => v.toJson()).toList();
+    }
+    if (tags != null) {
+      data['tags'] = tags.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
-class Cities {
+class Data {
   String displayName;
   String tag;
   String thumbnail;
 
-  Cities({this.displayName, this.tag, this.thumbnail});
+  Data({this.displayName, this.tag, this.thumbnail});
 
-  Cities.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     displayName = json['displayName'] as String;
     tag = json['tag'] as String;
     thumbnail = json['thumbnail'] as String;

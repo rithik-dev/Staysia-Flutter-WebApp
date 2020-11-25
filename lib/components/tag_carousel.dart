@@ -4,24 +4,24 @@ import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/models/get_cities.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 
-class CityCarousel extends StatefulWidget {
-  final List<Data> cities;
+class TagCarousel extends StatefulWidget {
+  final List<Data> tags;
 
-  CityCarousel({@required this.cities});
+  TagCarousel({@required this.tags});
 
   @override
-  _CityCarouselState createState() => _CityCarouselState();
+  _TagCarouselState createState() => _TagCarouselState();
 }
 
-class _CityCarouselState extends State<CityCarousel> {
+class _TagCarouselState extends State<TagCarousel> {
   final CarouselController _controller = CarouselController();
 
   void setData() {
-    widget.cities.forEach((element) {
+    widget.tags.forEach((element) {
       _isHovering.add(false);
       _isSelected.add(false);
       images.add(element.thumbnail);
-      places.add(element.displayName);
+      displayName.add(element.displayName);
     });
   }
 
@@ -33,29 +33,29 @@ class _CityCarouselState extends State<CityCarousel> {
   int _current = 0;
 
   final List<String> images = [];
-  final List<String> places = [];
+  final List<String> displayName = [];
 
   List<Widget> generateImageTiles(screenSize) {
     return images
         .map(
           (element) => GestureDetector(
-            onTap: () async {
-              await Navigator.pushNamed(context, SearchResultsPage.id,
-                  arguments: {
-                    'q': places[images.indexOf(element)],
-                    'useAdvanceSearch': true
-                  });
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage(
-                placeholder: AssetImage('images/shimmer.gif'),
-                image: NetworkImage(element),
-                fit: BoxFit.cover,
-              ),
-            ),
+        onTap: () async {
+          await Navigator.pushNamed(context, SearchResultsPage.id,
+              arguments: {
+                'q': displayName[images.indexOf(element)],
+                'useAdvanceSearch': true
+              });
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: FadeInImage(
+            placeholder: AssetImage('images/shimmer.gif'),
+            image: NetworkImage(element),
+            fit: BoxFit.cover,
           ),
-        )
+        ),
+      ),
+    )
         .toList();
   }
 
@@ -75,11 +75,9 @@ class _CityCarouselState extends State<CityCarousel> {
         CarouselSlider(
           items: imageSliders,
           options: CarouselOptions(
-              scrollPhysics: ResponsiveWidget.isSmallScreen(context)
-                  ? PageScrollPhysics()
-                  : NeverScrollableScrollPhysics(),
+              scrollPhysics: NeverScrollableScrollPhysics(),
               enlargeCenterPage: true,
-              aspectRatio: 18 / 8,
+              aspectRatio: 4 / 2,
               autoPlay: true,
               onPageChanged: (index, reason) {
                 setState(() {
@@ -96,10 +94,10 @@ class _CityCarouselState extends State<CityCarousel> {
           carouselController: _controller,
         ),
         AspectRatio(
-          aspectRatio: 18 / 8,
+          aspectRatio: 4 / 2,
           child: Center(
             child: Text(
-              places[_current],
+              displayName[_current],
               style: TextStyle(
                 letterSpacing: 8,
                 fontFamily: 'Electrolize',
@@ -113,7 +111,7 @@ class _CityCarouselState extends State<CityCarousel> {
           Container()
         else
           AspectRatio(
-            aspectRatio: 17 / 8,
+            aspectRatio: 4 / 2,
             child: Center(
               heightFactor: 1,
               child: Align(
@@ -126,13 +124,13 @@ class _CityCarouselState extends State<CityCarousel> {
                     elevation: 5,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        top: screenSize.height / 50,
-                        bottom: screenSize.height / 50,
+                        top: screenSize.height / 100,
+                        bottom: screenSize.height / 100,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          for (int i = 0; i < places.length; i++)
+                          for (int i = 0; i < displayName.length; i++)
                             Expanded(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -155,17 +153,17 @@ class _CityCarouselState extends State<CityCarousel> {
                                           top: screenSize.height / 80,
                                           bottom: screenSize.height / 90),
                                       child: Text(
-                                        places[i],
+                                        displayName[i],
                                         style: TextStyle(
                                           color: _isHovering[i] != null
                                               ? Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .button
-                                                  .decorationColor
+                                              .primaryTextTheme
+                                              .button
+                                              .decorationColor
                                               : Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .button
-                                                  .color,
+                                              .primaryTextTheme
+                                              .button
+                                              .color,
                                           fontFamily: 'Montserrat',
                                         ),
                                       ),
