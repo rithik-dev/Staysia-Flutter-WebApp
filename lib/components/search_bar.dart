@@ -234,10 +234,28 @@ class _SearchBarState extends State<SearchBar> {
     } else if (!isCheckoutDate && checkOutDateTime == null) {
       return dateTime;
     } else if (!isCheckoutDate && dateTime.isAfter(checkOutDateTime)) {
-      dateTime = checkOutDateTime;
+      dateTime = checkInDateTime;
       showSimpleNotification(
         Text(
           'The Check In Date should be before Check Out Date.',
+          style: TextStyle(color: Colors.white),
+        ),
+        background: Colors.deepOrange,
+      );
+    } else if(isCheckoutDate && dateTime==checkInDateTime) {
+      dateTime = checkOutDateTime;
+      showSimpleNotification(
+        Text(
+          'The Check In Date can not be equal to Check out date.',
+          style: TextStyle(color: Colors.white),
+        ),
+        background: Colors.deepOrange,
+      );
+    }else if(!isCheckoutDate && dateTime==checkOutDateTime) {
+      dateTime = checkInDateTime;
+      showSimpleNotification(
+        Text(
+          'The Check In Date can not be equal to Check out date.',
           style: TextStyle(color: Colors.white),
         ),
         background: Colors.deepOrange,

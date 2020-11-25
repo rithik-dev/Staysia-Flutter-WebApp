@@ -228,8 +228,11 @@ class _BookingDialogState extends State<BookingDialog> {
                       }
                     : () async {
                         checkInDateTime = await showDatePickerDialog(context,
+                            isCheckoutDate: false,
                             roomsBookedOn: getRoomsBookedOn(roomsData));
                         setState(() {});
+                        logger.d(
+                            'after selection in checkIn\ncheckIn: ${printDate(checkInDateTime)}\ncheckOut: ${printDate(checkOutDateTime)}');
                       },
               ),
               ListTile(
@@ -255,8 +258,11 @@ class _BookingDialogState extends State<BookingDialog> {
                       }
                     : () async {
                         checkOutDateTime = await showDatePickerDialog(context,
+                            isCheckoutDate: true,
                             roomsBookedOn: getRoomsBookedOn(roomsData));
                         setState(() {});
+                        logger.d(
+                            'after selection in checkOut\ncheckIn: ${printDate(checkInDateTime)}\ncheckOut: ${printDate(checkOutDateTime)}');
                       },
               ),
               SizedBox(height: 20),
@@ -362,7 +368,6 @@ class _BookingDialogState extends State<BookingDialog> {
                                         var booking = await addBooking();
 
                                         if (booking == null) {
-                                          logger.d('here lol');
                                           setState(() {
                                             isLoading = false;
                                           });
@@ -472,10 +477,11 @@ class _BookingDialogState extends State<BookingDialog> {
 
   Future<DateTime> showDatePickerDialog(
     BuildContext context, {
-    bool isCheckoutDate = false,
+    @required bool isCheckoutDate,
     List<String> roomsBookedOn,
   }) async {
-    var dateTime = await showDatePicker(
+    // ignore: omit_local_variable_types
+    DateTime dateTime = await showDatePicker(
         builder: (BuildContext context, Widget child) {
           return Theme(
             data: ThemeData.light().copyWith(
@@ -510,10 +516,28 @@ class _BookingDialogState extends State<BookingDialog> {
     } else if (!isCheckoutDate && checkOutDateTime == null) {
       return dateTime;
     } else if (!isCheckoutDate && dateTime.isAfter(checkOutDateTime)) {
-      dateTime = checkOutDateTime;
+      dateTime = checkInDateTime;
       showSimpleNotification(
         Text(
           'The Check In Date should be before Check Out Date.',
+          style: TextStyle(color: Colors.white),
+        ),
+        background: Colors.deepOrange,
+      );
+    } else if(isCheckoutDate && dateTime==checkInDateTime) {
+      dateTime = checkOutDateTime;
+      showSimpleNotification(
+        Text(
+          'The Check In Date can not be equal to Check out date.',
+          style: TextStyle(color: Colors.white),
+        ),
+        background: Colors.deepOrange,
+      );
+    }else if(!isCheckoutDate && dateTime==checkOutDateTime) {
+      dateTime = checkInDateTime;
+      showSimpleNotification(
+        Text(
+          'The Check In Date can not be equal to Check out date.',
           style: TextStyle(color: Colors.white),
         ),
         background: Colors.deepOrange,
