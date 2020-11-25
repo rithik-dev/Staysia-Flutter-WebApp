@@ -22,6 +22,7 @@ class _TagCarouselState extends State<TagCarousel> {
       _isSelected.add(false);
       images.add(element.thumbnail);
       displayName.add(element.displayName);
+      tags.add(element.tag);
     });
   }
 
@@ -34,6 +35,7 @@ class _TagCarouselState extends State<TagCarousel> {
 
   final List<String> images = [];
   final List<String> displayName = [];
+  final List<String> tags = [];
 
   List<Widget> generateImageTiles(screenSize) {
     return images
@@ -42,7 +44,7 @@ class _TagCarouselState extends State<TagCarousel> {
         onTap: () async {
           await Navigator.pushNamed(context, SearchResultsPage.id,
               arguments: {
-                'q': displayName[images.indexOf(element)],
+                'q': tags[images.indexOf(element)],
                 'useAdvanceSearch': true
               });
         },

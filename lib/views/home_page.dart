@@ -13,6 +13,7 @@ import 'package:staysia_web/components/tag_carousel.dart';
 import 'package:staysia_web/components/web_scrollbar.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/get_cities.dart';
+import 'package:staysia_web/views/search_results_page.dart';
 
 class HomePage extends StatefulWidget {
   static const id = '/home';
@@ -112,12 +113,34 @@ class _HomePageState extends State<HomePage> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CityCarousel(
                         cities: snapshot.data.cities,
                       ),
                       TagCarousel(tags: snapshot.data.tags),
-                      TagCarousel(tags: snapshot.data.stars)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: MediaQuery.of(context).size.width * 0.1,
+                            vertical: 20),
+                        child: Column(
+                            children: snapshot.data.stars.reversed
+                                .map((e) => GestureDetector(
+                                      onTap: () async {
+                                        await Navigator.pushNamed(
+                                            context, SearchResultsPage.id,
+                                            arguments: {
+                                              'q': e.tag,
+                                              'useAdvanceSearch': true
+                                            });
+                                      },
+                                      child: Image.network(
+                                        e.thumbnail,
+                                        height: 75,
+                                      ),
+                                    ))
+                                .toList()),
+                      )
                     ],
                   );
                 } else if (snapshot.hasError) {

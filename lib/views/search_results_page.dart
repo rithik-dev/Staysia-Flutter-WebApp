@@ -91,132 +91,64 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.1,
                   vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 2,
-                            ),
+              child: ResponsiveWidget.isSemiMediumScreen(context) ||
+                      ResponsiveWidget.isSmallScreen(context)
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2,
                           ),
-                          Text(
-                            "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}'}",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
-                        margin: EdgeInsets.symmetric(horizontal: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(color: Colors.grey, blurRadius: 5)
-                          ],
                         ),
-                        child: Row(
+                        Text(
+                          "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}'}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        _sortingWidgets(),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Column(
                           children: [
                             Text(
-                              'Rating',
+                              "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                            Text(
+                              "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}'}",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
                                 fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1.5,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1,
                               ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.arrow_upward_rounded),
-                              color: Theme.of(context).accentColor,
-                              onPressed: () {
-                                results.sort(
-                                  (a, b) => a.rating.compareTo(b.rating),
-                                );
-                                setState(() {});
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.arrow_downward_rounded),
-                              color: Theme.of(context).hintColor,
-                              onPressed: () {
-                                results.sort(
-                                  (a, b) => b.rating.compareTo(a.rating),
-                                );
-                                setState(() {});
-                              },
-                            ),
                           ],
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
-                        margin: EdgeInsets.symmetric(horizontal: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(color: Colors.grey, blurRadius: 5)
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Price',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.arrow_upward_rounded),
-                              color: Theme.of(context).accentColor,
-                              onPressed: () {
-                                results.sort(
-                                  (a, b) => a.price.currentPrice
-                                      .compareTo(b.price.currentPrice),
-                                );
-                                setState(() {});
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.arrow_downward_rounded),
-                              color: Theme.of(context).hintColor,
-                              onPressed: () {
-                                results.sort(
-                                  (a, b) => b.price.currentPrice
-                                      .compareTo(a.price.currentPrice),
-                                );
-                                setState(() {});
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                        Spacer(),
+                        _sortingWidgets(),
+                      ],
+                    ),
             ),
             FutureBuilder<List<Hotel>>(
                 future: getResults,
@@ -268,6 +200,101 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _sortingWidgets() {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+          ),
+          child: Row(
+            children: [
+              Text(
+                'Rating',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5,
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.arrow_upward_rounded),
+                color: Theme.of(context).accentColor,
+                onPressed: () {
+                  results.sort(
+                    (a, b) => a.rating.compareTo(b.rating),
+                  );
+                  setState(() {});
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.arrow_downward_rounded),
+                color: Theme.of(context).hintColor,
+                onPressed: () {
+                  results.sort(
+                    (a, b) => b.rating.compareTo(a.rating),
+                  );
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+          ),
+          child: Row(
+            children: [
+              Text(
+                'Price',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5,
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.arrow_upward_rounded),
+                color: Theme.of(context).accentColor,
+                onPressed: () {
+                  results.sort(
+                    (a, b) =>
+                        a.price.currentPrice.compareTo(b.price.currentPrice),
+                  );
+                  setState(() {});
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.arrow_downward_rounded),
+                color: Theme.of(context).hintColor,
+                onPressed: () {
+                  results.sort(
+                    (a, b) =>
+                        b.price.currentPrice.compareTo(a.price.currentPrice),
+                  );
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
