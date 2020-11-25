@@ -52,6 +52,7 @@ class _SearchBarState extends State<SearchBar> {
                                 'checkOut': checkOutDateTime == null
                                     ? null
                                     : printDate(checkOutDateTime),
+                                'useAdvanceSearch': false,
                               });
                         },
                         labelText: 'Search',
@@ -153,40 +154,43 @@ class _SearchBarState extends State<SearchBar> {
             ],
           ),
         ),
-        if (fuzzySearchResults.isEmpty) SizedBox.shrink() else Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(3),
-                child: Wrap(
-                  spacing: 13,
-                  direction: Axis.vertical,
-                  children: fuzzySearchResults
-                      .map((e) => GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              HotelDetailsPage.id,
-                              arguments: e.id,
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Text(e.starRating.toString()),
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow[700],
-                              ),
-                              SizedBox(width: 10),
-                              Text(e.title),
-                              SizedBox(width: 10),
-                            ],
-                          )))
-                      .toList(),
-                ),
-              ),
+        if (fuzzySearchResults.isEmpty)
+          SizedBox.shrink()
+        else
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(3),
+            child: Wrap(
+              spacing: 13,
+              direction: Axis.vertical,
+              children: fuzzySearchResults
+                  .map((e) => GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          HotelDetailsPage.id,
+                          arguments: e.id,
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(e.starRating.toString()),
+                          Icon(
+                            Icons.star,
+                            color: Colors.yellow[700],
+                          ),
+                          SizedBox(width: 10),
+                          Text(e.title),
+                          SizedBox(width: 10),
+                        ],
+                      )))
+                  .toList(),
+            ),
+          ),
       ],
     );
   }
