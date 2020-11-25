@@ -9,6 +9,7 @@ import 'package:staysia_web/components/city_heading.dart';
 import 'package:staysia_web/components/explore_drawer.dart';
 import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/components/search_bar.dart';
+import 'package:staysia_web/components/tag_carousel.dart';
 import 'package:staysia_web/components/web_scrollbar.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
 import 'package:staysia_web/models/get_cities.dart';
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController _scrollController;
   double _scrollPosition = 0;
   double _opacity = 0;
-  Future<GetCities> getCities;
+  Future<GetHome> getHome;
 
   void _scrollListener() {
     setState(() {
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    getCities = NavigationController.getCitiesController();
+    getHome = NavigationController.getCitiesController();
     _scrollController.addListener(_scrollListener);
     super.initState();
   }
@@ -99,20 +100,25 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: !(ResponsiveWidget.isSmallScreen(context) ||
                           ResponsiveWidget.isSemiMediumScreen(context))
-                      ? EdgeInsets.symmetric(
-                          horizontal: screenSize.width * 0.3)
+                      ? EdgeInsets.symmetric(horizontal: screenSize.width * 0.3)
                       : EdgeInsets.all(20),
                   child: SearchBar(),
                 )
               ],
             ),
             DestinationHeading(screenSize: screenSize),
-            FutureBuilder<GetCities>(
-              future: getCities,
+            FutureBuilder<GetHome>(
+              future: getHome,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return CityCarousel(
-                    cities: snapshot.data.cities,
+                  return Column(
+                    children: [
+                      CityCarousel(
+                        cities: snapshot.data.cities,
+                      ),
+                      TagCarousel(tags: snapshot.data.tags),
+                      TagCarousel(tags: snapshot.data.stars)
+                    ],
                   );
                 } else if (snapshot.hasError) {
                   return CustomErrorWidget(
