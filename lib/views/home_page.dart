@@ -118,7 +118,9 @@ class _HomePageState extends State<HomePage> {
                       CityCarousel(
                         cities: snapshot.data.cities,
                       ),
+                      SizedBox(height: 20),
                       TagCarousel(tags: snapshot.data.tags),
+                      SizedBox(height: 20),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: MediaQuery.of(context).size.width * 0.1,
