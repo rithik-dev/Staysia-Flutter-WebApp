@@ -6,6 +6,8 @@ import 'package:staysia_web/models/hotel_overview.dart';
 import 'package:staysia_web/views/hotel_details_page.dart';
 import 'package:staysia_web/views/search_results_page.dart';
 
+import '../main.dart';
+
 class SearchBar extends StatefulWidget {
   @override
   _SearchBarState createState() => _SearchBarState();
@@ -59,7 +61,8 @@ class _SearchBarState extends State<SearchBar> {
                         overrideLabel: true,
                         onChanged: (s) async {
                           searchText = s;
-                          if (s != '') {
+                          logger.d(s);
+                          if (s == null || s.trim() != '' || s.isEmpty) {
                             fuzzySearchResults = (await NavigationController
                                     .fuzzySearchController(
                                   q: s,
