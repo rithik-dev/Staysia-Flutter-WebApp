@@ -13,7 +13,7 @@ import 'package:staysia_web/utils/routes.dart';
 import '../main.dart';
 
 class NavigationController {
-  static Future<GetCities> getCitiesController() async {
+  static Future<GetHome> getCitiesController() async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
@@ -41,9 +41,9 @@ class NavigationController {
             },
           ),
         ]);
-      final res = await _dio.get(getCities);
+      final res = await _dio.get(getHome);
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        return GetCities.fromJson(res.data as Map<String, dynamic>);
+        return GetHome.fromJson(res.data as Map<String, dynamic>);
       } else {
         return null;
       }

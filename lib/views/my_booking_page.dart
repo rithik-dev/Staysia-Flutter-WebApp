@@ -44,8 +44,6 @@ class _MyBookingPageState extends State<MyBookingPage> {
     for (var booking in bookings) {
       if (booking.bookingId != bookingId) {
         newBookings.add(booking);
-      } else {
-        print('not adding ${booking.bookingId}');
       }
     }
     setState(() {
