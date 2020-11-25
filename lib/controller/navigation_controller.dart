@@ -86,6 +86,9 @@ class NavigationController {
         if (cityName != null) 'city': cityName,
       });
       if (res.statusCode >= 200 && res.statusCode < 300) {
+        if(res.statusCode == 204){
+          return [];
+        }
         return (res.data as List<dynamic>)
             .map((e) => Hotel.fromJson(e as Map<String, dynamic>))
             .toList()
@@ -139,6 +142,9 @@ class NavigationController {
         if (checkOut != null) 'check_Out': checkOut,
       });
       if (res.statusCode >= 200 && res.statusCode < 300) {
+        if(res.statusCode == 204){
+          return [];
+        }
         return (res.data as List<dynamic>)
             .map((e) => Hotel.fromJson(e as Map<String, dynamic>))
             .toList()
