@@ -62,7 +62,7 @@ class _SearchBarState extends State<SearchBar> {
                         onChanged: (s) async {
                           searchText = s;
                           logger.d(s);
-                          if (s == null || s.trim() != '' || s.isEmpty) {
+                          if (s != null || s.trim() != '' || s.isNotEmpty) {
                             fuzzySearchResults = (await NavigationController
                                     .fuzzySearchController(
                                   q: s,
