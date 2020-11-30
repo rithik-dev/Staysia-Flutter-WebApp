@@ -113,10 +113,13 @@ class NavigationController {
       Dio _dio = Dio(
         BaseOptions(
           baseUrl: 'https://staysia.herokuapp.com/api/',
-          headers: {
-            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
-            // 'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: Get.find<Jwt>().token.value == null ||
+                  Get.find<Jwt>().token.value == ''
+              ? {}
+              : {
+                  'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+                  // 'X-Requested-With': 'XMLHttpRequest',
+                },
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
@@ -202,16 +205,20 @@ class NavigationController {
     }
   }
 
-  static Future<List<Hotel>> advanceSearchController({@required String q}) async {
+  static Future<List<Hotel>> advanceSearchController(
+      {@required String q}) async {
     try {
       // ignore: omit_local_variable_types
       Dio _dio = Dio(
         BaseOptions(
           baseUrl: 'https://staysia.herokuapp.com/api/',
-          headers: {
-            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
-            // 'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: Get.find<Jwt>().token.value == null ||
+                  Get.find<Jwt>().token.value == ''
+              ? {}
+              : {
+                  'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+                  // 'X-Requested-With': 'XMLHttpRequest',
+                },
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
@@ -298,10 +305,13 @@ class NavigationController {
       Dio _dio = Dio(
         BaseOptions(
           baseUrl: 'https://staysia.herokuapp.com/api/',
-          headers: {
-            'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
-            // 'X-Requested-With': 'XMLHttpRequest',
-          },
+          headers: Get.find<Jwt>().token.value == null ||
+                  Get.find<Jwt>().token.value == ''
+              ? {}
+              : {
+                  'Authorization': 'Bearer ${Get.find<Jwt>().token.value}',
+                  // 'X-Requested-With': 'XMLHttpRequest',
+                },
           contentType: Headers.formUrlEncodedContentType,
         ),
       )..interceptors.addAll([
