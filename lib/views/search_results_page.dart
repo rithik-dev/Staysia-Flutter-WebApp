@@ -7,6 +7,7 @@ import 'package:staysia_web/components/explore_drawer.dart';
 
 import 'package:staysia_web/components/TopBarContents.dart';
 import 'package:staysia_web/components/hotel_card.dart';
+import 'package:staysia_web/components/multi_select.dart';
 
 import 'package:staysia_web/components/responsive_widget.dart';
 import 'package:staysia_web/controller/navigation_controller.dart';
@@ -29,19 +30,22 @@ class SearchResultsPage extends StatefulWidget {
 class _SearchResultsPageState extends State<SearchResultsPage> {
   Future<List<Hotel>> getResults;
   List<Hotel> results = [];
+  List<Hotel> fixedResults = [];
   String selectedCity;
+  List allTags;
+  List selectedTags;
 
   @override
   void initState() {
     getResults = (widget.queryParamsAndType['useAdvanceSearch'] as bool)
         ? NavigationController.advanceSearchController(
-            q: widget.queryParamsAndType['q'] as String,
-          )
+      q: widget.queryParamsAndType['q'] as String,
+    )
         : NavigationController.searchHotelWithNameController(
-            q: widget.queryParamsAndType['q'] as String,
-            checkIn: widget.queryParamsAndType['checkIn'] as String,
-            checkOut: widget.queryParamsAndType['checkOut'] as String,
-          );
+      q: widget.queryParamsAndType['q'] as String,
+      checkIn: widget.queryParamsAndType['checkIn'] as String,
+      checkOut: widget.queryParamsAndType['checkOut'] as String,
+    );
     super.initState();
   }
 
@@ -50,113 +54,144 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: ResponsiveWidget.isLargeScreen(context) ||
-                ResponsiveWidget.isMediumScreen(context)
+            ResponsiveWidget.isMediumScreen(context)
             ? PreferredSize(
-                preferredSize: Size(MediaQuery.of(context).size.width, 1000),
-                child: TopBarContents(),
-              )
+          preferredSize: Size(MediaQuery
+              .of(context)
+              .size
+              .width, 1000),
+          child: TopBarContents(),
+        )
             : AppBar(
-                backgroundColor: Theme.of(context).primaryColor,
-                elevation: 0,
-                title: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, HomePage.id, (route) => false);
-                      },
-                      child: Text(
-                        'STAYSIA',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 20,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 3,
-                        ),
-                      ),
-                    ),
-                  ],
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
+          elevation: 0,
+          title: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, HomePage.id, (route) => false);
+                },
+                child: Text(
+                  'STAYSIA',
+                  style: TextStyle(
+                    color: Theme
+                        .of(context)
+                        .accentColor,
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 3,
+                  ),
                 ),
               ),
+            ],
+          ),
+        ),
         drawer: ExploreDrawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.1,
+                  horizontal: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.1,
                   vertical: 20),
               child: ResponsiveWidget.isSemiMediumScreen(context) ||
-                      ResponsiveWidget.isSmallScreen(context)
+                  ResponsiveWidget.isSmallScreen(context)
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                        Text(
-                          "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}\n'}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                        _sortingWidgets(),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        _filterByCities()
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 2,
-                              ),
-                            ),
-                            Text(
-                              "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}'}",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        _sortingWidgets(),
-                        // Spacer(),
-                        _filterByCities()
-                      ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "\nShowing results for ${widget
+                        .queryParamsAndType['q'] as String}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2,
                     ),
+                  ),
+                  Text(
+                    "${widget.queryParamsAndType['checkIn'] == null
+                        ? ''
+                        : 'Check-In date: ${widget
+                        .queryParamsAndType['checkIn'] as String}\n'}${widget
+                        .queryParamsAndType['checkOut'] == null
+                        ? ''
+                        : 'Check-Out date: ${widget
+                        .queryParamsAndType['checkOut'] as String}\n'}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  _sortingWidgets(),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  _filterByCities(),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  _selectTags()
+                ],
+              )
+                  : Row(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "\nShowing results for ${widget
+                            .queryParamsAndType['q'] as String}",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      Text(
+                        "${widget.queryParamsAndType['checkIn'] == null
+                            ? ''
+                            : 'Check-In date: ${widget
+                            .queryParamsAndType['checkIn'] as String}\n'}${widget
+                            .queryParamsAndType['checkOut'] == null
+                            ? ''
+                            : 'Check-Out date: ${widget
+                            .queryParamsAndType['checkOut'] as String}'}",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  _sortingWidgets(),
+                  // Spacer(),
+                  _filterByCities(),
+                  _selectTags()
+                ],
+              ),
             ),
             FutureBuilder<List<Hotel>>(
                 future: getResults,
@@ -165,33 +200,46 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                       snapshot.connectionState == ConnectionState.done) {
                     // ignore: omit_local_variable_types
                     results = snapshot.data;
+                    fixedResults = snapshot.data;
                     if (selectedCity != null) {
-
                       results = results
-                          .where((element) => element.city == selectedCity).toList();
+                          .where((element) => element.city == selectedCity)
+                          .toList();
+                    }
+                    if (selectedTags != null) {
+                      results = results.where((hotel) {
+                        selectedTags.forEach((tag) {
+                          if (hotel.tags.contains(tag)) {
+                            return true;
+                          }
+                        });
+                        return false;
+                      }).toList();
                     }
                     if (results.isEmpty) {
                       return NoData(message: 'No results found');
                     } else {
-
                       return Expanded(
                         child: GridView.builder(
                           padding: EdgeInsets.symmetric(
                               horizontal:
-                                  MediaQuery.of(context).size.width * 0.1,
+                              MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.1,
                               vertical: 20),
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:
-                                      ResponsiveWidget.isSmallScreen(context)
-                                          ? 1
-                                          : ResponsiveWidget.isSemiMediumScreen(
-                                                  context)
-                                              ? 2
-                                              : ResponsiveWidget.isMediumScreen(
-                                                      context)
-                                                  ? 3
-                                                  : 4),
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount:
+                              ResponsiveWidget.isSmallScreen(context)
+                                  ? 1
+                                  : ResponsiveWidget.isSemiMediumScreen(
+                                  context)
+                                  ? 2
+                                  : ResponsiveWidget.isMediumScreen(
+                                  context)
+                                  ? 3
+                                  : 4),
                           itemBuilder: (context, index) {
                             return HotelCard(results[index]);
                           },
@@ -206,7 +254,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   } else {
                     return Center(
                       child: SpinKitCircle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme
+                            .of(context)
+                            .accentColor,
                       ),
                     );
                   }
@@ -215,6 +265,56 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         ),
       ),
     );
+  }
+
+  Widget _selectTags() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(10, 5, 5, 5),
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+      ),
+      child: FlatButton(
+        onPressed: () {
+          _showMultiSelect();
+        },
+        child: Text(
+          'Select Specific Tags',
+          style: TextStyle(color: Colors.grey[800], fontSize: 14),
+        ),
+      ),
+    );
+  }
+
+  void _showMultiSelect() async {
+    // ignore: omit_local_variable_types
+    List tags = [];
+    fixedResults.forEach((element) {
+      tags.addAll(element.tags);
+    });
+    // ignore: omit_local_variable_types
+    tags = Set<String>.from(tags).toList();
+    // ignore: omit_local_variable_types
+    List<MultiSelectDialogItem> items = [];
+    // ignore: omit_local_variable_types
+    for (int i = 0; i < tags.length; i++) {
+      items.add(MultiSelectDialogItem(i, tags[i] as String));
+    }
+    final selected = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelectDialog(
+          items: items,
+          initialSelectedValues: const {},
+        );
+      },
+    );
+    setState(() {
+      selectedTags = selected == null?null:selected['values'] as List;
+    });
+    print(selectedTags);
   }
 
   Widget _filterByCities() {
@@ -235,10 +335,11 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         underline: SizedBox.shrink(),
         value: selectedCity,
         items: cities
-            .map((e) => DropdownMenuItem(
-                  child: Text(e),
-                  value: e,
-                ))
+            .map((e) =>
+            DropdownMenuItem(
+              child: Text(e),
+              value: e,
+            ))
             .toList(),
         onChanged: (String value) {
           selectedCity = value;
@@ -273,20 +374,24 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_upward_rounded),
-                color: Theme.of(context).accentColor,
+                color: Theme
+                    .of(context)
+                    .accentColor,
                 onPressed: () {
                   results.sort(
-                    (a, b) => a.rating.compareTo(b.rating),
+                        (a, b) => a.rating.compareTo(b.rating),
                   );
                   setState(() {});
                 },
               ),
               IconButton(
                 icon: Icon(Icons.arrow_downward_rounded),
-                color: Theme.of(context).hintColor,
+                color: Theme
+                    .of(context)
+                    .hintColor,
                 onPressed: () {
                   results.sort(
-                    (a, b) => b.rating.compareTo(a.rating),
+                        (a, b) => b.rating.compareTo(a.rating),
                   );
                   setState(() {});
                 },
@@ -316,10 +421,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_upward_rounded),
-                color: Theme.of(context).accentColor,
+                color: Theme
+                    .of(context)
+                    .accentColor,
                 onPressed: () {
                   results.sort(
-                    (a, b) =>
+                        (a, b) =>
                         a.price.currentPrice.compareTo(b.price.currentPrice),
                   );
                   setState(() {});
@@ -327,10 +434,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_downward_rounded),
-                color: Theme.of(context).hintColor,
+                color: Theme
+                    .of(context)
+                    .hintColor,
                 onPressed: () {
                   results.sort(
-                    (a, b) =>
+                        (a, b) =>
                         b.price.currentPrice.compareTo(a.price.currentPrice),
                   );
                   setState(() {});
