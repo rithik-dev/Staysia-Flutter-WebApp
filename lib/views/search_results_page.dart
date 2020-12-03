@@ -34,18 +34,19 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   String selectedCity;
   List allTags;
   List selectedTags;
+  Set selectedTagIndex = {};
 
   @override
   void initState() {
     getResults = (widget.queryParamsAndType['useAdvanceSearch'] as bool)
         ? NavigationController.advanceSearchController(
-      q: widget.queryParamsAndType['q'] as String,
-    )
+            q: widget.queryParamsAndType['q'] as String,
+          )
         : NavigationController.searchHotelWithNameController(
-      q: widget.queryParamsAndType['q'] as String,
-      checkIn: widget.queryParamsAndType['checkIn'] as String,
-      checkOut: widget.queryParamsAndType['checkOut'] as String,
-    );
+            q: widget.queryParamsAndType['q'] as String,
+            checkIn: widget.queryParamsAndType['checkIn'] as String,
+            checkOut: widget.queryParamsAndType['checkOut'] as String,
+          );
     super.initState();
   }
 
@@ -54,144 +55,118 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: ResponsiveWidget.isLargeScreen(context) ||
-            ResponsiveWidget.isMediumScreen(context)
+                ResponsiveWidget.isMediumScreen(context)
             ? PreferredSize(
-          preferredSize: Size(MediaQuery
-              .of(context)
-              .size
-              .width, 1000),
-          child: TopBarContents(),
-        )
+                preferredSize: Size(MediaQuery.of(context).size.width, 1000),
+                child: TopBarContents(),
+              )
             : AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .primaryColor,
-          elevation: 0,
-          title: Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, HomePage.id, (route) => false);
-                },
-                child: Text(
-                  'STAYSIA',
-                  style: TextStyle(
-                    color: Theme
-                        .of(context)
-                        .accentColor,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 3,
-                  ),
+                backgroundColor: Theme.of(context).primaryColor,
+                elevation: 0,
+                title: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, HomePage.id, (route) => false);
+                      },
+                      child: Text(
+                        'STAYSIA',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 20,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 3,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
         drawer: ExploreDrawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.1,
+                  horizontal: MediaQuery.of(context).size.width * 0.1,
                   vertical: 20),
               child: ResponsiveWidget.isSemiMediumScreen(context) ||
-                  ResponsiveWidget.isSmallScreen(context)
+                      ResponsiveWidget.isSmallScreen(context)
                   ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "\nShowing results for ${widget
-                        .queryParamsAndType['q'] as String}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                  Text(
-                    "${widget.queryParamsAndType['checkIn'] == null
-                        ? ''
-                        : 'Check-In date: ${widget
-                        .queryParamsAndType['checkIn'] as String}\n'}${widget
-                        .queryParamsAndType['checkOut'] == null
-                        ? ''
-                        : 'Check-Out date: ${widget
-                        .queryParamsAndType['checkOut'] as String}\n'}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  _sortingWidgets(),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  _filterByCities(),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  _selectTags()
-                ],
-              )
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        Text(
+                          "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}\n'}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        _sortingWidgets(),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _filterByCities(),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _selectTags()
+                      ],
+                    )
                   : Row(
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        "\nShowing results for ${widget
-                            .queryParamsAndType['q'] as String}",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 2,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "\nShowing results for ${widget.queryParamsAndType['q'] as String}",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                            Text(
+                              "${widget.queryParamsAndType['checkIn'] == null ? '' : 'Check-In date: ${widget.queryParamsAndType['checkIn'] as String}\n'}${widget.queryParamsAndType['checkOut'] == null ? '' : 'Check-Out date: ${widget.queryParamsAndType['checkOut'] as String}'}",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Text(
-                        "${widget.queryParamsAndType['checkIn'] == null
-                            ? ''
-                            : 'Check-In date: ${widget
-                            .queryParamsAndType['checkIn'] as String}\n'}${widget
-                            .queryParamsAndType['checkOut'] == null
-                            ? ''
-                            : 'Check-Out date: ${widget
-                            .queryParamsAndType['checkOut'] as String}'}",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  _sortingWidgets(),
-                  // Spacer(),
-                  _filterByCities(),
-                  _selectTags()
-                ],
-              ),
+                        Spacer(),
+                        _sortingWidgets(),
+                        // Spacer(),
+                        _filterByCities(),
+                        _selectTags()
+                      ],
+                    ),
             ),
             FutureBuilder<List<Hotel>>(
                 future: getResults,
@@ -223,23 +198,20 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         child: GridView.builder(
                           padding: EdgeInsets.symmetric(
                               horizontal:
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.1,
+                                  MediaQuery.of(context).size.width * 0.1,
                               vertical: 20),
                           gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount:
-                              ResponsiveWidget.isSmallScreen(context)
-                                  ? 1
-                                  : ResponsiveWidget.isSemiMediumScreen(
-                                  context)
-                                  ? 2
-                                  : ResponsiveWidget.isMediumScreen(
-                                  context)
-                                  ? 3
-                                  : 4),
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      ResponsiveWidget.isSmallScreen(context)
+                                          ? 1
+                                          : ResponsiveWidget.isSemiMediumScreen(
+                                                  context)
+                                              ? 2
+                                              : ResponsiveWidget.isMediumScreen(
+                                                      context)
+                                                  ? 3
+                                                  : 4),
                           itemBuilder: (context, index) {
                             return HotelCard(results[index]);
                           },
@@ -254,9 +226,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   } else {
                     return Center(
                       child: SpinKitCircle(
-                        color: Theme
-                            .of(context)
-                            .accentColor,
+                        color: Theme.of(context).accentColor,
                       ),
                     );
                   }
@@ -307,12 +277,13 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       builder: (BuildContext context) {
         return MultiSelectDialog(
           items: items,
-          initialSelectedValues: const {},
+          initialSelectedValues: selectedTagIndex,
         );
       },
     );
     setState(() {
-      selectedTags = selected == null?null:selected['values'] as List;
+      selectedTags = selected == null ? null : selected['values'] as List;
+      selectedTagIndex = selected == null ? null : selected['index'] as Set;
     });
     print(selectedTags);
   }
@@ -335,11 +306,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         underline: SizedBox.shrink(),
         value: selectedCity,
         items: cities
-            .map((e) =>
-            DropdownMenuItem(
-              child: Text(e),
-              value: e,
-            ))
+            .map((e) => DropdownMenuItem(
+                  child: Text(e),
+                  value: e,
+                ))
             .toList(),
         onChanged: (String value) {
           selectedCity = value;
@@ -374,24 +344,20 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_upward_rounded),
-                color: Theme
-                    .of(context)
-                    .accentColor,
+                color: Theme.of(context).accentColor,
                 onPressed: () {
                   results.sort(
-                        (a, b) => a.rating.compareTo(b.rating),
+                    (a, b) => a.rating.compareTo(b.rating),
                   );
                   setState(() {});
                 },
               ),
               IconButton(
                 icon: Icon(Icons.arrow_downward_rounded),
-                color: Theme
-                    .of(context)
-                    .hintColor,
+                color: Theme.of(context).hintColor,
                 onPressed: () {
                   results.sort(
-                        (a, b) => b.rating.compareTo(a.rating),
+                    (a, b) => b.rating.compareTo(a.rating),
                   );
                   setState(() {});
                 },
@@ -421,12 +387,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_upward_rounded),
-                color: Theme
-                    .of(context)
-                    .accentColor,
+                color: Theme.of(context).accentColor,
                 onPressed: () {
                   results.sort(
-                        (a, b) =>
+                    (a, b) =>
                         a.price.currentPrice.compareTo(b.price.currentPrice),
                   );
                   setState(() {});
@@ -434,12 +398,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_downward_rounded),
-                color: Theme
-                    .of(context)
-                    .hintColor,
+                color: Theme.of(context).hintColor,
                 onPressed: () {
                   results.sort(
-                        (a, b) =>
+                    (a, b) =>
                         b.price.currentPrice.compareTo(a.price.currentPrice),
                   );
                   setState(() {});
