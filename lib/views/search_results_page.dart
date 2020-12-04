@@ -182,14 +182,23 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                           .toList();
                     }
                     if (selectedTags != null) {
+                      print('preTagResult: $results');
                       results = results.where((hotel) {
-                        selectedTags.forEach((tag) {
+                        // ignore: omit_local_variable_types
+                        bool containTag = false;
+                        for (var tag in selectedTags) {
                           if (hotel.tags.contains(tag)) {
-                            return true;
+                            containTag = true;
+                            break;
                           }
-                        });
-                        return false;
+                        }
+                        if (containTag) {
+                          return true;
+                        } else {
+                          return false;
+                        }
                       }).toList();
+                      print('tagResult: $results');
                     }
                     if (results.isEmpty) {
                       return NoData(message: 'No results found');
