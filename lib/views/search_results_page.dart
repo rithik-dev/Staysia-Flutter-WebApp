@@ -34,6 +34,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   String selectedCity;
   List allTags;
   List selectedTags = [];
+  String sortType = '';
   Set selectedTagIndex = {};
 
   @override
@@ -197,6 +198,36 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                           return false;
                         }
                       }).toList();
+                    }
+                    if (sortType.isNotEmpty) {
+                      // ignore: omit_local_variable_types
+                      String mainType = sortType.split(' ')[0];
+                      // ignore: omit_local_variable_types
+                      String resultType = sortType.split(' ')[1];
+                      if (mainType == 'Price') {
+                        if (resultType == 'up') {
+                          results.sort(
+                            (a, b) => a.price.currentPrice
+                                .compareTo(b.price.currentPrice),
+                          );
+                        } else {
+                          results.sort(
+                            (a, b) => b.price.currentPrice
+                                .compareTo(a.price.currentPrice),
+                          );
+                        }
+                      } else {
+                        if (resultType == 'up') {
+                          results.sort(
+                            (a, b) => a.rating.compareTo(b.rating),
+                          );
+                        } else {
+                          results.sort(
+                            (a, b) => b.rating.compareTo(a.rating),
+                          );
+                        }
+                      }
+                      print('type: $sortType');
                     }
                     if (results.isEmpty) {
                       return NoData(message: 'No results found');
@@ -367,7 +398,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   results.sort(
                     (a, b) => a.rating.compareTo(b.rating),
                   );
-                  setState(() {});
+                  setState(() {
+                    sortType = 'Rating up';
+                  });
                 },
               ),
               IconButton(
@@ -377,7 +410,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   results.sort(
                     (a, b) => b.rating.compareTo(a.rating),
                   );
-                  setState(() {});
+                  setState(() {
+                    sortType = 'Rating down';
+                  });
                 },
               ),
             ],
@@ -411,7 +446,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                     (a, b) =>
                         a.price.currentPrice.compareTo(b.price.currentPrice),
                   );
-                  setState(() {});
+                  setState(() {
+                    sortType = 'Price up';
+                  });
                 },
               ),
               IconButton(
@@ -422,7 +459,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                     (a, b) =>
                         b.price.currentPrice.compareTo(a.price.currentPrice),
                   );
-                  setState(() {});
+                  setState(() {
+                    sortType = 'Price down';
+                  });
                 },
               ),
             ],
