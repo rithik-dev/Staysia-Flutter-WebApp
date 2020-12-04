@@ -297,10 +297,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       },
     );
     print('selected: $selected');
-    // selectedTags.isEmpty
-    //     ? selected['values'] as List
-    //     : <dynamic>{...selectedTags, ...selected['values'] as List}
-    //     .toList()
     setState(() {
       selectedTags =
           selected == null ? selectedTags : selected['values'] as List;
