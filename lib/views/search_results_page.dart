@@ -131,7 +131,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         SizedBox(
                           height: 5,
                         ),
-                        _selectTags()
+                        _selectTags(),
                       ],
                     )
                   : Row(
@@ -163,8 +163,8 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         Spacer(),
                         _sortingWidgets(),
                         // Spacer(),
+                        _selectTags(),
                         _filterByCities(),
-                        _selectTags()
                       ],
                     ),
             ),
@@ -248,7 +248,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
 
   Widget _selectTags() {
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 5, 5, 5),
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -256,12 +255,20 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
       ),
       child: FlatButton(
+        padding: EdgeInsets.symmetric(horizontal: 5,vertical: 22),
+        splashColor: Colors.transparent,
         onPressed: () {
           _showMultiSelect();
         },
-        child: Text(
-          'Select Specific Tags',
-          style: TextStyle(color: Colors.grey[800], fontSize: 14),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Tags  ',
+              style: TextStyle(color: Colors.grey[800], fontSize: 14),
+            ),
+            Icon(Icons.tag),
+          ],
         ),
       ),
     );
@@ -310,7 +317,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       ),
       child: DropdownButton(
         hint: Text(
-          'Select City',
+          'City',
           style: TextStyle(color: Colors.grey[800], fontSize: 14),
         ),
         icon: Icon(Icons.location_on),
