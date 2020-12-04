@@ -181,7 +181,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                           .where((element) => element.city == selectedCity)
                           .toList();
                     }
-                    if (selectedTags != null) {
+                    if (selectedTags != null && selectedTags.isNotEmpty) {
                       print('preTagResult: $results');
                       results = results.where((hotel) {
                         // ignore: omit_local_variable_types
@@ -291,8 +291,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       },
     );
     setState(() {
-      selectedTags = selected == null ? selectedTags : selected['values'] as List;
-      selectedTagIndex = selected == null ? selectedTagIndex : selected['index'] as Set;
+      selectedTags =
+          selected == null ? selectedTags : selected['values'] as List;
+      selectedTagIndex =
+          selected == null ? selectedTagIndex : selected['index'] as Set;
     });
     print(selectedTags);
   }
