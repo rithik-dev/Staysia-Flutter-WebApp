@@ -8,11 +8,16 @@ class MultiSelectDialogItem<V> {
 }
 
 class MultiSelectDialog<V> extends StatefulWidget {
-  MultiSelectDialog({Key key, this.items, this.initialSelectedValues})
+  MultiSelectDialog(
+      {Key key,
+      this.items,
+      this.initialSelectedValues,
+      this.initialSelectedLabels})
       : super(key: key);
 
   final List<MultiSelectDialogItem<V>> items;
   final Set<V> initialSelectedValues;
+  final List initialSelectedLabels;
 
   @override
   State<StatefulWidget> createState() => _MultiSelectDialogState<V>();
@@ -27,6 +32,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
     super.initState();
     if (widget.initialSelectedValues != null) {
       _selectedValues.addAll(widget.initialSelectedValues);
+      _selectedLabels.addAll(widget.initialSelectedLabels);
     }
   }
 
@@ -54,7 +60,28 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Select Tags'),
+      title: Column(
+        children: [
+          Text('Select Tags\n'),
+          widget.initialSelectedLabels != null &&
+              widget.initialSelectedLabels.isNotEmpty
+              ? Wrap(
+            spacing: 5,
+            runSpacing: 10,
+            direction: Axis.horizontal,
+            children: widget.initialSelectedLabels
+                .map((e) => Chip(
+              label: Text(e as String,style: TextStyle(
+                fontSize: 10,
+                color: Colors.grey[600]
+              ),),
+              padding: EdgeInsets.all(5),
+            ))
+                .toList(),
+          )
+              : SizedBox.shrink(),
+        ],
+      ),
       contentPadding: EdgeInsets.only(top: 12.0),
       content: SingleChildScrollView(
         child: ListTileTheme(

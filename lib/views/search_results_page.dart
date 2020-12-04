@@ -33,7 +33,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   List<Hotel> fixedResults = [];
   String selectedCity;
   List allTags;
-  List selectedTags;
+  List selectedTags = [];
   Set selectedTagIndex = {};
 
   @override
@@ -182,7 +182,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                           .toList();
                     }
                     if (selectedTags != null && selectedTags.isNotEmpty) {
-                      print('preTagResult: $results');
                       results = results.where((hotel) {
                         // ignore: omit_local_variable_types
                         bool containTag = false;
@@ -198,7 +197,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                           return false;
                         }
                       }).toList();
-                      print('tagResult: $results');
                     }
                     if (results.isEmpty) {
                       return NoData(message: 'No results found');
@@ -255,7 +253,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
       ),
       child: FlatButton(
-        padding: EdgeInsets.symmetric(horizontal: 5,vertical: 22),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 22),
         splashColor: Colors.transparent,
         onPressed: () {
           _showMultiSelect();
@@ -293,10 +291,16 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       builder: (BuildContext context) {
         return MultiSelectDialog(
           items: items,
+          initialSelectedLabels: selectedTags,
           initialSelectedValues: selectedTagIndex,
         );
       },
     );
+    print('selected: $selected');
+    // selectedTags.isEmpty
+    //     ? selected['values'] as List
+    //     : <dynamic>{...selectedTags, ...selected['values'] as List}
+    //     .toList()
     setState(() {
       selectedTags =
           selected == null ? selectedTags : selected['values'] as List;
