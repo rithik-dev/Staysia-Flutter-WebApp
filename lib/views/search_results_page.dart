@@ -291,8 +291,8 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       },
     );
     setState(() {
-      selectedTags = selected == null ? null : selected['values'] as List;
-      selectedTagIndex = selected == null ? null : selected['index'] as Set;
+      selectedTags = selected == null ? selectedTags : selected['values'] as List;
+      selectedTagIndex = selected == null ? selectedTagIndex : selected['index'] as Set;
     });
     print(selectedTags);
   }
