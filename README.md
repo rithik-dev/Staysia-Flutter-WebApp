@@ -1,4 +1,4 @@
-# Staysia
+# Staysia (The web application is hosted [here](http://staysia.herokuapp.com/#/))
 
 Staysia is a responsive flutter web application that allows users to search and book hotels.
 Firebase is used for google auth.
