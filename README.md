@@ -1,7 +1,7 @@
-# Staysia (The web application is hosted [here](http://staysia.herokuapp.com/#/))
+# Staysia
 
 Staysia is a responsive flutter web application that allows users to search and book hotels.
-Firebase is used for google auth.
+Firebase is used for google auth. The backend is made in python.
 
 ### The homepage features a clean UI and gives access to a search bar 
 ![home](https://user-images.githubusercontent.com/56810766/100553457-01c32380-32b4-11eb-8946-1d880480a1aa.png)
